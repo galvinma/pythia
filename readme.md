@@ -2,6 +2,6 @@
 
 http://docs.python-guide.org/en/latest/starting/install/osx/
 
-### Using this sqlalchemy tuitorial 
+### Using this tuitorial 
 
-http://mapfish.org/doc/tutorials/sqlalchemy.html
+https://realpython.com/blog/python/flask-by-example-part-1-project-setup/
