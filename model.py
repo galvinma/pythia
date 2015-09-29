@@ -2,12 +2,12 @@ from app import db
 from sqlalchemy.dialects.postgresql import JSON
 
 
-class Result(db.Model):
+class Home(db.Model):
     __tablename__ = 'Login'
 
-    first_name = db.Column(db.String, primary_key=True)
+    first_name = db.Column(db.String())
     last_name = db.Column(db.String())
-    username = db.Column(db.String())
+    username = db.Column(db.String(), primary_key=True)
     username_email = db.Column(db.String())
     
 
