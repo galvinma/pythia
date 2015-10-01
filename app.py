@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
 import os
 
@@ -8,7 +8,7 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def text():
-		return "Welcome to the Pythia Project!"
+    return render_template('index.html')
 
 @app.route('/register')
 def sign_up():
