@@ -7,12 +7,20 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 
 @app.route('/')
-def text():
+def index():
     return render_template('index.html')
 
-@app.route('/register')
+@app.route('/signup')
 def sign_up():
-		return "There will be a signup page here!"
+	return render_template('signup.html')
+
+@app.route('/search')
+def search():
+	return render_template('search.html')
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
 
 if __name__ == '__main__':
 	app.run()
