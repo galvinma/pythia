@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.login import LoginManager, login_required
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_required
 from config import Config
 import os
 
@@ -24,7 +24,8 @@ def create_app(app):
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
-		form = LoginForm()
+		from signup import SignupForm
+		form = SignupForm()
 		if form.validate_on_submit():
 			user = User.query.filter_by(email=form.email.data).first()
 			if user is not None and user.verify_password(form.password.data):

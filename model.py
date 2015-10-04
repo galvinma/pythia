@@ -2,7 +2,7 @@ from app import db
 from sqlalchemy import *
 from sqlalchemy.engine.url import URL
 from sqlalchemy.dialects.postgresql import JSON
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 from app import login_manager
 import settings
 
@@ -19,6 +19,7 @@ def create_login_table(engine):
     Login.metadata.create_all(engine)
 
 class user(UserMixin, db.model):
+    __tablename = 'users'
     id = db.Column(db.integer, primary_key=True)
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
