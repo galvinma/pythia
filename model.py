@@ -3,8 +3,12 @@ from sqlalchemy import *
 from sqlalchemy.engine.url import URL
 from sqlalchemy.dialects.postgresql import JSON
 from flask.ext.login import UserMixin
-
+from app import login_manager
 import settings
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 Login = login()
 
