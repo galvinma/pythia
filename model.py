@@ -1,14 +1,27 @@
 from app import db
+from sqlalchemy import *
+from sqlalchemy.engine.url import URL
 from sqlalchemy.dialects.postgresql import JSON
+from flask.ext.login import UserMixin
 
+import settings
 
-class Home(db.Model):
-    __tablename__ = 'Login'
+Login = login()
 
+def db_connect():
+    return create_engine(URL(settings.DATABASE))
+
+def create_login_table(engine):
+    Login.metadata.create_all(engine)
+
+class user(UserMixin, db.model):
+    id = db.Column(db.integer, primary_key=True)
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
-    username = db.Column(db.String(), primary_key=True)
-    username_email = db.Column(db.String())
+    username = db.Column(db.String())
+    email = db.Column(db.String())
+    password_hash = db.Column(db.string(128))
+    role_id = db.Column(db.integer, db.ForeignKey('roles.id'))
     
 
     def __init__(self, first_name, last_name, username, username_email):

@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager
 import os
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
+
+login_manager = LoginManager
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'auth.login'
 
 @app.route('/')
 def index():
