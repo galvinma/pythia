@@ -1,22 +1,42 @@
-from flask import Flask, render_template, request
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_required
-from config import Config
+import flask_login 
 import os
+import settings
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import *
+from sqlalchemy.engine.url import URL
+from flask_wtf import Form
+from wtforms import validators, StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import Email, Length, Required
+from flask_login import LoginManager
+from config import Config
+from model import User
+from signup import SignupForm
 
 
-db = SQLAlchemy()
 app = Flask(__name__)
+db = SQLAlchemy()
+app.config.from_object(os.environ['APP_SETTINGS'])
+db.init_app(app)
+
+def db_connect():
+    return create_engine(URL(settings.DATABASE))
 
 
 login_manager = LoginManager()
+login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 
+
 def create_app(app):
-	app.config.from_object(os.environ['APP_SETTINGS'])
-	db.init_app(app)
+
+	@login_manager.user_loader
+	def load_user(id):
+		return User.get(id)
+
+	login_manager.setup_app(app)
 
 	@app.route('/')
 	def index():
@@ -24,32 +44,21 @@ def create_app(app):
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
-		from signup import SignupForm
 		form = SignupForm()
-		if form.validate_on_submit():
-			user = User.query.filter_by(email=form.email.data).first()
-			if user is not None and user.verify_password(form.password.data):
-				login_user(user, form.remember_me.data)
-				return redirect(request.args.get('next') or url_for('main.index'))
-			flash('Invalid username or password.')
-		return render_template('signup.html')
+		return render_template('signup.html', email='email')
 
 	@app.route('/about')
 	def about():
 		return render_template('about.html')
 
 	@app.route('/search')
-	@login_required
 	def search():
 		return render_template('search.html')
 
 	@app.route('/profile')
-	@login_required
 	def profile():
 		return render_template('profile.html')
-
-
-	login_manager.init_app(app)	
+	
 
 	return app
 
