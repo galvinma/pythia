@@ -1,16 +1,17 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import *
-from sqlalchemy.engine.url import URL
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_wtf import Form
+from wtforms.fields import BooleanField, StringField, SubmitField
+from wtforms.validators import Required
 
 
+
+from model import RegistrationForm
 
 
 app = Flask(__name__)
-db = SQLAlchemy()
 app.config.from_object(os.environ['APP_SETTINGS'])
-db.init_app(app)
+app.config['SECRET_KEY'] = 'secret'
 
 
 def create_app(app):
@@ -19,9 +20,14 @@ def create_app(app):
 	def index():
 		return render_template('index.html')
 
-	@app.route('/signup')
+	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
-		return render_template('signup.html')
+		form = RegistrationForm()
+		if form.validate_on_submit():
+			return redirect(url_for('profile'))
+		return render_template('signup.html', form=form)
+
+
 
 	@app.route('/search')
 	def search():
