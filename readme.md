@@ -2,6 +2,6 @@
 
 http://docs.python-guide.org/en/latest/starting/install/osx/
 
-### Using this tuitorial 
+### Video for setting up Flask
 
-https://realpython.com/blog/python/flask-by-example-part-1-project-setup/
+https://www.youtube.com/watch?v=DIcpEg77gdE
