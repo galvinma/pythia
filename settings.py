@@ -6,3 +6,5 @@ DATABASE = {
     'password': 'password',
     'database': 'pythia'
 }
+
+ITEM_PIPELINES = ['pipline.SignUpPipeline']

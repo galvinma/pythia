@@ -6,7 +6,7 @@ from wtforms.validators import Required
 
 
 
-from model import RegistrationForm
+from form import RegistrationForm
 
 
 app = Flask(__name__)
