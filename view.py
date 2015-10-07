@@ -11,8 +11,12 @@ from form import RegistrationForm
 from model import SignUp
 
 app = Flask(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 db = SQLAlchemy(app)
+
+original_engine = create_engine('postgresql://admin:password@localhost/pythia')
+Session = sessionmaker(bind=original_engine)
 
 
 def create_app(app):
@@ -23,8 +27,6 @@ def create_app(app):
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
-		original_engine = create_engine('postgresql://admin:password@localhost/pythia')
-		Session = sessionmaker(bind=original_engine)
 		session = Session()
 		form = RegistrationForm()
 		if form.validate_on_submit():
@@ -46,7 +48,8 @@ def create_app(app):
 	def profile():
 		return render_template('profile.html')
 	return app
-
+	
+create_app(app)
 
 if __name__ == '__main__':
 	app.run()

@@ -12,9 +12,6 @@ from sqlalchemy.orm import sessionmaker
 DeclarativeBase = declarative_base()
 
 
-def signup_table(engine):
-	DeclarativeBase.metadata.create_all(engine)
-
 class SignUp(DeclarativeBase):
 	__tablename__ = "signup"
 
