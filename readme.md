@@ -38,3 +38,13 @@ http://newcoder.io/scrape/part-4/
 http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
 http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
+
+
+
+##
+##### Free Scrum tools #####
+##
+
+https://scrumy.com/pythia
+https://trello.com/
+
