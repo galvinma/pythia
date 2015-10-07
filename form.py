@@ -3,6 +3,8 @@ from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 
+#from model import SignUp
+
 class RegistrationForm(Form):
 	firstname = StringField('What is your first name?', validators=[Required()])
 	lastname = StringField('What is your last name?', validators=[Required()])
@@ -10,3 +12,4 @@ class RegistrationForm(Form):
 	email = StringField('Email Address', validators=[Required()])
 	password = StringField('Password', validators=[Required()])
 	submit = SubmitField('Submit')
+
