@@ -4,19 +4,21 @@ from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 
 from form import RegistrationForm
-from model import SignUp
+from model import SignUp, DeclarativeBase
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
-db = SQLAlchemy(app)
 
 original_engine = create_engine('postgresql://admin:password@localhost/pythia')
 Session = sessionmaker(bind=original_engine)
+metadata = DeclarativeBase.metadata
+metadata.create_all(original_engine)
 
 
 def create_app(app):

@@ -6,22 +6,26 @@ from sqlalchemy import *
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy.engine.url import URL
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 #
 
 DeclarativeBase = declarative_base()
 
 
 class SignUp(DeclarativeBase):
-	__tablename__ = "signup"
+	__tablename__ = 'SignUp'
 
-	id = Column(Integer, primary_key=True)
+#	id = Column(Integer, primary_key=True)
+	username = Column('username', String, primary_key=True)
 	firstname = Column('firstname', String)
 	lastname = Column('lastname', String)
-	username = Column('username', String)
 	email = Column('email', String)
 	password = Column('password', String)
 
-	def __repr__(self,id):
-		return'<id {}>'.format(self.id)
+	def __init__(self,username,firstname,lastname,email,password):
+		self.username = username
+		self.firstname = firstname
+		self.lastname = lastname
+		self.email = email
+		self.password = password
 

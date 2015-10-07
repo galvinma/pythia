@@ -6,9 +6,9 @@ from wtforms.validators import Required
 #from model import SignUp
 
 class RegistrationForm(Form):
+	username = StringField('Username', validators=[Required()])
 	firstname = StringField('What is your first name?', validators=[Required()])
 	lastname = StringField('What is your last name?', validators=[Required()])
-	username = StringField('Username', validators=[Required()])
 	email = StringField('Email Address', validators=[Required()])
 	password = StringField('Password', validators=[Required()])
 	submit = SubmitField('Submit')
