@@ -1,13 +1,21 @@
-### Setting up Python on OSX. Use Homebrew, PIP, and finally virtualenv.
+##
+##### Setting up Python on OSX. Use Homebrew, PIP, and finally virtualenv. ######
+##
 
 http://docs.python-guide.org/en/latest/starting/install/osx/
 
-### Video for setting up Flask
 
+
+##
+##### Video for setting up Flask ######
+##
 https://www.youtube.com/watch?v=DIcpEg77gdE
 
 
-### Virtualenv (postactive):
+
+##
+##### Virtualenv (postactive) #####
+##
 
 #!/bin/bash
 # This hook is sourced after this virtualenv is activated.
@@ -20,8 +28,13 @@ cd ~/workspace/pythia
 
 PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 
-# For Postgres integration:
+
+
+##
+##### For Postgres (9.4.4) integration #####
+##
 
 http://newcoder.io/scrape/part-4/
 http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
+http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
