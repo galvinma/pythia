@@ -24,3 +24,4 @@ PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 
 http://newcoder.io/scrape/part-4/
 http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/
+http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
