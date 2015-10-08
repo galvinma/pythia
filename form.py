@@ -13,3 +13,6 @@ class RegistrationForm(Form):
 	password = StringField('Password', validators=[Required()])
 	submit = SubmitField('Submit')
 
+class PeopleSearchForm(Form):
+	search = StringField('Search for people who have similar interests', validators=[Required()])
+	submit = SubmitField('Submit')

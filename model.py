@@ -29,3 +29,4 @@ class SignUp(DeclarativeBase):
 		self.email = email
 		self.password = password
 
+
