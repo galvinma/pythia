@@ -17,8 +17,6 @@ https://www.youtube.com/watch?v=DIcpEg77gdE
 ##### Virtualenv (postactive) #####
 ##
 
-#!/bin/bash
-# This hook is sourced after this virtualenv is activated.
 
 export APP_SETTINGS="config.DevelopmentConfig"
 export DATABASE_URL="postgresql://localhost/pythia"
@@ -44,7 +42,6 @@ http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tut
 ##
 ##### Free Scrum tools #####
 ##
-
-https://scrumy.com/pythia
+https://scrumy.com/pythia_scrum_board
 https://trello.com/
 

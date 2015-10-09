@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 
-from form import RegistrationForm
+from form import RegistrationForm, PeopleSearchForm
 from model import SignUp, DeclarativeBase
 
 app = Flask(__name__)
@@ -31,6 +31,7 @@ def create_app(app):
 	def sign_up():
 		session = Session()
 		form = RegistrationForm()
+		flash('you are now logged in')
 		if form.validate_on_submit():
 			user = SignUp(firstname = form.firstname.data, lastname = form.lastname.data, username = form.username.data, email = form.email.data, password = form.password.data)
 			session.add(user)
@@ -45,6 +46,20 @@ def create_app(app):
 	@app.route('/search')
 	def search():
 		return render_template('search.html')
+
+	@app.route('/search_people', methods=['GET', 'POST'])
+	def search_people():
+		session = Session()
+		form = PeopleSearchForm()
+		if form.validate_on_submit():
+			searches  = session.query(SignUp)
+			for value in search:
+				return value
+			#form.populate_obj(searches)
+			return render_to_response('search_people.html', form=form, search=search)
+		flash('oh noes, you broke it')
+		session.close()
+		return render_template('search_people.html', form=form)	
 
 	@app.route('/profile')	
 	def profile():
