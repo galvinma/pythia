@@ -31,8 +31,12 @@ def load_user(user_id):
 
 def create_app(app):
 
-	@app.route('/')
+	@app.route('/', methods =['GET', 'POST'])
 	def index():
+		form = LoginForm()
+		if form.validate_on_submit():
+			login_user(user)
+			flask.flash('Logged in successfully')
 		return render_template('index.html')
 
 	@app.route('/signup', methods=['GET', 'POST'])
