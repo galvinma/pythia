@@ -7,7 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
-from  sqlalchemy.sql.expression import func, select
+from sqlalchemy.sql.expression import func, select
+from flask_login import LoginManager, UserMixin, login_user
 
 from form import RegistrationForm, PeopleSearchForm
 from model import SignUp, DeclarativeBase
@@ -20,6 +21,12 @@ original_engine = create_engine('postgresql://admin:password@localhost/pythia')
 Session = sessionmaker(bind=original_engine)
 metadata = DeclarativeBase.metadata
 metadata.create_all(original_engine)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+@login_manager.user_loader
+def load_user(user_id):
+    return UserMixin.get(user_id)
 
 
 def create_app(app):
