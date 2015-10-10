@@ -12,6 +12,7 @@ from flask_login import LoginManager, UserMixin, login_user
 
 from form import RegistrationForm, PeopleSearchForm
 from model import SignUp, DeclarativeBase
+from model import LoginForm
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
