@@ -13,7 +13,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required
 
 DeclarativeBase = declarative_base()
 
-
 class SignUp(UserMixin, DeclarativeBase):
 	__tablename__ = 'SignUp'
 
