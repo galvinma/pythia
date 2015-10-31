@@ -8,7 +8,15 @@
       </div>
     </div>
 
-<form method="POST">
+
+
+<div class="container">
+    <!--Row with two equal columns-->
+    <div class="row">
+
+        <div class="col-sm-4">
+
+            <form method="POST">
             {{ form.hidden_tag() }}
             <p>{{ form.firstname.label }} {{ form.firstname() }} </p>
             <p>{{ form.lastname.label }} {{ form.lastname() }} </p>
@@ -17,7 +25,17 @@
             <p>{{ form.password.label }} {{ form.password() }} </p>
 
             {{ form.submit }}
-</form>
+            
+            </form>
+        </div>
+
+        <div class="col-sm-4">OR</div>
+        <div class="col-sm-4">Login</div>
+    </div>
+    
+</div>
+
+
 
 
 {% endblock %}
