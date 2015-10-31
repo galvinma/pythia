@@ -1,22 +1,24 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
+#from wtforms import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
-from flask_login import LoginManager, UserMixin, login_user
+from flask_login import LoginManager, UserMixin, login_user, login_required
 
-from form import RegistrationForm, PeopleSearchForm
+from form import RegistrationForm, PeopleSearchForm, LoginForm
 from model import SignUp, DeclarativeBase
-from model import LoginForm
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
+app.secret_key = "secretkey"
+
 
 original_engine = create_engine('postgresql://admin:password@localhost/pythia')
 Session = sessionmaker(bind=original_engine)
@@ -25,26 +27,37 @@ metadata.create_all(original_engine)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = '/'
 @login_manager.user_loader
 def load_user(user_id):
-    return UserMixin.get(user_id)
-
+    try:
+    	session.query(SignUp).all('username' == user_id)
+    except:
+    	return None
 
 def create_app(app):
 
 	@app.route('/', methods =['GET', 'POST'])
-	def index():
-		form = LoginForm()
-		if form.validate_on_submit():
-			login_user(user)
-			flask.flash('Logged in successfully')
-		return render_template('index.html')
+	
+#	def index():
+#		session = Session()
+#		logform = LoginForm()
+#    	if logform.validate_on_submit():
+ #   		registered_user = session.query(SignUp).filter(username = logform.username.data).first()
+  #  		if registered_user is not None and registered_user.verify_password(logform.password.data):
+    #			login_user(registered_user)
+   # 			session.close()
+    #			return render_template('profile.html', logform=logform)
+   # 			return redirect(request.args.get('next') or url_for('profile'))
+	#		flash('invalid username or password')
+	#		return render_template('index.html', logform=logform)
+	#	session.close()
+	#	return render_template('index.html', logform=logform)
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
 		session = Session()
 		form = RegistrationForm()
-		flash('you are now logged in')
 		if form.validate_on_submit():
 			user = SignUp(firstname = form.firstname.data, lastname = form.lastname.data, username = form.username.data, email = form.email.data, password = form.password.data)
 			session.add(user)
@@ -65,15 +78,11 @@ def create_app(app):
 		session = Session()
 		last = session.query(SignUp).first()
 		form = RegistrationForm(obj=last)
-		#if not form.validate_on_submit():
-		#searches  = session.query(SignUp).first()
-		#form.populate_obj(last)
-		return render_template('search_people.html', form=form)
-		#flash('oh noes, you broke it')
-		#session.close()
-		#return render_template('search_people.html', form=form)	
+		session.close()
+		return render_template('search_people.html', form=form)	
 
 	@app.route('/profile')	
+	@login_required
 	def profile():
 		return render_template('profile.html')
 	return app

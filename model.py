@@ -7,12 +7,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker, scoped_session
+from flask_login import LoginManager, UserMixin, login_user, login_required
+
 #
 
 DeclarativeBase = declarative_base()
 
 
-class SignUp(DeclarativeBase):
+class SignUp(UserMixin, DeclarativeBase):
 	__tablename__ = 'SignUp'
 
 #	id = Column(Integer, primary_key=True)
@@ -28,5 +30,3 @@ class SignUp(DeclarativeBase):
 		self.lastname = lastname
 		self.email = email
 		self.password = password
-
-
