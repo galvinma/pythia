@@ -16,6 +16,11 @@
 
         <div class="col-sm-4">
 
+        Sign up plssss
+        <br>
+        <br>
+        <br>
+
             <form method="POST">
             {{ form.hidden_tag() }}
             <p>{{ form.firstname.label }} {{ form.firstname() }} </p>
@@ -30,7 +35,23 @@
         </div>
 
         <div class="col-sm-4">OR</div>
-        <div class="col-sm-4">Login</div>
+
+        <div class="col-sm-4">
+
+        Or log in like the champ you are
+        <br>
+        <br>
+        <br>
+
+            <form method="POST">
+            {{ form.hidden_tag() }}
+            <p>{{ form.username.label }} {{ form.username() }} </p>
+            <p>{{ form.password.label }} {{ form.password() }} </p>
+
+            {{ form.submit }}
+        </div>
+
+
     </div>
     
 </div>

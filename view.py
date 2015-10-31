@@ -40,9 +40,11 @@ def create_app(app):
 	@app.route('/', methods =['GET', 'POST'])
 	def index():
 		session = Session()
-		form = RegistrationForm()
-		if form.validate_on_submit():
-			user = SignUp(firstname = form.firstname.data, lastname = form.lastname.data, username = form.username.data, email = form.email.data, password = form.password.data)
+		signupform = RegistrationForm()
+		loginform = LoginForm()
+
+		if signupform.validate_on_submit():
+			user = SignUp(firstname = signupform.firstname.data, lastname = signupform.lastname.data, username = signupform.username.data, email = signupform.email.data, password = signupform.password.data)
 			session.add(user)
 			session.commit()
 			flash('you are now logged in')
@@ -50,20 +52,15 @@ def create_app(app):
 			return redirect(url_for('profile'))
 		flash('oh noes, you broke it')
 		session.close()
-		return render_template('signup.html', form=form)	
-#		session = Session()
-#		form = LoginForm()
-#    	if logform.validate_on_submit():
-#   		registered_user = session.query(SignUp).filter(username = logform.username.data).first()
-#    		if registered_user is not None and registered_user.verify_password(logform.password.data):
-#    			login_user(registered_user)
-#    			session.close()
-#    			return render_template('profile.html', logform=logform)
-#   			return redirect(request.args.get('next') or url_for('profile'))
-#			flash('invalid username or password')
-#			return render_template('index.html', logform=logform)
-#		session.close()
-#		return render_template('index.html', logform=logform)
+		return render_template('signup.html', form=signupform)	
+
+		if loginform.validate_on_submit():
+			session = Session()
+			user = session.query(SignUp).filter_by(username = loginform.username.data)
+			login_user(user)
+			flash("You are now logged in, congrat G!")
+			return redirect(url_for('profile'))
+		return render_template('signup.html', form=loginform)	
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():
