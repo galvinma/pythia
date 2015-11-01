@@ -20,22 +20,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/p
 app.secret_key = "secretkey"
 
 
-original_engine = create_engine('postgresql://admin:password@localhost/pythia')
-Session = sessionmaker(bind=original_engine)
-metadata = DeclarativeBase.metadata
-metadata.create_all(original_engine)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = '/'
-@login_manager.user_loader
-def load_user(user_id):
-    try:
-    	session.query(SignUp).all('username' == user_id)
-    except:
-    	return None
-
 def create_app(app):
+
+	original_engine = create_engine('postgresql://admin:password@localhost/pythia')
+	Session = sessionmaker(bind=original_engine)
+	metadata = DeclarativeBase.metadata
+	metadata.create_all(original_engine)
 
 	@app.route('/', methods =['GET', 'POST'])
 	def index():
@@ -55,27 +45,16 @@ def create_app(app):
 			session = Session()
 			user = session.query(SignUp).filter_by(username = loginform.logusername.data)
 			login_user(user)
-			flash("You are now logged in, congrat G!")
+			flash("You are now logged in, congrats G!")
 			return redirect(url_for('profile', loginform=loginform))
 
 		flash('oh noes, you broke it')
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
-	@app.route('/signup', methods=['GET', 'POST'])
-	def sign_up():
-		session = Session()
-		form = RegistrationForm()
-		if form.validate_on_submit():
-			user = SignUp(firstname = form.firstname.data, lastname = form.lastname.data, username = form.username.data, email = form.email.data, password = form.password.data)
-			session.add(user)
-			session.commit()
-			flash('you are now logged in')
-			session.close()
-			return redirect(url_for('profile'))
-		flash('oh noes, you broke it')
-		session.close()
-		return render_template('signup.html', form=form)
+	@app.route('/profile')	
+	def profile():
+		return render_template('profile.html')
 
 	@app.route('/search')
 	def search():
@@ -89,12 +68,8 @@ def create_app(app):
 		session.close()
 		return render_template('search_people.html', form=form)	
 
-	@app.route('/profile')	
-	@login_required
-	def profile():
-		return render_template('profile.html')
 	return app
-	
+
 create_app(app)
 
 if __name__ == '__main__':

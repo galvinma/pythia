@@ -16,14 +16,13 @@ DeclarativeBase = declarative_base()
 class SignUp(UserMixin, DeclarativeBase):
 	__tablename__ = 'SignUp'
 
-#	id = Column(Integer, primary_key=True)
 	username = Column('username', String, primary_key=True)
 	firstname = Column('firstname', String)
 	lastname = Column('lastname', String)
 	email = Column('email', String)
 	password = Column('password', String)
 
-	def __init__(self,username,firstname,lastname,email,password):
+	def __init__(self, username,firstname,lastname,email,password):
 		self.username = username
 		self.firstname = firstname
 		self.lastname = lastname
