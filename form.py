@@ -13,10 +13,10 @@ class RegistrationForm(Form):
 	submit = SubmitField('Submit')
 
 class LoginForm(UserMixin, Form):
-	username = StringField('Username', validators=[Required()])
-	password = StringField('Password', validators=[Required()])
-	submit = SubmitField('Submit')
+	logusername = StringField('Username', validators=[Required()])
+	logpassword = StringField('Password', validators=[Required()])
+	logsubmit = SubmitField('Log in')
 
 class PeopleSearchForm(Form):
 	search = StringField('Search for people who have similar interests', validators=[Required()])
-	submit = SubmitField('Submit')
+	submit = SubmitField('I am Search Dragon')

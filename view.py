@@ -49,18 +49,18 @@ def create_app(app):
 			session.commit()
 			flash('you are now logged in')
 			session.close()
-			return redirect(url_for('profile'))
-		flash('oh noes, you broke it')
-		session.close()
-		return render_template('signup.html', form=signupform)	
+			return redirect(url_for('profile', signupform=signupform))
 
-		if loginform.validate_on_submit():
+		elif loginform.validate_on_submit():
 			session = Session()
-			user = session.query(SignUp).filter_by(username = loginform.username.data)
+			user = session.query(SignUp).filter_by(username = loginform.logusername.data)
 			login_user(user)
 			flash("You are now logged in, congrat G!")
-			return redirect(url_for('profile'))
-		return render_template('signup.html', form=loginform)	
+			return redirect(url_for('profile', loginform=loginform))
+
+		flash('oh noes, you broke it')
+		session.close()
+		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
 	@app.route('/signup', methods=['GET', 'POST'])
 	def sign_up():

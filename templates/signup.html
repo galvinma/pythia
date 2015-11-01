@@ -22,14 +22,14 @@
         <br>
 
             <form method="POST">
-            {{ form.hidden_tag() }}
-            <p>{{ form.firstname.label }} {{ form.firstname() }} </p>
-            <p>{{ form.lastname.label }} {{ form.lastname() }} </p>
-            <p>{{ form.username.label }} {{ form.username() }} </p>
-            <p>{{ form.email.label }} {{ form.email() }} </p>
-            <p>{{ form.password.label }} {{ form.password() }} </p>
+            {{ signupform.hidden_tag() }}
+            <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
+            <p>{{ signupform.lastname.label }} {{ signupform.lastname() }} </p>
+            <p>{{ signupform.username.label }} {{ signupform.username() }} </p>
+            <p>{{ signupform.email.label }} {{ signupform.email() }} </p>
+            <p>{{ signupform.password.label }} {{ signupform.password() }} </p>
 
-            {{ form.submit }}
+            {{ signupform.submit }}
             
             </form>
         </div>
@@ -44,11 +44,13 @@
         <br>
 
             <form method="POST">
-            {{ form.hidden_tag() }}
-            <p>{{ form.username.label }} {{ form.username() }} </p>
-            <p>{{ form.password.label }} {{ form.password() }} </p>
+            {{ loginform.hidden_tag() }}
+            <p>{{ loginform.logusername.label }} {{ loginform.logusername() }} </p>
+            <p>{{ loginform.logpassword.label }} {{ loginform.logpassword() }} </p>
 
-            {{ form.submit }}
+            {{ loginform.logsubmit }}
+
+            </form>
         </div>
 
 
