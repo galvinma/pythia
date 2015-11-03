@@ -1,7 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
-#from wtforms import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +25,14 @@ def create_app(app):
 	Session = sessionmaker(bind=original_engine)
 	metadata = DeclarativeBase.metadata
 	metadata.create_all(original_engine)
+	session = Session()
+
+	login_manager = LoginManager()
+	login_manager.init_app(app)
+
+	@login_manager.user_loader
+	def load_user(username):
+		return session.query(SignUp).get(username)
 
 	@app.route('/', methods =['GET', 'POST'])
 	def index():
@@ -37,30 +44,30 @@ def create_app(app):
 			user = SignUp(firstname = signupform.firstname.data, lastname = signupform.lastname.data, username = signupform.username.data, email = signupform.email.data, password = signupform.password.data)
 			session.add(user)
 			session.commit()
-			flash('you are now logged in')
-			session.close()
+			username = session.query(SignUp).filter_by(username = signupform.username.data).first()
+			login_user(username)
 			return redirect(url_for('profile', signupform=signupform))
 
 		elif loginform.validate_on_submit():
-			session = Session()
-			user = session.query(SignUp).filter_by(username = loginform.logusername.data)
-			login_user(user)
-			flash("You are now logged in, congrats G!")
+			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
+			login_user(username)
 			return redirect(url_for('profile', loginform=loginform))
 
-		flash('oh noes, you broke it')
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
 	@app.route('/profile')	
+	@login_required
 	def profile():
 		return render_template('profile.html')
 
 	@app.route('/search')
+	@login_required
 	def search():
 		return render_template('search.html')
 
 	@app.route('/search_people', methods=['GET', 'POST'])
+	@login_required
 	def search_people():
 		session = Session()
 		last = session.query(SignUp).first()

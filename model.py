@@ -13,7 +13,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required
 
 DeclarativeBase = declarative_base()
 
-class SignUp(UserMixin, DeclarativeBase):
+class SignUp(DeclarativeBase, UserMixin):
 	__tablename__ = 'SignUp'
 
 	username = Column('username', String, primary_key=True)
@@ -28,3 +28,18 @@ class SignUp(UserMixin, DeclarativeBase):
 		self.lastname = lastname
 		self.email = email
 		self.password = password
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.username
+
+	def __unicode__(self):
+		return self.username

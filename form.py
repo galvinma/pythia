@@ -4,6 +4,7 @@ from wtforms.fields import BooleanField, StringField, SubmitField, TextField, Pa
 from wtforms.validators import Required
 from flask_login import LoginManager, UserMixin, login_user, login_required
 
+
 class RegistrationForm(Form):
 	username = StringField('Username', validators=[Required()])
 	firstname = StringField('What is your first name?', validators=[Required()])
@@ -12,7 +13,7 @@ class RegistrationForm(Form):
 	password = StringField('Password', validators=[Required()])
 	submit = SubmitField('Submit')
 
-class LoginForm(UserMixin, Form):
+class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
 	logpassword = StringField('Password', validators=[Required()])
 	logsubmit = SubmitField('Log in')
