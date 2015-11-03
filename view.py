@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
-from flask_login import LoginManager, UserMixin, login_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 
 from form import RegistrationForm, PeopleSearchForm, LoginForm
 from model import SignUp, DeclarativeBase
@@ -75,6 +75,12 @@ def create_app(app):
 		session.close()
 		return render_template('search_people.html', form=form)	
 
+
+ 	@app.route('/logout', methods=['GET', 'POST'])
+	def logout():
+		logout_user()
+		return redirect(url_for('index'))
+	
 	return app
 
 create_app(app)
