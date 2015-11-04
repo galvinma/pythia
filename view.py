@@ -50,9 +50,11 @@ def create_app(app):
 
 		elif loginform.validate_on_submit():
 			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
-			login_user(username)
-			return redirect(url_for('profile', loginform=loginform))
-
+			if username and username.password == loginform.logpassword.data:
+				login_user(username)
+				return redirect(url_for('profile', loginform=loginform))
+			else:
+				flash('Username or Password Incorrect')
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 

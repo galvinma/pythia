@@ -48,15 +48,11 @@ https://trello.com/
 
 
 ## 
-##### Query Postgres
+##### Query Postgres #####
 ##
 
 GALVIN-# \l
-
-
-GALVIN-# \connect pythia
-
-                      
+GALVIN-# \connect pythia                 
 pythia=# SELECT * FROM "SignUp";
 
  username | firstname | lastname |         email          | password 
