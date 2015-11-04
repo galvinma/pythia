@@ -66,7 +66,7 @@ def create_app(app):
 	def search():
 		return render_template('search.html')
 
-	@app.route('/search_people', methods=['GET', 'POST'])
+	@app.route('/search_people-', methods=['GET', 'POST'])
 	@login_required
 	def search_people():
 		session = Session()

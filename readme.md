@@ -45,3 +45,23 @@ http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tut
 https://scrumy.com/pythia_scrum_board
 https://trello.com/
 
+
+
+## 
+##### Query Postgres
+##
+
+GALVIN-# \l
+
+
+GALVIN-# \connect pythia
+
+                      
+pythia=# SELECT * FROM "SignUp";
+
+ username | firstname | lastname |         email          | password 
+----------+-----------+----------+------------------------+----------
+ galvinma | Matthew   | Galvin   | mattgalvin47@gmail.com | password
+ dsnfjkas | matthew   | dfsnjks  | dnjkfsa`dnbkdfs`       | ds nfks
+(2 rows)
+
