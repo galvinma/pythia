@@ -63,6 +63,11 @@ def create_app(app):
 	def profile():
 		return render_template('profile.html')
 
+	@app.route('/message')
+	@login_required
+	def message():
+		return render_template('message.html')	
+
 	@app.route('/search')
 	@login_required
 	def search():
