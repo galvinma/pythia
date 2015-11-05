@@ -16,15 +16,16 @@
 
 }
 
-.col-lg-2_messagelist {
-  height: 400px;
+.col-md-2 {
+  height: 300px;
   width: 200px;
   border: 10px;
   border-color: black;
 }
 
-.col-lg-2_message {
-  height: 400px;
+.col-md-10 {
+  height: 300px;
+  width: 600px;
   border: 10px;
   border-color: black;
-}
+
