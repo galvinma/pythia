@@ -10,8 +10,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 
-from form import RegistrationForm, PeopleSearchForm, LoginForm
-from model import SignUp, DeclarativeBase
+from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
+from model import SignUp, Message, DeclarativeBase
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -63,10 +63,19 @@ def create_app(app):
 	def profile():
 		return render_template('profile.html')
 
-	@app.route('/message')
+	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
-		return render_template('message.html')	
+		session = Session()
+		messageform = MessageForm()
+		if messageform.validate_on_submit():
+			chat = Message(msgusername = messageform.msgusername.data, message = messageform.message.data)
+			session.add(chat)
+			session.commit()
+			return render_template('message.html', messageform=messageform)
+		
+		session.close()
+		return render_template('message.html', messageform=messageform)	
 
 	@app.route('/search')
 	@login_required

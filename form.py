@@ -18,6 +18,11 @@ class LoginForm(Form):
 	logpassword = StringField('Password', validators=[Required()])
 	logsubmit = SubmitField('Log in')
 
+class MessageForm(Form):
+	msgusername = StringField('Send to:  ', validators=[Required()])
+	message = StringField('Message:  ', validators=[Required()])
+	messagesubmit = SubmitField('Send')
+
 class PeopleSearchForm(Form):
 	search = StringField('Search for people who have similar interests', validators=[Required()])
 	submit = SubmitField('I am Search Dragon')
