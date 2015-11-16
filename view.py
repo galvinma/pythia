@@ -10,13 +10,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 
+
+
 from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
 from model import SignUp, Message, DeclarativeBase
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "secretkey"
+
 
 
 def create_app(app):
@@ -91,11 +95,10 @@ def create_app(app):
 		session.close()
 		return render_template('search_people.html', form=form)	
 
-
- 	@app.route('/logout', methods=['GET', 'POST'])
+	@app.route('/logout', methods=['GET', 'POST'])
 	def logout():
 		logout_user()
-		return redirect(url_for('index'))
+		return redirect(url_for('index'))		
 	
 	return app
 
