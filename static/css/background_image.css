@@ -1,3 +1,4 @@
 body {
-  background-image: url("/static/images/The_Oracle_of_Delphi_Entranced.jpg");
+  /* background-image: url("/static/images/The_Oracle_of_Delphi_Entranced.jpg"); */
+  background-size: cover;
   background-color: #cccccc; }

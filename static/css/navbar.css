@@ -1,3 +1,4 @@
+/* Nav Bar */
 /* Pythia Main Style */
 *, *:after, *:before {
   -webkit-box-sizing: border-box;
@@ -5,26 +6,32 @@
   box-sizing: border-box; }
 
 body
-.row {
+.row, body
+.nav_bar_row_index {
   margin-bottom: 20px;
   padding: 0;
   *zoom: 1; }
   body
   .row:after, body
-  .row:before {
+  .nav_bar_row_index:after, body
+  .row:before, body
+  .nav_bar_row_index:before {
     content: " ";
     display: table; }
   body
-  .row:after {
+  .row:after, body
+  .nav_bar_row_index:after {
     clear: both; }
   body
-  .row > [class*='col-']:first-child {
+  .row > [class*='col-']:first-child, body
+  .nav_bar_row_index > [class*='col-']:first-child {
     margin-left: 0; }
   body
-  .row > [class*='col-']:last-child {
+  .row > [class*='col-']:last-child, body
+  .nav_bar_row_index > [class*='col-']:last-child {
     margin-right: 0; }
 
-[class*="col-"] {
+[class*="col-"], .nav_bar_col_index {
   float: left;
   min-height: 1px;
   padding: 30px; }
@@ -129,3 +136,13 @@ body
 
 .offset-16-16 {
   width: 100%; }
+
+.nav_bar_row_index {
+  background-color: #e7e3e4;
+  min-height: 40px;
+  text-align: center; }
+
+.nav_bar_col_index {
+  display: table-cell;
+  height: 50px;
+  vertical-align: middle; }

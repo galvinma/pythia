@@ -1,0 +1,17 @@
+/* Nav Bar */
+
+@import 'grid.scss';
+
+.nav_bar_row_index {
+  @extend .row;
+  background-color: #e7e3e4;
+  min-height: 40px;
+  text-align: center;
+}
+
+.nav_bar_col_index {
+  @extend [class*="col-"];
+  display: table-cell;
+  height: 50px;
+  vertical-align: middle;
+}

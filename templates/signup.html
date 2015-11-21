@@ -1,34 +1,11 @@
 {% extends "layout.html" %}
 {% block content %} 
 
-<div class="jumbotron">
-      <div class="container">
-        <h1>Pythia</h1>
-        <p>The minimal social network</p>
-      </div>
-    </div>
 
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 
 <div class="row">
-    <div class="col-6">Col #6</div>
-    <div class="col-6">Col #6</div>
-</div>
-
-
-<div class="container">
-    <!--Row with two equal columns-->
-    <div class="row">
-
-        <div class="col-sm-4">
-
-        Sign up plssss
-        <br>
-        <br>
-        <br>
-
+    <div class="col-6-16">
             <form method="POST">
             {{ signupform.hidden_tag() }}
             <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
@@ -36,21 +13,11 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             <p>{{ signupform.username.label }} {{ signupform.username() }} </p>
             <p>{{ signupform.email.label }} {{ signupform.email() }} </p>
             <p>{{ signupform.password.label }} {{ signupform.password() }} </p>
-
             {{ signupform.submit }}
-            
             </form>
-        </div>
-
-        <div class="col-sm-4">OR</div>
-
-        <div class="col-sm-4">
-
-        Log in like the champ you are
-        <br>
-        <br>
-        <br>
-
+    </div>
+    <div class ="offset-4-16"></div>
+    <div class="col-6-16">
             <form method="POST">
             {{ loginform.hidden_tag() }}
             <p>{{ loginform.logusername.label }} {{ loginform.logusername() }} </p>
@@ -68,8 +35,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
             {% endif %}
             {% endwith %}
             </form>
-        </div>
     </div>
+
     
 </div>
 
