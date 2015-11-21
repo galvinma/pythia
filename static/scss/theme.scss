@@ -1,7 +1,11 @@
-$font-stack:  Times, serif;
+// Google Fonts
+@import url(https://fonts.googleapis.com/css?family=Crimson+Text);
+$font-stack:'Crimson Text', serif;
 $primary-color: #333;
+
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
+  background-color: #fffff;
 }

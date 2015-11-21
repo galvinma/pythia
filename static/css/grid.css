@@ -27,12 +27,12 @@ body
 [class*="col-"] {
   float: left;
   min-height: 1px;
-  padding: 30px; }
+  padding: 20px; }
 
 [class*="offset-"] {
   float: left;
   min-height: 1px;
-  padding: 30px; }
+  padding: 20px; }
 
 .col-1-16 {
   width: 6.25%; }

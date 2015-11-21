@@ -30,13 +30,13 @@ body
 [class*="col-"] {
     float:left; 
     min-height:1px;
-    padding: 30px;
+    padding: 20px;
 }
 
 [class*="offset-"] {
     float:left; 
     min-height:1px;
-    padding: 30px;
+    padding: 20px;
 }
 
 @for $i from 1 through $total_columns {
