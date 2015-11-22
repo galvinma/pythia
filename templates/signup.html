@@ -5,7 +5,7 @@
 
 
 <div class="row">
-    <div class="col-6-16">
+    <div class="col-8-24">
             <form method="POST">
             {{ signupform.hidden_tag() }}
             <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
@@ -16,8 +16,8 @@
             {{ signupform.submit }}
             </form>
     </div>
-    <div class ="offset-4-16"></div>
-    <div class="col-6-16">
+    <div class ="offset-4-24"></div>
+    <div class="col-8-24">
             <form method="POST">
             {{ loginform.hidden_tag() }}
             <p>{{ loginform.logusername.label }} {{ loginform.logusername() }} </p>

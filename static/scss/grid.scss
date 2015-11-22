@@ -1,6 +1,6 @@
 /* Pythia Main Style */
 
-$total_columns: 16;
+$total_columns: 24;
 $total_width  : 100%;
 
 *, *:after, *:before {
@@ -30,13 +30,11 @@ body
 [class*="col-"] {
     float:left; 
     min-height:1px;
-    padding: 20px;
+    padding: 5px;
 }
 
 [class*="offset-"] {
-    float:left; 
-    min-height:1px;
-    padding: 20px;
+     @extend [class*="col-"];
 }
 
 @for $i from 1 through $total_columns {

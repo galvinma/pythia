@@ -38,8 +38,13 @@ def create_app(app):
 	def load_user(username):
 		return session.query(SignUp).get(username)
 
-	@app.route('/', methods =['GET', 'POST'])
+
+	@app.route('/')
 	def index():
+		return render_template('index.html')
+
+	@app.route('/signup', methods =['GET', 'POST'])
+	def signup():
 		session = Session()
 		signupform = RegistrationForm()
 		loginform = LoginForm()
