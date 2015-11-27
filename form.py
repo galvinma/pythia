@@ -10,12 +10,12 @@ class RegistrationForm(Form):
 	firstname = StringField('What is your first name?', validators=[Required()])
 	lastname = StringField('What is your last name?', validators=[Required()])
 	email = StringField('Email Address', validators=[Required()])
-	password = StringField('Password', validators=[Required()])
+	password = PasswordField('Password', validators=[Required()])
 	submit = SubmitField('Submit')
 
 class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
-	logpassword = StringField('Password', validators=[Required()])
+	logpassword = PasswordField('Password', validators=[Required()])
 	logsubmit = SubmitField('')
 
 class MessageForm(Form):
