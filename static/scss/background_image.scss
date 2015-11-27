@@ -1,6 +1,7 @@
-body {
-    background-image: url("/static/images/acropolis.gif");
+body.back_img{
+  	background-image: url("/static/images/acropolis.gif");
     background-size: cover;
     background-repeat:no-repeat;
-
-}
+    background-attachment: fixed;
+    position: center bottom;
+  }

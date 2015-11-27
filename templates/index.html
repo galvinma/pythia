@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 {% block content %} 
 
+<body class = "back_img">
 
     <div class = "nav_bar_row_index">
-      <div class = "nav_bar_col_index offset-14-24"></div>
-      <div class = "nav_bar_col_index col-10-24 nav_bar_form" >
+      <div class = "nav_bar_col_index offset-16-24"></div>
+      <div class = "nav_bar_col_index col-8-24 nav_bar_form" >
       <form method="POST">
             {{ loginform.hidden_tag() }}
-            {{ loginform.logusername.label }} {{ loginform.logusername() }}
-            {{ loginform.logpassword.label }} {{ loginform.logpassword() }}
+            {{ loginform.logusername() }}
+            {{ loginform.logpassword() }}
 
             <button type="submit" >
                 <span class = "icon-login"></span>
@@ -27,6 +28,8 @@
       </form>
       </div>
     </div>
+</body>
+
     
 
 
