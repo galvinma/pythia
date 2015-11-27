@@ -16,7 +16,7 @@ class RegistrationForm(Form):
 class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
 	logpassword = StringField('Password', validators=[Required()])
-	logsubmit = SubmitField('Log in')
+	logsubmit = SubmitField('')
 
 class MessageForm(Form):
 	msgusername = StringField('Send to:  ', validators=[Required()])

@@ -2,6 +2,34 @@
 {% block content %} 
 
 
+    <div class = "nav_bar_row_index">
+      <div class = "nav_bar_col_index offset-14-24"></div>
+      <div class = "nav_bar_col_index col-10-24 nav_bar_form" >
+      <form method="POST">
+            {{ loginform.hidden_tag() }}
+            {{ loginform.logusername.label }} {{ loginform.logusername() }}
+            {{ loginform.logpassword.label }} {{ loginform.logpassword() }}
+
+            <button type="submit" >
+                <span class = "icon-login"></span>
+            </button>
+
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% endwith %}
+      </form>
+      </div>
+    </div>
+    
+
+
 
 
 {% endblock %}

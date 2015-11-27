@@ -39,9 +39,21 @@ def create_app(app):
 		return session.query(SignUp).get(username)
 
 
-	@app.route('/')
+	@app.route('/', methods =['GET', 'POST'])
 	def index():
-		return render_template('index.html')
+		session = Session()
+		signupform = RegistrationForm()
+		loginform = LoginForm()
+
+		if loginform.validate_on_submit():
+			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
+			if username and username.password == loginform.logpassword.data:
+				login_user(username)
+				return redirect(url_for('profile', loginform=loginform))
+			else:
+				flash('Username or Password Incorrect')
+		session.close()
+		return render_template('index.html', loginform=loginform)	
 
 	@app.route('/signup', methods =['GET', 'POST'])
 	def signup():
