@@ -3,9 +3,31 @@
 $font-stack:'Crimson Text', serif;
 $primary-color: #333;
 
+@import 'grid.scss';
+
 
 body {
   font: 100% $font-stack;
   color: $primary-color;
   background-color: #fffff;
+}
+
+.row_main {
+  @extend .row;
+  min-height: 200px;
+  text-align: center;
+}
+
+.col_main {
+  @extend [class*="col-"];
+  @extend [class*="offset-"];
+  display: table-cell;
+  min-height: 200px;
+  vertical-align: middle;
+}
+
+.profile_picture{
+	content: url("/static/images/acropolis.gif");
+	width: 200px;
+	height: 200px;
 }

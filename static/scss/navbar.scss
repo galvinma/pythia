@@ -10,6 +10,7 @@
 
 .nav_bar_col_index {
   @extend [class*="col-"];
+  @extend [class*="offset-"];
   display: table-cell;
   height: 50px;
   vertical-align: middle;
