@@ -87,16 +87,12 @@ def create_app(app):
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
-		session = Session()
-		messageform = MessageForm()
-		if messageform.validate_on_submit():
-			chat = Message(msgusername = messageform.msgusername.data, message = messageform.message.data)
-			session.add(chat)
-			session.commit()
-			return render_template('message.html', messageform=messageform)
-		
-		session.close()
-		return render_template('message.html', messageform=messageform)	
+		return render_template('main.html')	
+
+	@app.route('/chat', methods =['GET', 'POST'])
+	@login_required
+	def chat():
+		return render_template('chat.html')	
 
 	@app.route('/search')
 	@login_required

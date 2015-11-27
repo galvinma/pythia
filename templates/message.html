@@ -2,86 +2,17 @@
 {% block content %}   
 
 
-  <!-- Main Entry Here -->
+<body>
 
-  <br>
-  <br>
-  <br>
-  <br>
-
-
-
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Start Bootstrap
-                    </a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">Shortcuts</a>
-                </li>
-                <li>
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12" style = "border:1px solid black">
-                            <ul class="list-unstyled">
-                                <li>This is an example chat</li>
-                                <li>...</li>
-                                <li>...</li>
-                                <li>...</li>
-                                <li>...</li>
-                                <li>...</li>
-                            </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form method="POST">
-                        {{ messageform.hidden_tag() }}
-                        {{ messageform.msgusername.label }} {{ messageform.msgusername() }}<br>
-                        {{ messageform.message.label }}{{ messageform.message() }}
-                        {{ messageform.messagesubmit }}
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
+    <div class = "nav_bar_row_index"> 
+      <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
+      <div class = "nav_bar_col_index offset-19-24"></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
     </div>
-  <!-- End Main Entry -->
 
+</body>
 
-  {% endblock %}
+{% endblock %}

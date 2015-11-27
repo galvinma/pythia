@@ -492,6 +492,6 @@ body {
   vertical-align: middle; }
 
 .profile_picture {
-  content: url("/static/images/acropolis.gif");
+  content: url("/static/images/profile_default.png");
   width: 200px;
   height: 200px; }
