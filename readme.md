@@ -8,6 +8,10 @@ http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
 ex. mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
 
+To install psycog2:
+
+sudo apt install libpq-dev python-dev
+
 ##
 ##### Video for setting up Flask ######
 ##
