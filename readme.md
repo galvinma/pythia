@@ -6,6 +6,8 @@ http://docs.python-guide.org/en/latest/starting/install/osx/
 
 http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
+ex. mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
+
 ##
 ##### Video for setting up Flask ######
 ##
