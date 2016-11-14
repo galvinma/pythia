@@ -2,9 +2,9 @@
 ##### Setting up Python on OSX. Use Homebrew, PIP, and finally virtualenv. ######
 ##
 
-http://docs.python-guide.org/en/latest/starting/install/osx/
+http://docs.python-guide.org/en/latest/starting/install/osx/ 
 
-
+http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
 ##
 ##### Video for setting up Flask ######
@@ -32,9 +32,12 @@ PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 ##### For Postgres (9.4.4) integration #####
 ##
 
-http://newcoder.io/scrape/part-4/
-http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/
+http://newcoder.io/scrape/part-4/  
+
+http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
+
 http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
+
 http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
 
 
@@ -43,8 +46,8 @@ http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tut
 ##### Free Scrum tools #####
 ##
 https://scrumy.com/pythia_scrum_board
-https://trello.com/
 
+https://trello.com/
 
 
 ## 
