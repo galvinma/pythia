@@ -17,7 +17,7 @@ from model import SignUp, Message, DeclarativeBase
 
 
 app = Flask(__name__)
-app.config.from_object(os.environ['APP_SETTINGS'])
+"app.config.from_object(os.environ['APP_SETTINGS'])"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "secretkey"
 
