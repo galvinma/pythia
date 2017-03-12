@@ -39,6 +39,10 @@ PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 ##### For Postgres (9.4.4) integration #####
 ##
 
+
+https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
+
+
 http://newcoder.io/scrape/part-4/  
 
 http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
