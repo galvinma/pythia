@@ -1,3 +1,9 @@
+git 
+
+http://rogerdudler.github.io/git-guide/
+http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
+
+
 ##
 ##### Setting up Python on OSX. Use Homebrew, PIP, and finally virtualenv. ######
 ##
