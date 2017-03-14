@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %} 
+
+<body class = "back_img">
+
+    <div class = "nav_bar_row_index">
+      <div class = "nav_bar_col_index offset-16-24"></div>
+      <div class = "nav_bar_col_index col-8-24 nav_bar_form" >
+      <form method="POST">
+            {{ loginform.hidden_tag() }}
+            {{ loginform.logusername(class="loginform") }}
+            {{ loginform.logpassword(class="loginform") }}
+
+
+            <button type="submit" >
+                <span class = "icon-login"></span>
+            </button>
+
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+
+            {% endif %}
+            {% endwith %}
+      </form>
+      </div>
+    </div>
+</body>
+
+    
+
+
+
+
+{% endblock %}
