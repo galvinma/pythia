@@ -45,10 +45,20 @@ class SignUp(DeclarativeBase, UserMixin):
 		return self.username
 
 
+class TotalMessage(DeclarativeBase):
+	__tablename__ = "Message"
+
+	identity = Column('identity', String, primary_key=True)
+	message = Column('message', String)
+
+	def __init__(self, msgusername, message):
+		self.msgusername = msgusername
+		self.message = message
+
 class Message(DeclarativeBase):
 	__tablename__ = "Message"
 
-	msgusername = Column('msgusername', String, primary_key=True)
+	identity = Column('identity', String, primary_key=True)
 	message = Column('message', String)
 
 	def __init__(self, msgusername, message):

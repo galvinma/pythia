@@ -86,6 +86,10 @@ def create_app(app):
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
+		session = Session()
+		
+
+		
 	def message():
 		return render_template('main.html')	
 

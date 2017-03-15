@@ -32,6 +32,9 @@ pythia=# SELECT * FROM "SignUp";
  dsnfjkas | matthew   | dfsnjks  | dnjkfsa`dnbkdfs`       | ds nfks
 (2 rows)
 
+Design of Message Function:
+
+* http://qnimate.com/database-design-for-storing-chat-messages/
 
 ##git##
 
