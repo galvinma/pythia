@@ -1,75 +1,26 @@
-git 
+## Board ##
+*https://scrumy.com/pythia_scrum_board
 
-http://rogerdudler.github.io/git-guide/
-http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
+##Virtual Environments and Requirements.txt##
 
+*http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
-##
-##### Setting up Python on OSX. Use Homebrew, PIP, and finally virtualenv. ######
-##
+Use Pip to install requirements.txt
 
-http://docs.python-guide.org/en/latest/starting/install/osx/ 
+Example Commands
+*mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
+*pip install -r /path/to/requirements.txt
+*To install psycog2: sudo apt install libpq-dev python-dev
 
-http://docs.python-guide.org/en/latest/dev/virtualenvs/
+## Postgres Integration ##
 
-ex. mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
+*https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
+*http://newcoder.io/scrape/part-4/  
+*http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
+*http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
+*http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
 
-
-To install psycog2:
-
-sudo apt install libpq-dev python-dev
-
-##
-##### Video for setting up Flask ######
-##
-https://www.youtube.com/watch?v=DIcpEg77gdE
-
-
-
-##
-##### Virtualenv (postactive) #####
-##
-
-
-export APP_SETTINGS="config.DevelopmentConfig"
-export DATABASE_URL="postgresql://localhost/pythia"
-
-pythia=$(basename $VIRTUAL_ENV)
-cd ~/workspace/pythia
-
-PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
-
-
-
-##
-##### For Postgres (9.4.4) integration #####
-##
-
-
-https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
-
-
-http://newcoder.io/scrape/part-4/  
-
-http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
-
-http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
-
-http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
-
-
-
-##
-##### Free Scrum tools #####
-##
-https://scrumy.com/pythia_scrum_board
-
-https://trello.com/
-
-
-## 
-##### Query Postgres #####
-##
+Query Postgres:
 
 GALVIN-# \l
 GALVIN-# \connect pythia                 
@@ -82,9 +33,33 @@ pythia=# SELECT * FROM "SignUp";
 (2 rows)
 
 
+##git##
 
-## 
-##### Mesaging App Example #####
-##
+*http://rogerdudler.github.io/git-guide/
+*http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
 
-http://www.jpablo128.com/multi-room-websockets-server-with-tornado-i-basic-chat-server/
+Useful Commands:
+*git init
+*git clone /path/path/path
+*git remote add origin <server>
+*git pull origin master
+*git push origin master
+*git checkout -b <branch_name>
+*git checkout master
+*git status
+*git branch
+*git add .
+*git commit -m "message"
+*git merge <branch>
+
+Example of merging a branch:
+1. git checkout -b <branch_name>
+1. Make code changes.
+1. git status
+1. git add .
+1. git commit -m "message"
+1. git push <branch_name>
+1. git checkout master
+1. git pull origin master
+1. git merge <branch_name>
+1. git push origin master
