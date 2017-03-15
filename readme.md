@@ -39,6 +39,7 @@ pythia=# SELECT * FROM "SignUp";
 * http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
 
 Useful Commands:
+
 * git init
 * git clone /path/path/path
 * git remote add origin <server>
@@ -53,6 +54,7 @@ Useful Commands:
 * git merge <branch>
 
 Example of merging a branch:
+
 1. git checkout -b <branch_name>
 1. Make code changes.
 1. git status
