@@ -52,6 +52,9 @@ Useful Commands:
 * git add .
 * git commit -m "message"
 * git merge <branch>
+* git branch -d local_branch
+* git branch -d branch_name   (for local delete)
+* git push origin --delete remote_branch}   (for remote delete)
 
 Example of merging a branch:
 
@@ -65,3 +68,5 @@ Example of merging a branch:
 1. git pull origin master
 1. git merge <branch_name>
 1. git push origin master
+1. git branch -d <branch_name>
+1. git push origin --delete <remote_branch>
