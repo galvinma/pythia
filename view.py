@@ -86,12 +86,9 @@ def create_app(app):
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
-		session = Session()
-		
-
-		
 	def message():
-		return render_template('main.html')	
+		session = Session()
+		return render_template('message.html')	
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
