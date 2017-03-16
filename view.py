@@ -13,7 +13,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
-from model import SignUp, Message, DeclarativeBase
+from model import DeclarativeBase, MessageBase, MessageTotalBase
+from model import SignUp, Message, Messagetotal
 
 
 app = Flask(__name__)
@@ -49,7 +50,8 @@ def create_app(app):
 			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
-				return redirect(url_for('profile', loginform=loginform))
+				session.close()
+				return render_template('profile.html', loginform=loginform)
 			else:
 				flash('Username or Password Incorrect')
 		session.close()
@@ -79,7 +81,7 @@ def create_app(app):
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
-	@app.route('/profile')	
+	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
 		return render_template('profile.html')
@@ -88,7 +90,17 @@ def create_app(app):
 	@login_required
 	def message():
 		session = Session()
-		return render_template('message.html')	
+		messageform = MessageForm()
+
+		if messageform.validate_on_submit():
+			mes = Message(message = messageform.message.data, mes_identity = messageform.msgusername.data)
+			session.add(mes)
+			session.commit()
+			return render_template('message.html', messageform=messageform)
+		else:
+			flash('Unable to commit')
+		session.close()
+		return render_template('message.html', message=message)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required

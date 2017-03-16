@@ -12,6 +12,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required
 #
 
 DeclarativeBase = declarative_base()
+MessageBase = declarative_base()
+MessageTotalBase = declarative_base()
 
 class SignUp(DeclarativeBase, UserMixin):
 	__tablename__ = 'SignUp'
@@ -45,22 +47,52 @@ class SignUp(DeclarativeBase, UserMixin):
 		return self.username
 
 
-class TotalMessage(DeclarativeBase):
-	__tablename__ = "messagetotal"
+class Messagetotal(MessageTotalBase):
+	__tablename__ = "Messagetotal"
 
 	identity = Column('identity', String, primary_key=True)
 	messagetotal = Column('messagetotal', String)
 
-	def __init__(self, msgusername, message):
-		self.msgusername = msgusername
-		self.message = message
+	def __init__(self, identity, messagetotal):
+		self.identity = identity
+		self.messagetotal = messagetotal
 
-class Message(DeclarativeBase):
-	__tablename__ = "message"
+	def is_authenticated(self):
+		return True
 
-	identity = Column('identity', String, primary_key=True)
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.identity
+
+	def __unicode__(self):
+		return self.identity
+
+class Message(MessageBase):
+	__tablename__ = "Message"
+
+	mes_identity = Column('mes_identity', String, primary_key=True)
 	message = Column('message', String)
 
-	def __init__(self, msgusername, message):
-		self.msgusername = msgusername
+	def __init__(self, mes_identity, message):
+		self.mes_identity = mes_identity
 		self.message = message
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.mes_identity
+
+	def __unicode__(self):
+		return self.mes_identity
