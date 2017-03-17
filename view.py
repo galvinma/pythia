@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 
@@ -92,9 +92,10 @@ def create_app(app):
 	def message():
 		session = Session()
 		messageform = MessageForm()
+		user = current_user.username
 
 		if messageform.validate_on_submit():
-			mes = Message(mes_identity = messageform.msgusername.data, message = messageform.message.data)
+			mes = Message(mes_identity = messageform.msgusername.data, message = messageform.message.data, from_user = user)
 			session.add(mes)
 			session.commit()
 			session.close()

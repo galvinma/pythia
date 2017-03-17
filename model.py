@@ -75,10 +75,12 @@ class Message(DeclarativeBase):
 
 	mes_identity = Column('mes_identity', String, primary_key=True)
 	message = Column('message', String)
+	from_user = Column('from_user', String)
 
-	def __init__(self, mes_identity, message):
+	def __init__(self, mes_identity, message, from_user):
 		self.mes_identity = mes_identity
 		self.message = message
+		self.from_user = from_user
 
 	def is_authenticated(self):
 		return True
