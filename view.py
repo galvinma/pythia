@@ -95,13 +95,32 @@ def create_app(app):
 		user = current_user.username
 
 		if messageform.validate_on_submit():
-			mes = Message(mes_identity = messageform.msgusername.data, message = messageform.message.data, from_user = user)
+			message_context = messageform.msgusername.data + ":" + user
+			if username == session.query(Messagetotal).filter_by(identity = message_context).first():
+				print username
+				iteration = session.query(Messagetotal).filter_by(messagetotal = message_context).first() + 1
+				print iteration
+				session.add(iteration)
+				session.commit()
+				mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
+				print mes
+				session.add(mes)
+				session.commit()
+				session.close()
+			return render_template('message.html', messageform=messageform)
+		else:
+			message_context == messageform.msgusername.data + ":" + user
+			print message_context
+			table_construct = Messagetotal(identity = message_context, messagetotal = 0)
+			print table_construct
+			session.add(table_construct)
+			session.commit()
+			mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
+			print mes
 			session.add(mes)
 			session.commit()
 			session.close()
 			return render_template('message.html', messageform=messageform)
-		else:
-			flash('Unable to commit')
 		session.close()
 		return render_template('message.html', messageform=messageform)
 

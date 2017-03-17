@@ -49,7 +49,7 @@ class Messagetotal(DeclarativeBase):
 	__tablename__ = "Messagetotal"
 
 	identity = Column('identity', String, primary_key=True)
-	messagetotal = Column('messagetotal', String)
+	messagetotal = Column('messagetotal', Integer)
 
 	def __init__(self, identity, messagetotal):
 		self.identity = identity
