@@ -21,7 +21,7 @@ class LoginForm(Form):
 class MessageForm(Form):
 	msgusername = StringField('Send to:  ', validators=[Required()])
 	message = StringField('Message:  ', validators=[Required()])
-	messagesubmit = SubmitField('Send')
+	messagesubmit = SubmitField('Send Message')
 
 class PeopleSearchForm(Form):
 	search = StringField('Search for people who have similar interests', validators=[Required()])

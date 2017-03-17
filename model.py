@@ -12,8 +12,6 @@ from flask_login import LoginManager, UserMixin, login_user, login_required
 #
 
 DeclarativeBase = declarative_base()
-MessageBase = declarative_base()
-MessageTotalBase = declarative_base()
 
 class SignUp(DeclarativeBase, UserMixin):
 	__tablename__ = 'SignUp'
@@ -47,7 +45,7 @@ class SignUp(DeclarativeBase, UserMixin):
 		return self.username
 
 
-class Messagetotal(MessageTotalBase):
+class Messagetotal(DeclarativeBase):
 	__tablename__ = "Messagetotal"
 
 	identity = Column('identity', String, primary_key=True)
@@ -72,7 +70,7 @@ class Messagetotal(MessageTotalBase):
 	def __unicode__(self):
 		return self.identity
 
-class Message(MessageBase):
+class Message(DeclarativeBase):
 	__tablename__ = "Message"
 
 	mes_identity = Column('mes_identity', String, primary_key=True)

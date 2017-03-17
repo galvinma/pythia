@@ -13,7 +13,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
-from model import DeclarativeBase, MessageBase, MessageTotalBase
+from model import DeclarativeBase
 from model import SignUp, Message, Messagetotal
 
 
@@ -94,9 +94,10 @@ def create_app(app):
 		messageform = MessageForm()
 
 		if messageform.validate_on_submit():
-			mes = Message(message = messageform.mes_identity.data, mes_identity = messageform.message.data).first()
+			mes = Message(mes_identity = messageform.msgusername.data, message = messageform.message.data)
 			session.add(mes)
 			session.commit()
+			session.close()
 			return render_template('message.html', messageform=messageform)
 		else:
 			flash('Unable to commit')
