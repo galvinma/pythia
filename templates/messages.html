@@ -4,29 +4,28 @@
 
 <body>
 
-<div class = "nav_bar_row_index"> 
+
+    <div class = "nav_bar_row_index"> 
       <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
       <div class = "nav_bar_col_index offset-19-24"></div>
       <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
       <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
       <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
       <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
-  </div>
+    </div>
 
 
 
-<div class="row">
+    <div class="row">
     <div class="col-8-24">
             <form method="POST">
             {{ messageform.hidden_tag() }}
             <p>{{ messageform.msgusername.label }} {{ messageform.msgusername() }} </p>
             <p>{{ messageform.message.label }} {{ messageform.message() }} </p>
-            {{ messageform.messagesubmit }}
+            {{ messageform.submit }}
             </form>
-
     </div>
     </div>
-
 
 </body>
 

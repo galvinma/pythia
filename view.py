@@ -69,6 +69,7 @@ def create_app(app):
 			session.commit()
 			username = session.query(SignUp).filter_by(username = signupform.username.data).first()
 			login_user(username)
+			session.close()
 			return redirect(url_for('profile', signupform=signupform))
 
 		elif loginform.validate_on_submit():
@@ -93,14 +94,14 @@ def create_app(app):
 		messageform = MessageForm()
 
 		if messageform.validate_on_submit():
-			mes = Message(message = messageform.message.data, mes_identity = messageform.msgusername.data)
+			mes = Message(message = messageform.mes_identity.data, mes_identity = messageform.message.data).first()
 			session.add(mes)
 			session.commit()
 			return render_template('message.html', messageform=messageform)
 		else:
 			flash('Unable to commit')
 		session.close()
-		return render_template('message.html', message=message)
+		return render_template('message.html', messageform=messageform)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
