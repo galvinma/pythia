@@ -95,42 +95,24 @@ def create_app(app):
 		user = current_user.username
 		if messageform.validate_on_submit():
 			message_context = messageform.msgusername.data + ":" + user
-			if 	message_context == messageform.msgusername.data + ":" + user:
+
+			# If conversation DNE, create a new traker for number of messages
+			if 	message_context == messageform.msgusername.data + ":" + user: # ex. admin:galvinma where galvinma is current user
 				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
 				session.add(table_construct)
 				session.commit()
+				# Increment the number of messages between users
 				for var in session.query(Messagetotal).\
 						filter(Messagetotal.identity==message_context):
 						var.messagetotal = var.messagetotal + 1
-						print var.messagetotal
+						messagesum = str(var.messagetotal)
 						session.commit()
-
-#						newsum = var.messagetotal + 1
-#						print newsum
-#						session.query().\
-#							update({"messagetotal": var.messagetotal +1})
-#						session.commit()
-									
-
-
-
-#						new_iteration = session.query(Messagetotal.identity.user.messagetotal)
-#						print new_iteration
-
-
-#				for var in session.query(Messagetotal).filter_by(identity=message_context)
-	
-#				iteration = session.query(Messagetotal).filter(Messagetotal.c.identity.message_context)
-#
-#
-#				print iteration
-#				mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
-#				print mes
-#				session.add(mes)
-#				session.commit()
-#				session.close()
-#				return render_template('message.html', messageform=messageform)
-#		session.close()
+						# Add message 
+						table_entry_id = str(message_context + ":" + messagesum)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						session.add(mes)
+						session.commit()
+						session.close()
 		return render_template('message.html', messageform=messageform)
 
 	@app.route('/chat', methods =['GET', 'POST'])
