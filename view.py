@@ -93,35 +93,44 @@ def create_app(app):
 		session = Session()
 		messageform = MessageForm()
 		user = current_user.username
-
 		if messageform.validate_on_submit():
 			message_context = messageform.msgusername.data + ":" + user
-			if username == session.query(Messagetotal).filter_by(identity = message_context).first():
-				print username
-				iteration = session.query(Messagetotal).filter_by(messagetotal = message_context).first() + 1
-				print iteration
-				session.add(iteration)
+			if 	message_context == messageform.msgusername.data + ":" + user:
+				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
+				session.add(table_construct)
 				session.commit()
-				mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
-				print mes
-				session.add(mes)
-				session.commit()
-				session.close()
-			return render_template('message.html', messageform=messageform)
-		else:
-			message_context == messageform.msgusername.data + ":" + user
-			print message_context
-			table_construct = Messagetotal(identity = message_context, messagetotal = 0)
-			print table_construct
-			session.add(table_construct)
-			session.commit()
-			mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
-			print mes
-			session.add(mes)
-			session.commit()
-			session.close()
-			return render_template('message.html', messageform=messageform)
-		session.close()
+				for var in session.query(Messagetotal).\
+						filter(Messagetotal.identity==message_context):
+						var.messagetotal = var.messagetotal + 1
+						print var.messagetotal
+						session.commit()
+
+#						newsum = var.messagetotal + 1
+#						print newsum
+#						session.query().\
+#							update({"messagetotal": var.messagetotal +1})
+#						session.commit()
+									
+
+
+
+#						new_iteration = session.query(Messagetotal.identity.user.messagetotal)
+#						print new_iteration
+
+
+#				for var in session.query(Messagetotal).filter_by(identity=message_context)
+	
+#				iteration = session.query(Messagetotal).filter(Messagetotal.c.identity.message_context)
+#
+#
+#				print iteration
+#				mes = Message(mes_identity = messageform.msgusername.data + ":" + user + ":" + iteration, message = messageform.message.data, from_user = user)
+#				print mes
+#				session.add(mes)
+#				session.commit()
+#				session.close()
+#				return render_template('message.html', messageform=messageform)
+#		session.close()
 		return render_template('message.html', messageform=messageform)
 
 	@app.route('/chat', methods =['GET', 'POST'])
