@@ -95,25 +95,60 @@ def create_app(app):
 		user = current_user.username
 		if messageform.validate_on_submit():
 			message_context = messageform.msgusername.data + ":" + user
-
+			# Spit decision tree based upon if an entry exists in increment table
 			# If conversation DNE, create a new traker for number of messages
-			if 	message_context == messageform.msgusername.data + ":" + user: # ex. admin:galvinma where galvinma is current user
+			if message_context != session.query(Messagetotal).filter(Messagetotal.identity):
 				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
 				session.add(table_construct)
 				session.commit()
 				# Increment the number of messages between users
 				for var in session.query(Messagetotal).\
+					filter(Messagetotal.identity==message_context):
+					var.messagetotal = var.messagetotal + 1
+					messagesum = str(var.messagetotal)
+					session.commit()
+					# Add message 
+					table_entry_id = str(message_context + ":" + messagesum)
+					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+					session.add(mes)
+					session.commit()
+					session.close()
+			else:	
+			# For conversations that exist in increment table
+				for var in session.query(Messagetotal).\
 						filter(Messagetotal.identity==message_context):
-						var.messagetotal = var.messagetotal + 1
-						messagesum = str(var.messagetotal)
-						session.commit()
-						# Add message 
-						table_entry_id = str(message_context + ":" + messagesum)
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
-						session.add(mes)
-						session.commit()
-						session.close()
+					var.messagetotal = var.messagetotal + 1
+					messagesum = str(var.messagetotal)
+					session.commit()
+					# Add message 
+					table_entry_id = str(message_context + ":" + messagesum)
+					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+					session.add(mes)
+					session.commit()
+					session.close()
 		return render_template('message.html', messageform=messageform)
+
+
+# old code that fails when identity already exists
+#
+#			if 	message_context == messageform.msgusername.data + ":" + user: # ex. admin:galvinma where galvinma is current user
+#				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
+#				session.add(table_construct)
+#				session.commit()
+#				# Increment the number of messages between users
+#				for var in session.query(Messagetotal).\
+#						filter(Messagetotal.identity==message_context):
+#						var.messagetotal = var.messagetotal + 1
+#						messagesum = str(var.messagetotal)
+#						session.commit()
+#						# Add message 
+#						table_entry_id = str(message_context + ":" + messagesum)
+#						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+#						session.add(mes)
+#						session.commit()
+#						session.close()
+#		return render_template('message.html', messageform=messageform)
+
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
