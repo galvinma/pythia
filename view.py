@@ -117,15 +117,16 @@ def create_app(app):
 			# For conversations that exist in increment table
 				for var in session.query(Messagetotal).\
 						filter(Messagetotal.identity==message_context):
-					var.messagetotal = var.messagetotal + 1
-					messagesum = str(var.messagetotal)
-					session.commit()
-					# Add message 
-					table_entry_id = str(message_context + ":" + messagesum)
-					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
-					session.add(mes)
-					session.commit()
-					session.close()
+						var.messagetotal = var.messagetotal + 1
+						messagesum = str(var.messagetotal)
+						session.commit()
+						# Add message 
+						table_entry_id = str(message_context + ":" + messagesum)
+						print table_entry_id
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						session.add(mes)
+						session.commit()
+						session.close()
 		return render_template('message.html', messageform=messageform)
 
 
