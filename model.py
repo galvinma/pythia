@@ -45,12 +45,54 @@ class SignUp(DeclarativeBase, UserMixin):
 		return self.username
 
 
+class Messagetotal(DeclarativeBase):
+	__tablename__ = "Messagetotal"
+
+	identity = Column('identity', String, primary_key=True)
+	messagetotal = Column('messagetotal', Integer)
+
+	def __init__(self, identity, messagetotal):
+		self.identity = identity
+		self.messagetotal = messagetotal
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.identity
+
+	def __unicode__(self):
+		return self.identity
+
 class Message(DeclarativeBase):
 	__tablename__ = "Message"
 
-	msgusername = Column('msgusername', String, primary_key=True)
+	mes_identity = Column('mes_identity', String, primary_key=True)
 	message = Column('message', String)
+	from_user = Column('from_user', String)
 
-	def __init__(self, msgusername, message):
-		self.msgusername = msgusername
+	def __init__(self, mes_identity, message, from_user):
+		self.mes_identity = mes_identity
 		self.message = message
+		self.from_user = from_user
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.mes_identity
+
+	def __unicode__(self):
+		return self.mes_identity

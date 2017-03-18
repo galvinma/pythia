@@ -8,12 +8,13 @@ from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 
 from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
-from model import SignUp, Message, DeclarativeBase
+from model import DeclarativeBase
+from model import SignUp, Message, Messagetotal
 
 
 app = Flask(__name__)
@@ -49,7 +50,8 @@ def create_app(app):
 			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
-				return redirect(url_for('profile', loginform=loginform))
+				session.close()
+				return render_template('profile.html', loginform=loginform)
 			else:
 				flash('Username or Password Incorrect')
 		session.close()
@@ -67,6 +69,7 @@ def create_app(app):
 			session.commit()
 			username = session.query(SignUp).filter_by(username = signupform.username.data).first()
 			login_user(username)
+			session.close()
 			return redirect(url_for('profile', signupform=signupform))
 
 		elif loginform.validate_on_submit():
@@ -79,7 +82,7 @@ def create_app(app):
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
-	@app.route('/profile')	
+	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
 		return render_template('profile.html')
@@ -87,7 +90,30 @@ def create_app(app):
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
-		return render_template('main.html')	
+		session = Session()
+		messageform = MessageForm()
+		user = current_user.username
+		if messageform.validate_on_submit():
+			message_context = messageform.msgusername.data + ":" + user
+
+			# If conversation DNE, create a new traker for number of messages
+			if 	message_context == messageform.msgusername.data + ":" + user: # ex. admin:galvinma where galvinma is current user
+				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
+				session.add(table_construct)
+				session.commit()
+				# Increment the number of messages between users
+				for var in session.query(Messagetotal).\
+						filter(Messagetotal.identity==message_context):
+						var.messagetotal = var.messagetotal + 1
+						messagesum = str(var.messagetotal)
+						session.commit()
+						# Add message 
+						table_entry_id = str(message_context + ":" + messagesum)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						session.add(mes)
+						session.commit()
+						session.close()
+		return render_template('message.html', messageform=messageform)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
