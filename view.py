@@ -101,8 +101,6 @@ def create_app(app):
 			# For conversations that exist Messagetotal table
 			query = session.query(Messagetotal).order_by(Messagetotal.identity)
 			for row in query.all():
-				print row
-				print row.identity
 				if row.identity == message_context:
 					print "no increment table update required"
 					for var in session.query(Messagetotal).\
@@ -112,7 +110,6 @@ def create_app(app):
 						session.commit()
 						# Add message 
 						table_entry_id = str(message_context + ":" + messagesum)
-						print table_entry_id
 						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
 						session.add(mes)
 						session.commit()	
