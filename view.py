@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
@@ -8,7 +9,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
-from sqlalchemy import literal_column
+from sqlalchemy import literal_column, or_
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
@@ -94,15 +95,17 @@ def create_app(app):
 		session = Session()
 		messageform = MessageForm()
 		user = current_user.username
+		timestamp = str(datetime.datetime.now())
 		if messageform.validate_on_submit():
+			# message_context and alternate_context are used to query the 
+			# "Messagetotal" table and increment total message count
 			message_context = messageform.msgusername.data + ":" + user
+			alternate_context = user + ":" + messageform.msgusername.data
 			# Spit decision tree based upon if an entry exists in increment table
 			#
-			# For conversations that exist Messagetotal table
+			# For conversations that exist in Messagetotal table
 			query = session.query(Messagetotal).order_by(Messagetotal.identity)
 			for row in query.all():
-				print row
-				print row.identity
 				if row.identity == message_context:
 					print "no increment table update required"
 					for var in session.query(Messagetotal).\
@@ -112,12 +115,23 @@ def create_app(app):
 						session.commit()
 						# Add message 
 						table_entry_id = str(message_context + ":" + messagesum)
-						print table_entry_id
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
+						session.add(mes)
+						session.commit()
+				elif row.identity == alternate_context:
+					print "alt: no increment table update required"
+					for var in session.query(Messagetotal).\
+						filter(Messagetotal.identity==alternate_context):
+						var.messagetotal = var.messagetotal + 1
+						messagesum = str(var.messagetotal)
+						session.commit()
+						# Add message 
+						table_entry_id = str(alternate_context + ":" + messagesum)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 						session.add(mes)
 						session.commit()	
 			# If conversation DNE, create a new row to track the number of messages
-			query = session.query(Messagetotal).filter(Messagetotal.identity==message_context).first()
+			query = session.query(Messagetotal).filter(or_(Messagetotal.identity==message_context, Messagetotal.identity==alternate_context)).first()
 			if query is None:
 				print "updating the messagetotal table"
 				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
@@ -131,7 +145,7 @@ def create_app(app):
 					session.commit()
 					# Add message 
 					table_entry_id = str(message_context + ":" + messagesum)
-					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 					session.add(mes)
 					session.commit()
 		session.close()			
