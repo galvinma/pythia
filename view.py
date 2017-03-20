@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
@@ -94,6 +95,7 @@ def create_app(app):
 		session = Session()
 		messageform = MessageForm()
 		user = current_user.username
+		timestamp = str(datetime.datetime.now())
 		if messageform.validate_on_submit():
 			# message_context and alternate_context are used to query the 
 			# "Messagetotal" table and increment total message count
@@ -113,7 +115,7 @@ def create_app(app):
 						session.commit()
 						# Add message 
 						table_entry_id = str(message_context + ":" + messagesum)
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 						session.add(mes)
 						session.commit()
 				elif row.identity == alternate_context:
@@ -125,7 +127,7 @@ def create_app(app):
 						session.commit()
 						# Add message 
 						table_entry_id = str(alternate_context + ":" + messagesum)
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 						session.add(mes)
 						session.commit()	
 			# If conversation DNE, create a new row to track the number of messages
@@ -143,7 +145,7 @@ def create_app(app):
 					session.commit()
 					# Add message 
 					table_entry_id = str(message_context + ":" + messagesum)
-					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user)
+					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 					session.add(mes)
 					session.commit()
 		session.close()			
