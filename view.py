@@ -148,8 +148,12 @@ def create_app(app):
 					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 					session.add(mes)
 					session.commit()
+		messages = []
+		query = session.query(Message).order_by(Message.message)
+		for mes in query.all():
+			messages.append(mes.message)
 		session.close()			
-		return render_template('message.html', messageform=messageform)
+		return render_template('message.html', messageform=messageform, user=user, messages=messages)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
