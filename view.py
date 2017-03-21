@@ -148,8 +148,14 @@ def create_app(app):
 					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
 					session.add(mes)
 					session.commit()
+		messages = []
+		# user_query pulls up messages based on a match to the mes_identity column.
+		# May need to sort by timestamp in the future
+		user_query = session.query(Message).filter(Message.mes_identity.contains(user))
+		for match in user_query.all():
+			messages.append(match.message)
 		session.close()			
-		return render_template('message.html', messageform=messageform)
+		return render_template('message.html', messageform=messageform, user=user, messages=messages)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required

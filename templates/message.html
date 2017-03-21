@@ -28,6 +28,19 @@
     </div>
 
 
+    <div class="row">
+    <div class="col-8-24">
+
+                <p>Messages for {{user}}</p>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+
+   
+    </div>
+
+
+
 </body>
 
 {% endblock %}
