@@ -149,9 +149,11 @@ def create_app(app):
 					session.add(mes)
 					session.commit()
 		messages = []
-		query = session.query(Message).order_by(Message.message)
-		for mes in query.all():
-			messages.append(mes.message)
+		# user_query pulls up messages based on a match to the mes_identity column.
+		# May need to sort by timestamp in the future
+		user_query = session.query(Message).filter(Message.mes_identity.contains(user))
+		for match in user_query.all():
+			messages.append(match.message)
 		session.close()			
 		return render_template('message.html', messageform=messageform, user=user, messages=messages)
 
