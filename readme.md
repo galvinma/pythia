@@ -41,6 +41,13 @@ CREATE TABLE "Message"(
    message           TEXT    NOT NULL
 );
 
+
+Entering pythia
+
+workon pythia
+psql pythia
+\d
+
 Design of Message Function:
 
 * http://qnimate.com/database-design-for-storing-chat-messages/
