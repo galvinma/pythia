@@ -23,6 +23,10 @@ class MessageForm(Form):
 	message = StringField('Message:  ', validators=[Required()])
 	messagesubmit = SubmitField('Send Message')
 
-class PeopleSearchForm(Form):
-	search = StringField('Search for people who have similar interests', validators=[Required()])
-	submit = SubmitField('I am Search Dragon')
+
+class InterestsForm(Form):
+	
+
+#class PeopleSearchForm(Form):
+#	search = StringField('Search for people who have similar interests', validators=[Required()])
+#	submit = SubmitField('I am Search Dragon')
