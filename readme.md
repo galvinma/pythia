@@ -20,6 +20,7 @@ Example Commands
 * http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
 * http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
 * http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
+* https://www.digitalocean.com/community/tutorials/how-to-use-roles-and-manage-grant-permissions-in-postgresql-on-a-vps--2
 
 Query Postgres:
 
