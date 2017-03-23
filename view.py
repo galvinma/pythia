@@ -14,7 +14,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 
-from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
+from form import RegistrationForm, LoginForm, MessageForm, InterestsForm
 from model import DeclarativeBase
 from model import SignUp, Message, Messagetotal
 
