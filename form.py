@@ -16,7 +16,7 @@ class RegistrationForm(Form):
 class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
 	logpassword = PasswordField('Password', validators=[Required()])
-	logsubmit = SubmitField('')
+	logsubmit = SubmitField('Login')
 
 class MessageForm(Form):
 	msgusername = StringField('Send to:  ', validators=[Required()])
@@ -24,10 +24,11 @@ class MessageForm(Form):
 	messagesubmit = SubmitField('Send Message')
 
 
-class InterestsForm(Form):
-	msgusername = StringField('Send to:  ', validators=[Required()])
-	message = StringField('Message:  ', validators=[Required()])
-	messagesubmit = SubmitField('Send Message')
+class ProfileForm(Form):
+	description = StringField('Description here  ', validators=[Required()])
+	interests = StringField('Interests here:  ', validators=[Required()])
+	profilepicture = StringField('Profile picture')
+	profilesubmit = SubmitField('Submit')
 
 #class PeopleSearchForm(Form):
 #	search = StringField('Search for people who have similar interests', validators=[Required()])

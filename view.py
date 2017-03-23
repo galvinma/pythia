@@ -14,9 +14,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 
-from form import RegistrationForm, LoginForm, MessageForm, InterestsForm
+from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
 from model import DeclarativeBase
-from model import SignUp, Message, Messagetotal
+from model import SignUp, Message, Messagetotal, Profile
 
 
 app = Flask(__name__)
@@ -87,7 +87,12 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
-		return render_template('profile.html')
+		session = Session()
+		profileform = ProfileForm()
+		user = current_user.username
+		if request.method == 'GET':
+			print user
+		return render_template('profile.html', profileform=profileform )
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
