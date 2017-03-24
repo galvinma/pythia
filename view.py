@@ -90,9 +90,22 @@ def create_app(app):
 		session = Session()
 		profileform = ProfileForm()
 		user = current_user.username
-		if request.method == 'GET':
-			print user
-		return render_template('profile.html', profileform=profileform )
+		print user
+		descriptions = []
+		description_query = session.query(Profile).filter(Profile.identity.contains(user))
+		print description_query
+#		if request.method == 'GET':
+#			for match in description_query.all():
+#				descriptions.append(match.description)
+				## query here for profile data
+				## profileform.description.data
+		if profileform.validate_on_submit():
+			profile_info = Profile(identity = user, description = profileform.description.data, interests = user, profilepicture = user)
+			session.add(profile_info)
+			session.commit()
+		session.close()	
+		return render_template('profile.html', profileform=profileform, descriptions=descriptions)
+
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
