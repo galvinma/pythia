@@ -53,7 +53,7 @@ def create_app(app):
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
 				session.close()
-				return render_template('profile.html', loginform=loginform)
+				return redirect(url_for('profile', loginform=loginform))
 			else:
 				flash('Username or Password Incorrect')
 		session.close()
@@ -93,18 +93,22 @@ def create_app(app):
 		print user
 		descriptions = []
 		description_query = session.query(Profile).filter(Profile.identity.contains(user))
-		print description_query
-#		if request.method == 'GET':
-#			for match in description_query.all():
-#				descriptions.append(match.description)
-				## query here for profile data
-				## profileform.description.data
+		if request.method == 'GET':
+			for match in description_query.all():
+				descriptions.append(match.description)
+#				query here for profile data
+#				profileform.description.data
+			print descriptions
+			return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
 		if profileform.validate_on_submit():
 			profile_info = Profile(identity = user, description = profileform.description.data, interests = user, profilepicture = user)
 			session.add(profile_info)
 			session.commit()
-		session.close()	
-		return render_template('profile.html', profileform=profileform, descriptions=descriptions)
+			session.close()	
+			return render_template('profile.html', profileform=profileform) #descriptions=descriptions)
+		session.close()
+		return render_template('profile.html', profileform=profileform)
+
 
 
 	@app.route('/message', methods =['GET', 'POST'])
@@ -204,6 +208,7 @@ def create_app(app):
 create_app(app)
 
 if __name__ == '__main__':
+	app.debug = True
 	app.run()
 
 

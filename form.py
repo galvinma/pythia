@@ -24,7 +24,7 @@ class MessageForm(Form):
 	messagesubmit = SubmitField('Send Message')
 
 class ProfileForm(Form):
-	description = StringField('Description here  ')
+	description = StringField('Description here  ', validators=[Required()])
 	interests = StringField('Interests here:  ')
 	profilepicture = StringField('Profile picture')
 	profilesubmit = SubmitField('Submit')
