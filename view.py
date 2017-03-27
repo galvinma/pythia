@@ -22,7 +22,7 @@ from model import SignUp, Message, Messagetotal, Profile
 app = Flask(__name__)
 "app.config.from_object(os.environ['APP_SETTINGS'])"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
-app.secret_key = "secretkey"
+app.secret_key = "623478902135784905734890579340"
 
 
 
@@ -90,24 +90,22 @@ def create_app(app):
 		session = Session()
 		profileform = ProfileForm()
 		user = current_user.username
-		print user
 		descriptions = []
 		description_query = session.query(Profile).filter(Profile.identity.contains(user))
 		if request.method == 'GET':
 			for match in description_query.all():
 				descriptions.append(match.description)
-#				query here for profile data
-#				profileform.description.data
-			print descriptions
 			return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
 		if profileform.validate_on_submit():
 			profile_info = Profile(identity = user, description = profileform.description.data, interests = user, profilepicture = user)
-			session.add(profile_info)
+			session.merge(profile_info)
 			session.commit()
-			session.close()	
-			return render_template('profile.html', profileform=profileform) #descriptions=descriptions)
+			session.close()
+			for match in description_query.all():
+				descriptions.append(match.description)	
+			return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
 		session.close()
-		return render_template('profile.html', profileform=profileform)
+		return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
 
 
 
