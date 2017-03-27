@@ -91,21 +91,25 @@ def create_app(app):
 		profileform = ProfileForm()
 		user = current_user.username
 		descriptions = []
+		interests = []
+
 		description_query = session.query(Profile).filter(Profile.identity.contains(user))
 		if request.method == 'GET':
 			for match in description_query.all():
 				descriptions.append(match.description)
-			return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
+				interests.append(match.interests)
+			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 		if profileform.validate_on_submit():
-			profile_info = Profile(identity = user, description = profileform.description.data, interests = user, profilepicture = user)
+			profile_info = Profile(identity = user, description = profileform.description.data, interests = profileform.interests.data, profilepicture = user)
 			session.merge(profile_info)
 			session.commit()
 			session.close()
 			for match in description_query.all():
-				descriptions.append(match.description)	
-			return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
+				descriptions.append(match.description)
+				interests.append(match.interests)	
+			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 		session.close()
-		return render_template('profile.html', profileform=profileform, user = user, descriptions=descriptions)
+		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 
 
 

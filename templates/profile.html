@@ -21,18 +21,6 @@
 
 
 
-
-<div class = "row_main"> 
-      <div class = "offset-1-24 col_main "></div>
-      <div class="col-8-24">
-
-        Put profile form submit here
-        
-      </div>
-      <div class = "offset-19-24 col_main "></div>
-</div>
-
-
 <div class="row">
     <div class="col-8-24">
             <form method="POST">
@@ -54,10 +42,16 @@
                 {% for des in descriptions %}
                 <li>{{des}}</li>
                 {% endfor %}
+    </div>
+    <div class="col-8-24">
+                <p>interests of {{user}}</p>
+                {% for interest in interests %}
+                <li>{{interest}}</li>
+                {% endfor %}
+    </div>
+    </div>
 
-   
-    </div>
-    </div>
+
 
 </body>
 
