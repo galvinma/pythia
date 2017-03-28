@@ -16,7 +16,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
 from model import DeclarativeBase
-from model import SignUp, Message, Messagetotal, Profile
+from model import SignUp, Message, Messagetotal, Profile, Interests
 
 
 app = Flask(__name__)
@@ -94,19 +94,24 @@ def create_app(app):
 		interests = []
 
 		description_query = session.query(Profile).filter(Profile.identity.contains(user))
+		interest_query = session.query(Interests).filter(Interests.identity.contains(user))
 		if request.method == 'GET':
 			for match in description_query.all():
 				descriptions.append(match.description)
-				interests.append(match.interests)
+			for match in interest_query.all():
+				interests.append(match.interest)
 			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 		if profileform.validate_on_submit():
-			profile_info = Profile(identity = user, description = profileform.description.data, interests = profileform.interests.data, profilepicture = user)
+			profile_info = Profile(identity = user, description = profileform.description.data, profilepicture = user)
+			profile_interests = Interests(identity = user, interest = profileform.interests.data)
 			session.merge(profile_info)
+			session.add(profile_interests)
 			session.commit()
 			session.close()
 			for match in description_query.all():
 				descriptions.append(match.description)
-				interests.append(match.interests)	
+			for match in interest_query.all():
+				interests.append(match.interest)
 			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 		session.close()
 		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
