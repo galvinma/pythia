@@ -132,7 +132,8 @@ class Profile(DeclarativeBase):
 class Interests(DeclarativeBase):
 	__tablename__ = "Interests"
 
-	identity = Column('identity', String, primary_key=True)
+	id = Column('id', Integer, Sequence('interest_id'), primary_key=True)
+	identity = Column('identity', String)
 	interest = Column('interest', String)
 
 	def __init__(self, identity, interest):
