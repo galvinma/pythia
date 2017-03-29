@@ -98,3 +98,61 @@ class Message(DeclarativeBase):
 
 	def __unicode__(self):
 		return self.mes_identity
+
+
+class Profile(DeclarativeBase):
+	__tablename__ = "Profile"
+
+	identity = Column('identity', String, primary_key=True)
+	description = Column('descrption', String)
+	profilepicture = Column('profilepicture', String)
+
+	def __init__(self, identity, description, profilepicture):
+		self.identity = identity
+		self.description = description
+		self.profilepicture = profilepicture
+
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.identity
+
+	def __unicode__(self):
+		return self.identity
+
+
+class Interests(DeclarativeBase):
+	__tablename__ = "Interests"
+
+	id = Column('id', Integer, Sequence('interest_id'), primary_key=True)
+	identity = Column('identity', String)
+	interest = Column('interest', String)
+
+	def __init__(self, identity, interest):
+		self.identity = identity
+		self.interest = interest
+
+
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.identity
+
+	def __unicode__(self):
+		return self.identity	

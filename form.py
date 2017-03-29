@@ -16,13 +16,19 @@ class RegistrationForm(Form):
 class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
 	logpassword = PasswordField('Password', validators=[Required()])
-	logsubmit = SubmitField('')
+	logsubmit = SubmitField('Login')
 
 class MessageForm(Form):
 	msgusername = StringField('Send to:  ', validators=[Required()])
 	message = StringField('Message:  ', validators=[Required()])
 	messagesubmit = SubmitField('Send Message')
 
-class PeopleSearchForm(Form):
-	search = StringField('Search for people who have similar interests', validators=[Required()])
-	submit = SubmitField('I am Search Dragon')
+class ProfileForm(Form):
+	description = StringField('Description here  ', validators=[Required()])
+	interests = StringField('Interests here:  ')
+	profilepicture = StringField('Profile picture')
+	profilesubmit = SubmitField('Submit')
+
+#class PeopleSearchForm(Form):
+#	search = StringField('Search for people who have similar interests', validators=[Required()])
+#	submit = SubmitField('I am Search Dragon')

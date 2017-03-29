@@ -18,17 +18,40 @@
       <div class = "col_main col-4-24"><div class = "profile_picture"></div></div>
       <div class = "offset-19-24 col_main "></div>
 </div>
-<div class = "row_main"> 
-      <div class = "offset-1-24 col_main "></div>
-      <div class = "col_main col-4-24">Here is a personal description</div>
-      <div class = "offset-19-24 col_main ">Here are my interests</div>
-</div>
 
-<div class = "row_main"> 
-      <div class = "offset-1-24 col_main "></div>
-      <div class = "col_main col-4-24">Here is some education background</div>
-      <div class = "offset-19-24 col_main "></div>
-</div>
+
+
+<div class="row">
+    <div class="col-8-24">
+            <form method="POST">
+            {{ profileform.hidden_tag() }}
+            <p>{{ profileform.description.label }} {{ profileform.description() }} </p>
+            <p>{{ profileform.interests.label }} {{ profileform.interests() }} </p>
+            <p>{{ profileform.profilepicture.label }} {{ profileform.profilepicture() }} </p>
+            {{ profileform.profilesubmit }}
+            </form>
+
+    </div>
+    <div class ="offset-4-24"></div>
+  </div>
+
+      <div class="row">
+    <div class="col-8-24">
+
+                <p>profile info for {{user}}</p>
+                {% for des in descriptions %}
+                <li>{{des}}</li>
+                {% endfor %}
+    </div>
+    <div class="col-8-24">
+                <p>interests of {{user}}</p>
+                {% for interest in interests %}
+                <li>{{interest}}</li>
+                {% endfor %}
+    </div>
+    </div>
+
+
 
 </body>
 

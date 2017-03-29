@@ -14,15 +14,15 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 
-from form import RegistrationForm, PeopleSearchForm, LoginForm, MessageForm
+from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
 from model import DeclarativeBase
-from model import SignUp, Message, Messagetotal
+from model import SignUp, Message, Messagetotal, Profile, Interests
 
 
 app = Flask(__name__)
 "app.config.from_object(os.environ['APP_SETTINGS'])"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
-app.secret_key = "secretkey"
+app.secret_key = "623478902135784905734890579340"
 
 
 
@@ -53,7 +53,7 @@ def create_app(app):
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
 				session.close()
-				return render_template('profile.html', loginform=loginform)
+				return redirect(url_for('profile', loginform=loginform))
 			else:
 				flash('Username or Password Incorrect')
 		session.close()
@@ -87,7 +87,36 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
-		return render_template('profile.html')
+		session = Session()
+		profileform = ProfileForm()
+		user = current_user.username
+		descriptions = []
+		interests = []
+
+		description_query = session.query(Profile).filter(Profile.identity.contains(user))
+		interest_query = session.query(Interests).filter(Interests.identity.contains(user))
+		if request.method == 'GET':
+			for match in description_query.all():
+				descriptions.append(match.description)
+			for match in interest_query.all():
+				interests.append(match.interest)
+			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
+		if profileform.validate_on_submit():
+			profile_info = Profile(identity = user, description = profileform.description.data, profilepicture = user)
+			profile_interests = Interests(identity = user, interest = profileform.interests.data)
+			session.merge(profile_info)
+			session.add(profile_interests)
+			session.commit()
+			session.close()
+			for match in description_query.all():
+				descriptions.append(match.description)
+			for match in interest_query.all():
+				interests.append(match.interest)
+			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
+		session.close()
+		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
+
+
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
@@ -186,6 +215,7 @@ def create_app(app):
 create_app(app)
 
 if __name__ == '__main__':
+	app.debug = True
 	app.run()
 
 
