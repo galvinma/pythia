@@ -4,6 +4,8 @@ from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from sqlalchemy import *
 from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship
+from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker, scoped_session
