@@ -27,9 +27,9 @@ class User(DeclarativeBase, UserMixin):
 
 	message = relationship("Message")
 	userconversation = relationship("UserConversations")
+	user_c = relationship("User", back_populates = "user_p")
 
-	def __init__(self, id, username,firstname,lastname,email,password):
-		self.id = id
+	def __init__(self, username,firstname,lastname,email,password):
 		self.username = username
 		self.firstname = firstname
 		self.lastname = lastname
@@ -62,8 +62,7 @@ class Message(DeclarativeBase):
 	from_user = Column(String, ForeignKey('User.Username'))
 	conversation = Column(Integer, ForeignKey('Conversations.id'))
 
-	def __init__(self, id, message, from_user,timestamp):
-		self.id = id
+	def __init__(self, message, timestamp, from_user):
 		self.message = messages
 		self.timestamp = timestamp
 		self.from_user = from_user
@@ -90,8 +89,10 @@ class UserConversations(DeclarativeBase):
 
 	username = Column(String, ForeignKey('User.Username'), primary_key=True)
 	conversation = Column(Integer, ForeignKey('Conversations.id'), primary_key=True)
+	conversation_c = relationship("Conversations", back_populates = "conversation_p")
+	user_c = relationship("User", back_populates = "user_p")
 
-	def __init__(self, id, mes_identity, message, from_user,timestamp):
+	def __init__(self, username, conversation):
 		self.username = username
 		self.conversation = conversation
 
@@ -102,11 +103,10 @@ class Conversations(DeclarativeBase):
 	id = Column('id', Integer, Sequence('Conversations_id'), primary_key=True)
 	timestamp = Column('Timestamp', String)
 
-	conversation = relationship("UserConversations")
+	conversation_p = relationship("UserConversations", back_populates = "conversation_c")
 	message = relationship("Message")
 
-	def __init__(self, id, timestamp):
-		self.id = id
+	def __init__(self, timestamp):
 		self.timestamp = timestamp
 
 	def get_id(self):
@@ -116,16 +116,15 @@ class Conversations(DeclarativeBase):
 		return self.id
 
 
+
 class Profile(DeclarativeBase):
 	__tablename__ = "Profile"
 
 	id = Column(String, ForeignKey('User.Username'), primary_key=True)
-	### identity should a foreign key
 	description = Column('descrption', String)
 	profilepicture = Column('profilepicture', String)
 
-	def __init__(self, id, description, profilepicture):
-		self.id = id
+	def __init__(self, description, profilepicture):
 		self.description = description
 		self.profilepicture = profilepicture
 
@@ -156,8 +155,6 @@ class Interests(DeclarativeBase):
 	def __init__(self, identity, interest):
 		self.identity = identity
 		self.interest = interest
-
-
 
 	def is_authenticated(self):
 		return True

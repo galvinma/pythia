@@ -93,7 +93,7 @@ def create_app(app):
 		descriptions = []
 		interests = []
 
-		description_query = session.query(Profile).filter(Profile.identity.contains(user))
+		description_query = session.query(Profile).filter(Profile.id.contains(user))
 		interest_query = session.query(Interests).filter(Interests.identity.contains(user))
 		if request.method == 'GET':
 			for match in description_query.all():
@@ -126,63 +126,25 @@ def create_app(app):
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
 		if messageform.validate_on_submit():
-			# message_context and alternate_context are used to query the 
-			# "Messagetotal" table and increment total message count
-			message_context = messageform.msgusername.data + ":" + user
-			alternate_context = user + ":" + messageform.msgusername.data
-			# Spit decision tree based upon if an entry exists in increment table
-			#
-			# For conversations that exist in Messagetotal table
-			query = session.query(Messagetotal).order_by(Messagetotal.identity)
-			for row in query.all():
-				if row.identity == message_context:
-					print "no increment table update required"
-					for var in session.query(Messagetotal).\
-						filter(Messagetotal.identity==message_context):
-						var.messagetotal = var.messagetotal + 1
-						messagesum = str(var.messagetotal)
-						session.commit()
-						# Add message 
-						table_entry_id = str(message_context + ":" + messagesum)
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
-						session.add(mes)
-						session.commit()
-				elif row.identity == alternate_context:
-					print "alt: no increment table update required"
-					for var in session.query(Messagetotal).\
-						filter(Messagetotal.identity==alternate_context):
-						var.messagetotal = var.messagetotal + 1
-						messagesum = str(var.messagetotal)
-						session.commit()
-						# Add message 
-						table_entry_id = str(alternate_context + ":" + messagesum)
-						mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
-						session.add(mes)
-						session.commit()	
-			# If conversation DNE, create a new row to track the number of messages
-			query = session.query(Messagetotal).filter(or_(Messagetotal.identity==message_context, Messagetotal.identity==alternate_context)).first()
-			if query is None:
-				print "updating the messagetotal table"
-				table_construct = Messagetotal(identity = message_context, messagetotal = 0)
-				session.add(table_construct)
-				session.commit()
-				# Increment the number of messages between users
-				for var in session.query(Messagetotal).\
-					filter(Messagetotal.identity==message_context):
-					var.messagetotal = var.messagetotal + 1
-					messagesum = str(var.messagetotal)
-					session.commit()
-					# Add message 
-					table_entry_id = str(message_context + ":" + messagesum)
-					mes = Message(mes_identity = table_entry_id, message = messageform.message.data, from_user = user, timestamp = timestamp)
-					session.add(mes)
-					session.commit()
+			# Add Conversation
+			conversation_test = Conversations(timestamp=timestamp)
+			session.add(conversation_test)
+			session.commit()
+			# Add User-Conversation
+			session.flush()
+			user_convo = UserConversations(username = User.username, conversation = Conversations.id)
+			session.add(user_convo)
+			session.commit()
+			# Add message 
+#			message = Message(message = messageform.message.data, timestamp = timestamp)
+#			session.add(mes)
+#			session.commit()
 		messages = []
 		# user_query pulls up messages based on a match to the mes_identity column.
 		# May need to sort by timestamp in the future
-		user_query = session.query(Message).filter(Message.mes_identity.contains(user))
-		for match in user_query.all():
-			messages.append(match.message)
+#		user_query = session.query(Message).filter(Message.mes_identity.contains(user))
+#		for match in user_query.all():
+#			messages.append(match.message)
 		session.close()			
 		return render_template('message.html', messageform=messageform, user=user, messages=messages)
 
