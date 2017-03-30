@@ -19,15 +19,15 @@ class User(DeclarativeBase, UserMixin):
 	__tablename__ = 'User'
 
 	id = Column('id', Integer, Sequence('User_id'), primary_key=True)
-	username = Column('Username', String, unique=True)
-	firstname = Column('Firstname', String)
-	lastname = Column('Lastname', String)
-	email = Column('Email', String)
-	password = Column('Password', String)
+	username = Column('username', String, unique=True)
+	firstname = Column('firstname', String)
+	lastname = Column('lastname', String)
+	email = Column('email', String)
+	password = Column('password', String)
 
 	message = relationship("Message")
 	userconversation = relationship("UserConversations")
-	user_c = relationship("User", back_populates = "user_p")
+
 
 	def __init__(self, username,firstname,lastname,email,password):
 		self.username = username
@@ -55,11 +55,11 @@ class User(DeclarativeBase, UserMixin):
 class Message(DeclarativeBase):
 	__tablename__ = "Message"
 
-	id = Column('id', Integer, Sequence('Message_id'), primary_key=True)
-	message = Column('Message', String)
-	timestamp = Column('Timestamp', String)
+	id = Column('id', Integer, Sequence('message_id'), primary_key=True)
+	message = Column('message', String)
+	timestamp = Column('timestamp', String)
 
-	from_user = Column(String, ForeignKey('User.Username'))
+	from_user = Column(String, ForeignKey('User.username'))
 	conversation = Column(Integer, ForeignKey('Conversations.id'))
 
 	def __init__(self, message, timestamp, from_user):
@@ -87,10 +87,10 @@ class Message(DeclarativeBase):
 class UserConversations(DeclarativeBase):
 	__tablename__ = "UserConversations"
 
-	username = Column(String, ForeignKey('User.Username'), primary_key=True)
+	username = Column(String, ForeignKey('User.username'), primary_key=True)
 	conversation = Column(Integer, ForeignKey('Conversations.id'), primary_key=True)
-	conversation_c = relationship("Conversations", back_populates = "conversation_p")
-	user_c = relationship("User", back_populates = "user_p")
+
+
 
 	def __init__(self, username, conversation):
 		self.username = username
@@ -100,10 +100,10 @@ class UserConversations(DeclarativeBase):
 class Conversations(DeclarativeBase):
 	__tablename__ = "Conversations"
 
-	id = Column('id', Integer, Sequence('Conversations_id'), primary_key=True)
-	timestamp = Column('Timestamp', String)
+	id = Column('id', Integer, Sequence('conversations_id'), primary_key=True)
+	timestamp = Column('timestamp', String)
 
-	conversation_p = relationship("UserConversations", back_populates = "conversation_c")
+	conversation = relationship("UserConversations")
 	message = relationship("Message")
 
 	def __init__(self, timestamp):
@@ -120,7 +120,7 @@ class Conversations(DeclarativeBase):
 class Profile(DeclarativeBase):
 	__tablename__ = "Profile"
 
-	id = Column(String, ForeignKey('User.Username'), primary_key=True)
+	id = Column(String, ForeignKey('User.username'), primary_key=True)
 	description = Column('descrption', String)
 	profilepicture = Column('profilepicture', String)
 
@@ -148,7 +148,7 @@ class Profile(DeclarativeBase):
 class Interests(DeclarativeBase):
 	__tablename__ = "Interests"
 
-	id = Column('id', Integer, Sequence('Interests_id'), primary_key=True)
+	id = Column('id', Integer, Sequence('interests_id'), primary_key=True)
 	identity = Column('identity', String)
 	interest = Column('interest', String)
 
