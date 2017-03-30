@@ -4,6 +4,7 @@ from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from sqlalchemy import *
 from sqlalchemy import create_engine
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import	declarative_base
@@ -11,20 +12,24 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.orm import sessionmaker, scoped_session
 from flask_login import LoginManager, UserMixin, login_user, login_required
 
-#
 
 DeclarativeBase = declarative_base()
 
-class SignUp(DeclarativeBase, UserMixin):
-	__tablename__ = 'SignUp'
+class User(DeclarativeBase, UserMixin):
+	__tablename__ = 'User'
 
-	username = Column('username', String, primary_key=True)
-	firstname = Column('firstname', String)
-	lastname = Column('lastname', String)
-	email = Column('email', String)
-	password = Column('password', String)
+	id = Column('id', Integer, Sequence('User_id'), primary_key=True)
+	username = Column('Username', String, unique=True)
+	firstname = Column('Firstname', String)
+	lastname = Column('Lastname', String)
+	email = Column('Email', String)
+	password = Column('Password', String)
 
-	def __init__(self, username,firstname,lastname,email,password):
+	message = relationship("Message")
+	userconversation = relationship("UserConversations")
+
+	def __init__(self, id, username,firstname,lastname,email,password):
+		self.id = id
 		self.username = username
 		self.firstname = firstname
 		self.lastname = lastname
@@ -41,50 +46,28 @@ class SignUp(DeclarativeBase, UserMixin):
 		return False
 
 	def get_id(self):
-		return self.username
+		return self.id
 
 	def __unicode__(self):
-		return self.username
+		return self.id
 
-
-class Messagetotal(DeclarativeBase):
-	__tablename__ = "Messagetotal"
-
-	identity = Column('identity', String, primary_key=True)
-	messagetotal = Column('messagetotal', Integer)
-
-	def __init__(self, identity, messagetotal):
-		self.identity = identity
-		self.messagetotal = messagetotal
-
-	def is_authenticated(self):
-		return True
-
-	def is_active(self):
-		return True
-
-	def is_anonymous(self):
-		return False
-
-	def get_id(self):
-		return self.identity
-
-	def __unicode__(self):
-		return self.identity
 
 class Message(DeclarativeBase):
 	__tablename__ = "Message"
 
-	mes_identity = Column('mes_identity', String, primary_key=True)
-	message = Column('message', String)
-	from_user = Column('from_user', String)
-	timestamp = Column('timestamp', String)
+	id = Column('id', Integer, Sequence('Message_id'), primary_key=True)
+	message = Column('Message', String)
+	timestamp = Column('Timestamp', String)
 
-	def __init__(self, mes_identity, message, from_user,timestamp):
-		self.mes_identity = mes_identity
-		self.message = message
-		self.from_user = from_user
+	from_user = Column(String, ForeignKey('User.Username'))
+	conversation = Column(Integer, ForeignKey('Conversations.id'))
+
+	def __init__(self, id, message, from_user,timestamp):
+		self.id = id
+		self.message = messages
 		self.timestamp = timestamp
+		self.from_user = from_user
+		self.conversation = conversation
 
 	def is_authenticated(self):
 		return True
@@ -96,21 +79,53 @@ class Message(DeclarativeBase):
 		return False
 
 	def get_id(self):
-		return self.mes_identity
+		return self.id
 
 	def __unicode__(self):
-		return self.mes_identity
+		return self.id
+
+
+class UserConversations(DeclarativeBase):
+	__tablename__ = "UserConversations"
+
+	username = Column(String, ForeignKey('User.Username'), primary_key=True)
+	conversation = Column(Integer, ForeignKey('Conversations.id'), primary_key=True)
+
+	def __init__(self, id, mes_identity, message, from_user,timestamp):
+		self.username = username
+		self.conversation = conversation
+
+
+class Conversations(DeclarativeBase):
+	__tablename__ = "Conversations"
+
+	id = Column('id', Integer, Sequence('Conversations_id'), primary_key=True)
+	timestamp = Column('Timestamp', String)
+
+	conversation = relationship("UserConversations")
+	message = relationship("Message")
+
+	def __init__(self, id, timestamp):
+		self.id = id
+		self.timestamp = timestamp
+
+	def get_id(self):
+		return self.id
+
+	def __unicode__(self):
+		return self.id
 
 
 class Profile(DeclarativeBase):
 	__tablename__ = "Profile"
 
-	identity = Column('identity', String, primary_key=True)
+	id = Column(String, ForeignKey('User.Username'), primary_key=True)
+	### identity should a foreign key
 	description = Column('descrption', String)
 	profilepicture = Column('profilepicture', String)
 
-	def __init__(self, identity, description, profilepicture):
-		self.identity = identity
+	def __init__(self, id, description, profilepicture):
+		self.id = id
 		self.description = description
 		self.profilepicture = profilepicture
 
@@ -125,16 +140,16 @@ class Profile(DeclarativeBase):
 		return False
 
 	def get_id(self):
-		return self.identity
+		return self.id
 
 	def __unicode__(self):
-		return self.identity
+		return self.id
 
 
 class Interests(DeclarativeBase):
 	__tablename__ = "Interests"
 
-	id = Column('id', Integer, Sequence('interest_id'), primary_key=True)
+	id = Column('id', Integer, Sequence('Interests_id'), primary_key=True)
 	identity = Column('identity', String)
 	interest = Column('interest', String)
 
@@ -154,7 +169,7 @@ class Interests(DeclarativeBase):
 		return False
 
 	def get_id(self):
-		return self.identity
+		return self.id
 
 	def __unicode__(self):
-		return self.identity	
+		return self.id	

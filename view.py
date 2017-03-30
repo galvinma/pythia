@@ -16,7 +16,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
 from model import DeclarativeBase
-from model import SignUp, Message, Messagetotal, Profile, Interests
+from model import User, Message, Conversations, UserConversations, Profile, Interests
 
 
 app = Flask(__name__)
@@ -39,7 +39,7 @@ def create_app(app):
 
 	@login_manager.user_loader
 	def load_user(username):
-		return session.query(SignUp).get(username)
+		return session.query(User).get(username)
 
 
 	@app.route('/', methods =['GET', 'POST'])
@@ -49,7 +49,7 @@ def create_app(app):
 		loginform = LoginForm()
 
 		if loginform.validate_on_submit():
-			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
+			username = session.query(User).filter_by(username = loginform.logusername.data).first()
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
 				session.close()
@@ -66,16 +66,16 @@ def create_app(app):
 		loginform = LoginForm()
 
 		if signupform.validate_on_submit():
-			user = SignUp(firstname = signupform.firstname.data, lastname = signupform.lastname.data, username = signupform.username.data, email = signupform.email.data, password = signupform.password.data)
+			user = User(firstname = signupform.firstname.data, lastname = signupform.lastname.data, username = signupform.username.data, email = signupform.email.data, password = signupform.password.data)
 			session.add(user)
 			session.commit()
-			username = session.query(SignUp).filter_by(username = signupform.username.data).first()
+			username = session.query(User).filter_by(username = signupform.username.data).first()
 			login_user(username)
 			session.close()
 			return redirect(url_for('profile', signupform=signupform))
 
 		elif loginform.validate_on_submit():
-			username = session.query(SignUp).filter_by(username = loginform.logusername.data).first()
+			username = session.query(User).filter_by(username = loginform.logusername.data).first()
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
 				return redirect(url_for('profile', loginform=loginform))
@@ -200,7 +200,7 @@ def create_app(app):
 	@login_required
 	def search_people():
 		session = Session()
-		last = session.query(SignUp).first()
+		last = session.query(User).first()
 		form = RegistrationForm(obj=last)
 		session.close()
 		return render_template('search_people.html', form=form)	
