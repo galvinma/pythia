@@ -132,9 +132,9 @@ def create_app(app):
 			session.commit()
 			# Add User-Conversation
 			session.flush()
-			user_convo = UserConversations(username = User.username, conversation = Conversations.id)
-			session.add(user_convo)
-			session.commit()
+		#	user_convo = UserConversations(username = User.username, conversation = Conversations.id)
+		#	session.add(user_convo)
+		#	session.commit()
 			# Add message 
 #			message = Message(message = messageform.message.data, timestamp = timestamp)
 #			session.add(mes)
