@@ -92,8 +92,16 @@ def create_app(app):
 		user = current_user.username
 		descriptions = []
 		interests = []
+		if profileform.validate_on_submit():
+			profile_info = Profile(iden = User.username, description = profileform.description.data, profilepicture = user)
+			session.merge(profile_info)
+			session.commit()
+			session.close()
+		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 
-		description_query = session.query(Profile).filter(Profile.id.contains(user))
+
+
+	"""	description_query = session.query(Profile).filter(Profile.id.contains(user))
 		interest_query = session.query(Interests).filter(Interests.identity.contains(user))
 		if request.method == 'GET':
 			for match in description_query.all():
@@ -116,7 +124,7 @@ def create_app(app):
 		session.close()
 		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
 
-
+"""
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required

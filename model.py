@@ -27,6 +27,8 @@ class User(DeclarativeBase, UserMixin):
 
 	message = relationship("Message")
 	userconversation = relationship("UserConversations")
+	profile = relationship("Profile", back_populates="user")
+
 
 
 	def __init__(self, username,firstname,lastname,email,password):
@@ -120,11 +122,15 @@ class Conversations(DeclarativeBase):
 class Profile(DeclarativeBase):
 	__tablename__ = "Profile"
 
-	id = Column(String, ForeignKey('User.username'), primary_key=True)
+	id = Column('id', Integer, Sequence('profile_id'), primary_key=True)
+	iden = Column(String, ForeignKey('User.username'), primary_key=True)
 	description = Column('descrption', String)
 	profilepicture = Column('profilepicture', String)
 
-	def __init__(self, description, profilepicture):
+	user = relationship("User", back_populates="profile")
+
+	def __init__(self,iden, description, profilepicture):
+		self.iden = iden
 		self.description = description
 		self.profilepicture = profilepicture
 
