@@ -1,5 +1,4 @@
 ## Board ##
-* https://scrumy.com/pythia_scrum_board
 * https://trello.com/b/dOa48WoC/pythia
 
 ##Virtual Environments and Requirements.txt##

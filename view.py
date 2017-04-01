@@ -112,31 +112,6 @@ def create_app(app):
 
 
 
-	"""	description_query = session.query(Profile).filter(Profile.id.contains(user))
-		interest_query = session.query(Interests).filter(Interests.identity.contains(user))
-		if request.method == 'GET':
-			for match in description_query.all():
-				descriptions.append(match.description)
-			for match in interest_query.all():
-				interests.append(match.interest)
-			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
-		if profileform.validate_on_submit():
-			profile_info = Profile(identity = user, description = profileform.description.data, profilepicture = user)
-			profile_interests = Interests(identity = user, interest = profileform.interests.data)
-			session.merge(profile_info)
-			session.add(profile_interests)
-			session.commit()
-			session.close()
-			for match in description_query.all():
-				descriptions.append(match.description)
-			for match in interest_query.all():
-				interests.append(match.interest)
-			return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
-		session.close()
-		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
-
-"""
-
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
