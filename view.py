@@ -16,7 +16,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
 from model import DeclarativeBase
-from model import User, Message, Conversations, UserConversations, Profile, Interests
+from model import User, Message, Conversations, UserConversations, Interests
 
 
 app = Flask(__name__)
@@ -89,15 +89,26 @@ def create_app(app):
 	def profile():
 		session = Session()
 		profileform = ProfileForm()
-		user = current_user.username
+		# Get data about current user
+		user = current_user.id
+		description_query = session.query(User).filter_by(id=user)
 		descriptions = []
-		interests = []
+		# GET request to display user data
+		if request.method == 'GET':
+			for match in description_query.all():
+				descriptions.append(match.description)
+			return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
+		# POST request to update user description and interests
 		if profileform.validate_on_submit():
-			profile_info = Profile(iden = user, description = profileform.description.data, profilepicture = user)
+			profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
 			session.merge(profile_info)
 			session.commit()
 			session.close()
-		return render_template('profile.html', profileform=profileform,interests=interests, user = user, descriptions=descriptions)
+			for match in description_query.all():
+				descriptions.append(match.description)
+			return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
+		session.close()
+		return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
 
 
 

@@ -8,7 +8,8 @@
 
 Use Pip to install requirements.txt
 
-Example Commands
+#Example Commands#
+
 * mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
 * pip install -r /path/to/requirements.txt
 * To install psycog2: sudo apt install libpq-dev python-dev
@@ -22,7 +23,7 @@ Example Commands
 * http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
 * https://www.digitalocean.com/community/tutorials/how-to-use-roles-and-manage-grant-permissions-in-postgresql-on-a-vps--2
 
-Query Postgres:
+#Query Postgres#
 
 GALVIN-# \l
 GALVIN-# \connect pythia                 
@@ -34,7 +35,7 @@ pythia=# SELECT * FROM "SignUp";
  dsnfjkas | matthew   | dfsnjks  | dnjkfsa`dnbkdfs`       | ds nfks
 (2 rows)
 
-Creating a Table:
+#Creating a Table#
 
 CREATE TABLE "Message"(
    mes_identity TEXT PRIMARY KEY     NOT NULL,
@@ -42,16 +43,23 @@ CREATE TABLE "Message"(
 );
 
 
-
-Entering pythia
+#Entering pythia#
 
 workon pythia
 psql pythia
 \d
 
-Design of Message Function:
 
-* http://qnimate.com/database-design-for-storing-chat-messages/
+#Dropping Schema#
+
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+then
+
+
+GRANT USAGE ON SCHEMA public TO public;
+GRANT CREATE ON SCHEMA public TO public;
 
 ##git##
 
