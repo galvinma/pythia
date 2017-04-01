@@ -93,7 +93,7 @@ def create_app(app):
 		descriptions = []
 		interests = []
 		if profileform.validate_on_submit():
-			profile_info = Profile(iden = User.username, description = profileform.description.data, profilepicture = user)
+			profile_info = Profile(iden = user, description = profileform.description.data, profilepicture = user)
 			session.merge(profile_info)
 			session.commit()
 			session.close()

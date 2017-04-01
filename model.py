@@ -5,7 +5,7 @@ from wtforms.validators import Required
 from sqlalchemy import *
 from sqlalchemy import create_engine
 from sqlalchemy import UniqueConstraint
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy.engine.url import URL
@@ -25,9 +25,9 @@ class User(DeclarativeBase, UserMixin):
 	email = Column('email', String)
 	password = Column('password', String)
 
-	message = relationship("Message")
-	userconversation = relationship("UserConversations")
-	profile = relationship("Profile", back_populates="user")
+#	message = relationship("Message")
+#	userconversation = relationship("UserConversations")
+#	profile = relationship("Profile", back_populates="user")
 
 
 
@@ -37,6 +37,37 @@ class User(DeclarativeBase, UserMixin):
 		self.lastname = lastname
 		self.email = email
 		self.password = password
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.id
+
+	def __unicode__(self):
+		return self.id
+
+class Profile(DeclarativeBase):
+	__tablename__ = "Profile"
+
+	id = Column('id', Integer, Sequence('profile_id'), primary_key=True)
+	iden = Column(String, ForeignKey('User.username'))
+	description = Column('descrption', String)
+	profilepicture = Column('profilepicture', String)
+
+	user = relationship(User, backref=backref('usernames'))
+
+	def __init__(self, iden, description, profilepicture):
+		self.iden = iden
+		self.description = description
+		self.profilepicture = profilepicture
+
 
 	def is_authenticated(self):
 		return True
@@ -110,39 +141,6 @@ class Conversations(DeclarativeBase):
 
 	def __init__(self, timestamp):
 		self.timestamp = timestamp
-
-	def get_id(self):
-		return self.id
-
-	def __unicode__(self):
-		return self.id
-
-
-
-class Profile(DeclarativeBase):
-	__tablename__ = "Profile"
-
-	id = Column('id', Integer, Sequence('profile_id'), primary_key=True)
-	iden = Column(String, ForeignKey('User.username'), primary_key=True)
-	description = Column('descrption', String)
-	profilepicture = Column('profilepicture', String)
-
-	user = relationship("User", back_populates="profile")
-
-	def __init__(self,iden, description, profilepicture):
-		self.iden = iden
-		self.description = description
-		self.profilepicture = profilepicture
-
-
-	def is_authenticated(self):
-		return True
-
-	def is_active(self):
-		return True
-
-	def is_anonymous(self):
-		return False
 
 	def get_id(self):
 		return self.id
