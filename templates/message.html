@@ -14,6 +14,18 @@
   </div>
 
 
+<div class="row">
+    <div class="col-8-24">
+            <form method="POST">
+            {{ conversationform.hidden_tag() }}
+            <p>{{ conversationform.conversationtitle.label }} {{ conversationform.conversationtitle() }} </p>
+            {{ conversationform.conversationsubmit }}
+            </form>
+    </div>
+    </div>
+
+
+
 
 <div class="row">
     <div class="col-8-24">

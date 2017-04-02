@@ -18,17 +18,21 @@ class LoginForm(Form):
 	logpassword = PasswordField('Password', validators=[Required()])
 	logsubmit = SubmitField('Login')
 
+# Allows user to send a message
 class MessageForm(Form):
 	msgusername = StringField('Send to:  ', validators=[Required()])
 	message = StringField('Message:  ', validators=[Required()])
 	messagesubmit = SubmitField('Send Message')
 
+
+# Allows user to begin a new conversation
+class ConversationForm(Form):
+	conversationtitle = StringField('Conversation Name: ')
+	conversationsubmit = SubmitField('Create Conversation')
+
+# Allows user to submit new profile information and associated interests.
 class ProfileForm(Form):
 	description = StringField('Description here  ', validators=[Required()])
 	interests = StringField('Interests here:  ')
 	profilepicture = StringField('Profile picture')
 	profilesubmit = SubmitField('Submit')
-
-#class PeopleSearchForm(Form):
-#	search = StringField('Search for people who have similar interests', validators=[Required()])
-#	submit = SubmitField('I am Search Dragon')

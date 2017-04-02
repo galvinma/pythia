@@ -14,7 +14,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 
 
 
-from form import RegistrationForm, LoginForm, MessageForm, ProfileForm
+from form import RegistrationForm, LoginForm, MessageForm, ProfileForm, ConversationForm
 from model import DeclarativeBase
 from model import User, Message, Conversations, UserConversations, Interests
 
@@ -98,7 +98,8 @@ def create_app(app):
 			for match in description_query.all():
 				descriptions.append(match.description)
 			return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
-		# POST request to update user description and interests
+		# POST request to update user description 
+		# Add interests in later story
 		if profileform.validate_on_submit():
 			profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
 			session.merge(profile_info)
@@ -111,28 +112,29 @@ def create_app(app):
 		return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
 
 
-
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
 		session = Session()
 		messageform = MessageForm()
+		conversationform = ConversationForm()
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
-		if messageform.validate_on_submit():
+		if conversationform.validate_on_submit():
 			# Add Conversation
-			conversation_test = Conversations(timestamp=timestamp)
-			session.add(conversation_test)
+			conversation = Conversations(timestamp=timestamp)
+			session.add(conversation)
 			session.commit()
-			# Add User-Conversation
+			# Add UserConversation
 			session.flush()
-		#	user_convo = UserConversations(username = User.username, conversation = Conversations.id)
-		#	session.add(user_convo)
-		#	session.commit()
+			userconversation = UserConversations(user_id=current_user.id, conversations_id=conversation.id)
+			session.add(userconversation)
+			session.commit()
+		if messageform.validate_on_submit():
 			# Add message 
-#			message = Message(message = messageform.message.data, timestamp = timestamp)
-#			session.add(mes)
-#			session.commit()
+			message = Message(user_id=current_user.id, conversations_id=conversation.id, message=messageform.message.data, timestamp=timestamp)
+			session.add(message)
+			session.commit()
 		messages = []
 		# user_query pulls up messages based on a match to the mes_identity column.
 		# May need to sort by timestamp in the future
@@ -140,7 +142,7 @@ def create_app(app):
 #		for match in user_query.all():
 #			messages.append(match.message)
 		session.close()			
-		return render_template('message.html', messageform=messageform, user=user, messages=messages)
+		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required
