@@ -117,10 +117,10 @@ def create_app(app):
 	def message():
 		session = Session()
 		messageform = MessageForm()
-		conversationform = ConversationForm()
 		user = current_user.username
+		conversationform = ConversationForm()
 		timestamp = str(datetime.datetime.now())
-		if conversationform.validate_on_submit():
+		if conversationform.validate_on_submit() and conversationform.conversationsubmit.data:
 			# Add Conversation
 			conversation = Conversations(timestamp=timestamp)
 			session.add(conversation)
@@ -130,11 +130,18 @@ def create_app(app):
 			userconversation = UserConversations(user_id=current_user.id, conversations_id=conversation.id)
 			session.add(userconversation)
 			session.commit()
-		if messageform.validate_on_submit():
-			# Add message 
+		if messageform.validate_on_submit() and messageform.messagesubmit.data:
+			# Add message
+			session.flush() 
 			message = Message(user_id=current_user.id, conversations_id=conversation.id, message=messageform.message.data, timestamp=timestamp)
 			session.add(message)
 			session.commit()
+		# Show all conversations for a given user
+		conversations = []
+		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
+		for match in conversation_query.all():
+			conversations.append(match.conversations_id)
+		# Show all message for a given conversation
 		messages = []
 		# user_query pulls up messages based on a match to the mes_identity column.
 		# May need to sort by timestamp in the future
@@ -142,7 +149,7 @@ def create_app(app):
 #		for match in user_query.all():
 #			messages.append(match.message)
 		session.close()			
-		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages)
+		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages, conversations=conversations)
 
 	@app.route('/chat', methods =['GET', 'POST'])
 	@login_required

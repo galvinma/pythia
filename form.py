@@ -24,7 +24,6 @@ class MessageForm(Form):
 	message = StringField('Message:  ', validators=[Required()])
 	messagesubmit = SubmitField('Send Message')
 
-
 # Allows user to begin a new conversation
 class ConversationForm(Form):
 	conversationtitle = StringField('Conversation Name: ')
