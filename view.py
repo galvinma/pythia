@@ -153,7 +153,7 @@ def create_app(app):
 		session.close()			
 		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages, conversations=conversations)
 
-	@socketio.on('conversation')
+	@socketio.on('conversation', namespace='/message')
 	def show_message(conversation):
 #		values[conversation]
 		print 'received conversation id'
@@ -161,7 +161,7 @@ def create_app(app):
 		message_query = session.query(Message).filter_by(conversations_id = conversation)
 		for match in message_query.all():
 			messages.append(match.message)
-		send('message_delivery', messages=messages, broadcast=True)
+		emit('message_delivery', messages=messages, namespace='/message')
 
 #	@app.route('/chat', methods =['GET', 'POST'])
 #	@login_required
@@ -192,7 +192,6 @@ def create_app(app):
 create_app(app)
 
 if __name__ == '__main__':
-	app.debug = True
-	socketio.run(app)
+	socketio.run(app, debug=True)
 
 
