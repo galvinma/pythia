@@ -41,3 +41,5 @@ wheel==0.24.0
 Whoosh==2.7.0
 WTForm==1.0
 WTForms==2.0.2
+pip install flask-socketio==2.8.6
+eventlet==0.20.1

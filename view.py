@@ -11,7 +11,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, select
 from sqlalchemy import literal_column, or_
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
+from flask_socketio import SocketIO
+from flask_socketio import send, emit
 
 
 from form import RegistrationForm, LoginForm, MessageForm, ProfileForm, ConversationForm
@@ -22,7 +23,8 @@ from model import User, Message, Conversations, UserConversations, Interests
 app = Flask(__name__)
 "app.config.from_object(os.environ['APP_SETTINGS'])"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
-app.secret_key = "623478902135784905734890579340"
+app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
+socketio = SocketIO(app)
 
 
 
@@ -151,24 +153,34 @@ def create_app(app):
 		session.close()			
 		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages, conversations=conversations)
 
-	@app.route('/chat', methods =['GET', 'POST'])
-	@login_required
-	def chat():
-		return render_template('chat.html')	
+	@socketio.on('conversation')
+	def show_message(conversation):
+#		values[conversation]
+		print 'received conversation id'
+		messages = []
+		message_query = session.query(Message).filter_by(conversations_id = conversation)
+		for match in message_query.all():
+			messages.append(match.message)
+		send('message_delivery', messages=messages, broadcast=True)
 
-	@app.route('/search')
-	@login_required
-	def search():
-		return render_template('search.html')
+#	@app.route('/chat', methods =['GET', 'POST'])
+#	@login_required
+#	def chat():
+#		return render_template('chat.html')	
 
-	@app.route('/search_people-', methods=['GET', 'POST'])
-	@login_required
-	def search_people():
-		session = Session()
-		last = session.query(User).first()
-		form = RegistrationForm(obj=last)
-		session.close()
-		return render_template('search_people.html', form=form)	
+#	@app.route('/search')
+#	@login_required
+#	def search():
+#		return render_template('search.html')
+
+#	@app.route('/search_people-', methods=['GET', 'POST'])
+#	@login_required
+#	def search_people():
+#		session = Session()
+#		last = session.query(User).first()
+#		form = RegistrationForm(obj=last)
+#		session.close()
+#		return render_template('search_people.html', form=form)	
 
 	@app.route('/logout', methods=['GET', 'POST'])
 	def logout():
@@ -181,6 +193,6 @@ create_app(app)
 
 if __name__ == '__main__':
 	app.debug = True
-	app.run()
+	socketio.run(app)
 
 

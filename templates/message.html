@@ -15,23 +15,41 @@
 
 
 
-    <table cellpadding="5" cellspacing="5">
-      <tr>
-        <th>Conversation</th>
-        <th>Messages</th>
-      </tr>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 
-        {% for conversation in conversations %}
-        <tr>
-          <td>
-            <li>{{conversation}}</li>
-          </td>
-          <td>Message</td>
-        </tr>
-        {% endfor %}
-    </table>
 
+
+        <script type="text/javascript" charset="utf-8">
+          $(document).ready(function(){
+          var socket = io.connect('http://127.0.0.1:5000/message');
+
+          socket.on('message_delivery', function(messages) {
+                   {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+            });
+          </script>
+
+
+{% for conversation in conversations %}
+          <script type="text/javascript" charset="utf-8">
+          $(document).ready(function(){
+          var socket = io.connect('http://127.0.0.1:5000/message');
+
+           $('togglebutton').on('click', function(event)) {
+              socket.emit('conversation', {data: ${{conversation}}  });
+              });
+              });
+
+    
+        </script>
+
+        <button type=togglebutton>{{conversation}}</button>
+      {% endfor %}
+  
+
+    
 
 
 
