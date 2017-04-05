@@ -19,28 +19,40 @@
 <script type="text/javascript" charset="utf-8">
     var socket = io.connect();
     socket.on('connect', function() {
-        console.log("send message");
-        socket.emit('conversation', {conversation: "conversation id for the server" });
+        console.log("Sending a message to the server");
+        socket.emit('conversation', {conversation: "test connection to the server" });
     });
-
-    socket.on('event', function(conversation) {
-                console.log("here is a message");
-            });
-
-
 </script>
+
+
+
+<script type="text/javascript" charset="utf-8">
+    socket.on('event', function(conversation) {
+                console.log("Recieved a message from the server");
+            });
+</script>
+
+
+ {% for conversation in conversations %}
+        <button id="togglebutton" value="{{conversation}}">{{conversation}}</button>
+      {% endfor %}
+
 
   
 
+  <script type="text/javascript">
+        $(document).click(function() { 
+          $('#togglebutton');
+            var x = document.getElementById("togglebutton").value;
+            socket.emit('conversation', {conversation: x });
+          });
+  </script>
+
     
-      {% for conversation in conversations %}
-        <button id="togglebutton">{{conversation}}</button>
-      {% endfor %}
 
 <div class="row">
  <textarea id="chat" cols="80" rows="20"></textarea><br><br>
-
-    </div>
+</div>
               
 <div class="row">
     <div class="col-8-24">
