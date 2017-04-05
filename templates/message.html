@@ -14,24 +14,22 @@
   </div>
 
 
-{% for conversation in conversations %}
+
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    var socket = io.connect();
     socket.on('connect', function() {
         console.log("send message");
-        socket.emit('conversation', {conversation: "{{conversation}}" });
+        socket.emit('conversation', {conversation: "conversation id from the server" });
     });
 
-    socket.on('message_delivery', function(data) {
-                console.log("client message");
-                $('#chat').val($('#chat').val() + data.msg + '\n');
-                $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    socket.on('event', function(conversation) {
+                console.log("here is a message");
             });
 
 
 </script>
-{% endfor %}
+
   
 
     

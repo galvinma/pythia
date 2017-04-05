@@ -163,7 +163,8 @@ def create_app(app):
 	#	message_query = session.query(Message).filter_by(conversations_id = conversation)
 	#	for match in message_query.all():
 	#		messages.append(match.message)
-		emit('message_delivery', {'msg': 'msg'}, namespace='/message')
+		emit("event", conversation, broadcast = True)
+	#	return conversation 
 
 #	@app.route('/chat', methods =['GET', 'POST'])
 #	@login_required
