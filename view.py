@@ -164,7 +164,6 @@ def create_app(app):
 	#	for match in message_query.all():
 	#		messages.append(match.message)
 		emit("event", conversation, broadcast = True)
-	#	return conversation 
 
 #	@app.route('/chat', methods =['GET', 'POST'])
 #	@login_required
