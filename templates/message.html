@@ -20,7 +20,7 @@
     var socket = io.connect();
     socket.on('connect', function() {
         console.log("send message");
-        socket.emit('conversation', {conversation: "conversation id from the server" });
+        socket.emit('conversation', {conversation: "conversation id for the server" });
     });
 
     socket.on('event', function(conversation) {
