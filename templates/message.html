@@ -14,23 +14,24 @@
   </div>
 
 
-
+{% for conversation in conversations %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('connect', function() {
         console.log("send message");
-        socket.emit('conversation', {data: 'here is a string'});
+        socket.emit('conversation', {conversation: "{{conversation}}" });
     });
 
-    socket.on('message_delivery', function() {
-                var foo = $('foo.foo')
-                console.log("got message");
+    socket.on('message_delivery', function(data) {
+                console.log("client message");
+                $('#chat').val($('#chat').val() + data.msg + '\n');
+                $('#chat').scrollTop($('#chat')[0].scrollHeight);
             });
 
 
 </script>
-
+{% endfor %}
   
 
     
@@ -38,7 +39,10 @@
         <button id="togglebutton">{{conversation}}</button>
       {% endfor %}
 
+<div class="row">
+ <textarea id="chat" cols="80" rows="20"></textarea><br><br>
 
+    </div>
               
 <div class="row">
     <div class="col-8-24">
