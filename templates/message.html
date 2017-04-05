@@ -16,41 +16,30 @@
 
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        console.log("send message");
+        socket.emit('conversation', {data: 'here is a string'});
+    });
 
-
-{% for conversation in conversations %}
-        <button id="togglebutton">{{conversation}}</button>
-      {% endfor %}
-
-        <script type="text/javascript" charset="utf-8">
-          $(document).ready(function(){
-            $("#togglebutton").click(function() {
-            function click(){
-            namespace= 'message':
-            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-              socket.on('connect', function() {
-                console.log('connected!')
-                socket.emit('conversation', {data: ${{conversation}}  });
+    socket.on('message_delivery', function() {
+                var foo = $('foo.foo')
+                console.log("got message");
             });
-            )};
 
-          socket.on('message_delivery', function(messages) {
-              console.log('recieving messages')
-              
-              });
-              });
-        }
-      
-        </script>
+
+</script>
 
   
 
     
+      {% for conversation in conversations %}
+        <button id="togglebutton">{{conversation}}</button>
+      {% endfor %}
 
-                   {% for message in messages %}
-                    <li>{{message}}</li>
-                    {% endfor %}
 
+              
 <div class="row">
     <div class="col-8-24">
             <form method="POST">
