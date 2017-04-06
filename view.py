@@ -129,9 +129,17 @@ def create_app(app):
 			session.commit()
 			# Add UserConversation
 			session.flush()
-			userconversation = UserConversations(user_id=current_user.id, conversations_id=conversation.id)
-			session.add(userconversation)
-			session.commit()
+			users = conversationform.usersinconversation.data
+			print users
+			idfind = []
+			user_id_query = session.query(User).filter_by(username=users)
+			for match in user_id_query.all():
+				idfind.append(match.id)
+			print idfind
+			for user in idfind:
+				userconversation = UserConversations(user_id=user, conversations_id=conversation.id)
+				session.add(userconversation)
+				session.commit()
 		if messageform.validate_on_submit() and messageform.messagesubmit.data:
 			# Add message
 			session.flush() 
@@ -143,15 +151,8 @@ def create_app(app):
 		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
 		for match in conversation_query.all():
 			conversations.append(match.conversations_id)
-		# Show all message for a given conversation
-		messages = []
-		# user_query pulls up messages based on a match to the mes_identity column.
-		# May need to sort by timestamp in the future
-#		user_query = session.query(Message).filter(Message.mes_identity.contains(user))
-#		for match in user_query.all():
-#			messages.append(match.message)
 		session.close()			
-		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, messages=messages, conversations=conversations)
+		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, conversations=conversations)
 
 	@socketio.on('conversation')
 	def show_message(conversation):

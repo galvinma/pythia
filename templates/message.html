@@ -62,6 +62,7 @@ button.addEventListener('click', function(e) {
             <form method="POST">
             {{ conversationform.hidden_tag() }}
             <p>{{ conversationform.conversationtitle.label }} {{ conversationform.conversationtitle() }} </p>
+            <p>{{ conversationform.usersinconversation.label }} {{ conversationform.usersinconversation() }} </p>
             {{ conversationform.conversationsubmit }}
             </form>
     </div>
