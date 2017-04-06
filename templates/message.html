@@ -20,15 +20,14 @@
     var socket = io.connect();
     socket.on('connect', function() {
         console.log("Sending a message to the server");
-        socket.emit('conversation', {conversation: "test connection to the server" });
     });
 </script>
 
-
-
 <script type="text/javascript" charset="utf-8">
-    socket.on('event', function(conversation) {
+    socket.on('event', function(messages) {
                 console.log("Recieved a message from the server");
+                console.log(messages)
+                document.getElementById('chat').value = messages;
             });
 </script>
 

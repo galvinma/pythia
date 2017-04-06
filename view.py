@@ -158,12 +158,14 @@ def create_app(app):
 #		values[conversation]
 		print 'Received message from the client'
 		print conversation
-		conversation = "conversation id for client"
-	#	messages = []
-	#	message_query = session.query(Message).filter_by(conversations_id = conversation)
-	#	for match in message_query.all():
-	#		messages.append(match.message)
-		emit("event", conversation, broadcast = True)
+		conversation_id = conversation['conversation']
+		print conversation_id 
+		messages = []
+		message_query = session.query(Message).filter_by(conversations_id=conversation_id)
+		for match in message_query.all():
+			messages.append(match.message)
+		print messages
+		emit("event", messages, broadcast = True)
 
 #	@app.route('/chat', methods =['GET', 'POST'])
 #	@login_required
