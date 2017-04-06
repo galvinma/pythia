@@ -34,11 +34,9 @@
 
 
  {% for conversation in conversations %}
-        <button id="togglebutton" value="{{conversation}}">{{conversation}}</button>
+        <button id="togglebutton" value={{conversation}}>{{conversation}}</button>
       {% endfor %}
 
-
-  
 
   <script type="text/javascript">
         $(document).click(function() { 

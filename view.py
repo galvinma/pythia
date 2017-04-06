@@ -156,7 +156,7 @@ def create_app(app):
 	@socketio.on('conversation')
 	def show_message(conversation):
 #		values[conversation]
-		print 'received message from the client'
+		print 'Received message from the client'
 		print conversation
 		conversation = "conversation id for client"
 	#	messages = []
