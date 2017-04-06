@@ -32,20 +32,26 @@
             });
 </script>
 
+ {% for conversation in conversations %}
+<script type="text/javascript" charset="utf-8">
+var div = document.createElement('button');
+div.textContent = "{{conversation}}";
+div.setAttribute('id', '{{conversation}}');
+div.setAttribute('value', "{{conversation}}");
+document.body.appendChild(div);
+</script>
+{% endfor %}
+
 
  {% for conversation in conversations %}
-        <button id="togglebutton" value={{conversation}}>{{conversation}}</button>
-      {% endfor %}
-
-
   <script type="text/javascript">
         $(document).click(function() { 
-          $('#togglebutton');
-            var x = document.getElementById("togglebutton").value;
+          $('#{{conversation}}');
+            var x = document.getElementById("{{conversation}}").value;
             socket.emit('conversation', {conversation: x });
           });
   </script>
-
+{% endfor %}
     
 
 <div class="row">
