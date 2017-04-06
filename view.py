@@ -142,9 +142,37 @@ def create_app(app):
 				session.commit()
 		if messageform.validate_on_submit() and messageform.messagesubmit.data:
 			# Add message
+			#
+			# Find id of user being sent the message
+			idfind = []
+			users = conversationform.usersinconversation.data
+			user_id_query = session.query(User).filter_by(username=users)
+			for match in user_id_query.all():
+				idfind.append(match.id)
+			print "here is if find"
+			print idfind
+			# find the conversations current user is a prt of
+			conversation_users = session.query(UserConversations).filter_by(user_id=current_user.id)
+			conv = []
+			for match in conversation_users.all():
+				conv.append(match.conversations_id)
+			# Find foreign user convos
+			fconv = []
+			for i in idfind:
+				foreign_convo = session.query(UserConversations).filter_by(user_id=i)
+				for match in foreign_convo.all():
+					fconv.append(match.conversations_id)
+			# match the user to the foreign user
+			x = set(conv) & set(fconv)
+			print "here are the conversations both users are in"
+			print x
 			session.flush() 
-			message = Message(user_id=current_user.id, conversations_id=conversation.id, message=messageform.message.data, timestamp=timestamp)
-			session.add(message)
+			message = Message(user_id=current_user.id, conversations_id=x, message=messageform.message.data, timestamp=timestamp)
+			users = messageform.msgusername.data
+			for user in idfind:
+				touser = Message(user_id=user, conversations_id=x, message=messageform.message.data, timestamp=timestamp)
+				session.add(touser)
+				session.add(message)
 			session.commit()
 		# Show all conversations for a given user
 		conversations = []
