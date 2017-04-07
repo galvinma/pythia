@@ -18,12 +18,6 @@ class LoginForm(Form):
 	logpassword = PasswordField('Password', validators=[Required()])
 	logsubmit = SubmitField('Login')
 
-# Allows user to send a message
-class MessageForm(Form):
-	msgusername = StringField('Send to:  ', validators=[Required()])
-	message = StringField('Message:  ', validators=[Required()])
-	messagesubmit = SubmitField('Send Message')
-
 # Allows user to submit new profile information and associated interests.
 class ProfileForm(Form):
 	description = StringField('Description here  ', validators=[Required()])

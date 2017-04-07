@@ -15,7 +15,7 @@ from flask_socketio import SocketIO
 from flask_socketio import send, emit
 
 
-from form import RegistrationForm, LoginForm, MessageForm, ProfileForm 
+from form import RegistrationForm, LoginForm, ProfileForm 
 from model import DeclarativeBase
 from model import User, Message, Conversations, UserConversations, Interests
 
@@ -118,31 +118,8 @@ def create_app(app):
 	@login_required
 	def message():
 		session = Session()
-		messageform = MessageForm()
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
-		if messageform.validate_on_submit() and messageform.messagesubmit.data:
-			# Find id of user sending the message
-			from_user = current_user.id
-			print 'from user'
-			print from_user
-			# Find id of user recieving the message
-			to_user = []
-			to_user_query = session.query(User).filter_by(username=messageform.msgusername.data)
-			for match in to_user_query.all():
-				to_user.append(match.id)
-			print 'to user'
-			print to_user[0]
-			# Get conversation id from the client
-
-			# Query for users in the given conversation id
-
-			# Create conversation id if one does not exist
-
-			# Add message to model
-
-
-
 
 		# Show all conversations for a given user
 		conversations = []
@@ -150,7 +127,7 @@ def create_app(app):
 		for match in conversation_query.all():
 			conversations.append(match.conversations_id)
 		session.close()			
-		return render_template('message.html', messageform=messageform, user=user, conversations=conversations)
+		return render_template('message.html', user=user, conversations=conversations)
 
 	@socketio.on('conversation')
 	def show_message(conversation):
@@ -165,24 +142,33 @@ def create_app(app):
 		print messages
 		emit("event", messages, broadcast = True)
 
-#	@app.route('/chat', methods =['GET', 'POST'])
-#	@login_required
-#	def chat():
-#		return render_template('chat.html')	
+	@socketio.on('message')
+	def archive_message(message):
+		# Find id of user sending the message
+			from_user = current_user.id
+			print 'from user'
+			print from_user
+			# Find id of user recieving the message. In addition to the message, client will need to return both usernames + conversation id.
+			to_user = []
+			to_user_query = session.query(User).filter_by(username= "to user XXX") # this will need to be sent from the client
+			for match in to_user_query.all():
+				to_user.append(match.id)
+			print 'to user'
+			print to_user[0]
 
-#	@app.route('/search')
-#	@login_required
-#	def search():
-#		return render_template('search.html')
+			# Get conversation id from the client.
 
-#	@app.route('/search_people-', methods=['GET', 'POST'])
-#	@login_required
-#	def search_people():
-#		session = Session()
-#		last = session.query(User).first()
-#		form = RegistrationForm(obj=last)
-#		session.close()
-#		return render_template('search_people.html', form=form)	
+			# Query for users in the given conversation id
+
+			# Create conversation id if one does not exist
+
+			# Add message to model
+
+	@app.route('/search')
+	@login_required
+	def search():
+		return render_template('search.html')
+
 
 	@app.route('/logout', methods=['GET', 'POST'])
 	def logout():
