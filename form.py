@@ -24,12 +24,6 @@ class MessageForm(Form):
 	message = StringField('Message:  ', validators=[Required()])
 	messagesubmit = SubmitField('Send Message')
 
-# Allows user to begin a new conversation
-#class ConversationForm(Form):
-#	conversationtitle = StringField('Conversation Name: ')
-#	usersinconversation = StringField('User(s): ')
-#	conversationsubmit = SubmitField('Create Conversation')
-
 # Allows user to submit new profile information and associated interests.
 class ProfileForm(Form):
 	description = StringField('Description here  ', validators=[Required()])

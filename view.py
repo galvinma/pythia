@@ -133,6 +133,17 @@ def create_app(app):
 				to_user.append(match.id)
 			print 'to user'
 			print to_user[0]
+			# Get conversation id from the client
+
+			# Query for users in the given conversation id
+
+			# Create conversation id if one does not exist
+
+			# Add message to model
+
+
+
+
 		# Show all conversations for a given user
 		conversations = []
 		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
