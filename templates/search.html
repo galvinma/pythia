@@ -2,6 +2,18 @@
 {% block content %} 
 
   <!-- Main Entry Here -->
+<body>
+  <div class = "nav_bar_row_index"> 
+      <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
+      <div class = "nav_bar_col_index offset-19-24"></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
+      <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
+  </div>
+
+
+
 <br>
 <br>
 <br>
@@ -9,18 +21,29 @@
 <br>
 <br>
 
+<script type="text/javascript" charset="utf-8">
+var div = document.createElement('button');
+div.textContent = "People";
+div.Width = "50 px"
+document.body.appendChild(div);
 
-<div class="btn-group-lg btn-group-justified">
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary">People</button>
-  </div>
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary">Places</button>
-  </div>
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary">Things</button>
-  </div>
-  <!-- End Main Entry -->
+var div = document.createElement('button');
+div.textContent = "Ideas";
+document.body.appendChild(div);
+
+var button = document.getElementById('togglebutton');
+
+button.addEventListener('click', function(e) {
+  var x = e.target.value
+  socket.emit('conversation', {conversation: x });
+
+
+});
+</script>
+
+
+</body>
+
 
 
 
