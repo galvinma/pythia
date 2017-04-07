@@ -25,7 +25,7 @@
 
 <script type="text/javascript" charset="utf-8">
     socket.on('event', function(messages) {
-                console.log("Recieved a message from the server");
+                console.log("Client recieved a list of messages from the server");
                 console.log(messages)
                 document.getElementById('chat').value = messages;
             });
@@ -52,11 +52,52 @@ button.addEventListener('click', function(e) {
 
 
 
-
 <div class="row">
  <textarea id="chat" cols="80" rows="20"></textarea><br><br>
 </div>
-              
+
+
+<script type="text/javascript" charset="utf-8">
+
+var div = document.createElement('textarea');
+div.setAttribute('id', 'inputmessage');
+div.setAttribute('cols', '80');
+div.setAttribute('rows', '5');
+document.body.appendChild(div);
+
+document.write("<br>");
+
+var div = document.createElement('label');
+div.textContent = "Send message to:";
+div.setAttribute('style', 'width:50px')
+document.body.appendChild(div);
+
+document.write("\n\n\n\n\n");
+
+var div = document.createElement('textarea');
+div.setAttribute('id', 'touser');
+div.setAttribute('cols', '20');
+div.setAttribute('rows', '1');
+document.body.appendChild(div);
+
+document.write("\n\n\n\n\n");
+
+var div = document.createElement('button');
+div.textContent = "Send";
+div.setAttribute('style', 'width:50px')
+div.setAttribute('id', 'sendmessage');
+document.body.appendChild(div);
+
+var button = document.getElementById('sendmessage');
+
+button.addEventListener('click', function(e) {
+  var x = e.target.value
+  console.log("User sent a message to the server");
+  socket.emit('message', "here is the message from the client");
+
+
+});
+</script>
 
 
 
