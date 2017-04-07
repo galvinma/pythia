@@ -15,7 +15,7 @@ from flask_socketio import SocketIO
 from flask_socketio import send, emit
 
 
-from form import RegistrationForm, LoginForm, MessageForm, ProfileForm, ConversationForm
+from form import RegistrationForm, LoginForm, MessageForm, ProfileForm 
 from model import DeclarativeBase
 from model import User, Message, Conversations, UserConversations, Interests
 
@@ -120,71 +120,29 @@ def create_app(app):
 		session = Session()
 		messageform = MessageForm()
 		user = current_user.username
-		conversationform = ConversationForm()
 		timestamp = str(datetime.datetime.now())
-		if conversationform.validate_on_submit() and conversationform.conversationsubmit.data:
-			# Add Conversation
-			conversation = Conversations(timestamp=timestamp)
-			session.add(conversation)
-			session.commit()
-			# Add UserConversation
-			session.flush()
-			users = conversationform.usersinconversation.data
-			print users
-			idfind = []
-			user_id_query = session.query(User).filter_by(username=users)
-			for match in user_id_query.all():
-				idfind.append(match.id)
-			print idfind
-			for user in idfind:
-				userconversation = UserConversations(user_id=user, conversations_id=conversation.id)
-				session.add(userconversation)
-				session.commit()
 		if messageform.validate_on_submit() and messageform.messagesubmit.data:
-			# Add message
-			#
-			# Find id of user being sent the message
-			idfind = []
-			users = conversationform.usersinconversation.data
-			user_id_query = session.query(User).filter_by(username=users)
-			for match in user_id_query.all():
-				idfind.append(match.id)
-			print "here is if find"
-			print idfind
-			# find the conversations current user is a prt of
-			conversation_users = session.query(UserConversations).filter_by(user_id=current_user.id)
-			conv = []
-			for match in conversation_users.all():
-				conv.append(match.conversations_id)
-			# Find foreign user convos
-			fconv = []
-			for i in idfind:
-				foreign_convo = session.query(UserConversations).filter_by(user_id=i)
-				for match in foreign_convo.all():
-					fconv.append(match.conversations_id)
-			# match the user to the foreign user
-			x = set(conv) & set(fconv)
-			print "here are the conversations both users are in"
-			print x
-			session.flush() 
-			message = Message(user_id=current_user.id, conversations_id=x, message=messageform.message.data, timestamp=timestamp)
-			users = messageform.msgusername.data
-			for user in idfind:
-				touser = Message(user_id=user, conversations_id=x, message=messageform.message.data, timestamp=timestamp)
-				session.add(touser)
-				session.add(message)
-			session.commit()
+			# Find id of user sending the message
+			from_user = current_user.id
+			print 'from user'
+			print from_user
+			# Find id of user recieving the message
+			to_user = []
+			to_user_query = session.query(User).filter_by(username=messageform.msgusername.data)
+			for match in to_user_query.all():
+				to_user.append(match.id)
+			print 'to user'
+			print to_user[0]
 		# Show all conversations for a given user
 		conversations = []
 		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
 		for match in conversation_query.all():
 			conversations.append(match.conversations_id)
 		session.close()			
-		return render_template('message.html', messageform=messageform, conversationform=conversationform, user=user, conversations=conversations)
+		return render_template('message.html', messageform=messageform, user=user, conversations=conversations)
 
 	@socketio.on('conversation')
 	def show_message(conversation):
-#		values[conversation]
 		print 'Received message from the client'
 		print conversation
 		conversation_id = conversation['conversation']
