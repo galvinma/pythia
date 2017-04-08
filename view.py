@@ -149,6 +149,7 @@ def create_app(app):
 			timestamp = str(datetime.datetime.now())
 			print 'from user'
 			print from_user
+			print message['message']
 			# Find id of user recieving the message. In addition to the message, client will need to return both usernames + conversation id.
 			foreign_user_list = []
 			to_user_query = session.query(User).filter_by(username= to_user['to_user'])

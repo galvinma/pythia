@@ -90,10 +90,12 @@ document.body.appendChild(div);
 
 var button = document.getElementById('sendmessage');
 
-button.addEventListener('click', function(e) {
-  var x = e.target.value
+button.addEventListener('click', function() {
+  var x = document.getElementById('touser').value;
+  var y = document.getElementById('inputmessage').value;
   console.log("User sent a message to the server");
-  socket.emit('message', {to_user: "tots"}, {message: "haha it works"});
+  socket.emit('message', {to_user: x}, {message: y});
+
 
 
 });
