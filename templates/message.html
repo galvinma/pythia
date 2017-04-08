@@ -97,12 +97,17 @@ button.addEventListener('click', function() {
   socket.emit('message', {to_user: x}, {message: y});
 
 
-
 });
 </script>
 
 
-
+<script type="text/javascript" charset="utf-8">
+    socket.on('usermes', function(messages) {
+                console.log("Client recieved a list of messages from the server");
+                console.log(messages)
+                document.getElementById('chat').value = messages;
+            });
+</script>
 
 
 </body>

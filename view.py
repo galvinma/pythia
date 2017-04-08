@@ -198,6 +198,11 @@ def create_app(app):
 				session.commit()
 				session.flush()
 				session.close()
+				messages = []
+				message_query = session.query(Message).filter_by(conversations_id=final_convo[0])
+				for match in message_query.all():
+					messages.append(match.message)
+				emit("event", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
 	def search():
