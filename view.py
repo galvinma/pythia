@@ -5,6 +5,7 @@ from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
@@ -132,7 +133,6 @@ def create_app(app):
 	@socketio.on('conversation')
 	def show_message(conversation):
 		print 'Received message from the client'
-		print conversation
 		conversation_id = conversation['conversation']
 		print conversation_id 
 		messages = []
@@ -143,27 +143,60 @@ def create_app(app):
 		emit("event", messages, broadcast = True)
 
 	@socketio.on('message')
-	def archive_message(message):
+	def archive_message(to_user,message):
 		# Find id of user sending the message
 			from_user = current_user.id
+			timestamp = str(datetime.datetime.now())
 			print 'from user'
 			print from_user
 			# Find id of user recieving the message. In addition to the message, client will need to return both usernames + conversation id.
-			to_user = []
-			to_user_query = session.query(User).filter_by(username= "to user XXX") # this will need to be sent from the client
+			foreign_user_list = []
+			to_user_query = session.query(User).filter_by(username= to_user['to_user'])
 			for match in to_user_query.all():
-				to_user.append(match.id)
+				foreign_user_list.append(match.id)
 			print 'to user'
-			print to_user[0]
-
-			# Get conversation id from the client.
-
-			# Query for users in the given conversation id
-
+			foreign_user = foreign_user_list[0]
+			print foreign_user
+			# Find conversations the current user is a part of
+			conversation_id = []
+			conversation_id_query = session.query(UserConversations).filter_by(user_id=from_user)
+			for match in conversation_id_query.all():
+				conversation_id.append(match.conversations_id)
+			print 'convesations current user is a part of'
+			print conversation_id
+			# Find conversations shared by both users
+			final_convo = []
+			for convo in conversation_id:
+				match = session.query(UserConversations).filter(UserConversations.user_id==foreign_user, UserConversations.conversations_id==convo)
+				for x in match:
+					final_convo.append(x.conversations_id)
+			print "matching conversation between current and foreign user"
+			print final_convo
 			# Create conversation id if one does not exist
-
-			# Add message to model
-
+			if not final_convo:
+				convo = Conversations(timestamp = timestamp)
+				session.add(convo)
+				session.commit()
+				session.flush()
+				user_convo_1 = UserConversations(user_id = from_user, conversations_id = convo.id)
+				session.add(user_convo_1)
+				session.commit()
+				user_convo_2 = UserConversations(user_id = foreign_user, conversations_id = convo.id)
+				session.add(user_convo_2)
+				session.commit()
+				session.flush()
+				message = Message(user_id=from_user, conversations_id=convo.id, message=message['message'], timestamp=timestamp)
+				session.add(message)
+				session.commit()
+				session.flush()
+				session.close()
+				# Add message to model
+			else:	
+				message = Message(user_id=from_user, conversations_id=final_convo[0], message=message['message'], timestamp=timestamp)
+				session.add(message)
+				session.commit()
+				session.flush()
+				session.close()
 	@app.route('/search')
 	@login_required
 	def search():

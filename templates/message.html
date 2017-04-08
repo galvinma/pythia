@@ -19,7 +19,7 @@
 <script type="text/javascript" charset="utf-8">
     var socket = io.connect();
     socket.on('connect', function() {
-        console.log("Sending a message to the server");
+        console.log("Sending a test message to the server");
     });
 </script>
 
@@ -93,7 +93,7 @@ var button = document.getElementById('sendmessage');
 button.addEventListener('click', function(e) {
   var x = e.target.value
   console.log("User sent a message to the server");
-  socket.emit('message', "here is the message from the client");
+  socket.emit('message', {to_user: "tots"}, {message: "haha it works"});
 
 
 });
