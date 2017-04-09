@@ -24,7 +24,7 @@
 </script>
 
 <script type="text/javascript" charset="utf-8">
-    socket.on('event', function(messages) {
+    socket.on('newmessage', function(messages) {
                 console.log("Client recieved a list of messages from the server");
                 console.log(messages)
                 document.getElementById('chat').innerHTML = "";
@@ -34,6 +34,9 @@
                 }
             });
 </script>
+
+
+
 
  {% for conversation in conversations %}
 <script type="text/javascript" charset="utf-8">

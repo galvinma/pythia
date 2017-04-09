@@ -140,7 +140,7 @@ def create_app(app):
 		for match in message_query.all():
 			messages.append(match.message)
 		print messages
-		emit("event", messages, broadcast = True)
+		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
 	def archive_message(to_user,message):
@@ -174,6 +174,7 @@ def create_app(app):
 			print "matching conversation between current and foreign user"
 			print final_convo
 			# Create conversation id if one does not exist, then add message
+			# Split because finalconvo changes
 			if not final_convo:
 				convo = Conversations(timestamp = timestamp)
 				session.add(convo)
@@ -190,6 +191,7 @@ def create_app(app):
 				session.add(message)
 				session.commit()
 				session.flush()
+				redirect = '/message'
 				session.close()
 			# Add message to db
 			else:	
@@ -202,7 +204,7 @@ def create_app(app):
 				message_query = session.query(Message).filter_by(conversations_id=final_convo[0])
 				for match in message_query.all():
 					messages.append(match.message)
-				emit("event", messages, broadcast = True)
+				emit("newmessage", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
 	def search():
