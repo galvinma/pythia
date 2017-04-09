@@ -173,7 +173,7 @@ def create_app(app):
 					final_convo.append(x.conversations_id)
 			print "matching conversation between current and foreign user"
 			print final_convo
-			# Create conversation id if one does not exist
+			# Create conversation id if one does not exist, then add message
 			if not final_convo:
 				convo = Conversations(timestamp = timestamp)
 				session.add(convo)
@@ -191,7 +191,7 @@ def create_app(app):
 				session.commit()
 				session.flush()
 				session.close()
-				# Add message to model
+			# Add message to db
 			else:	
 				message = Message(user_id=from_user, conversations_id=final_convo[0], message=message['message'], timestamp=timestamp)
 				session.add(message)

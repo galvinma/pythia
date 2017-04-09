@@ -27,7 +27,11 @@
     socket.on('event', function(messages) {
                 console.log("Client recieved a list of messages from the server");
                 console.log(messages)
-                document.getElementById('chat').value = messages;
+                document.getElementById('chat').innerHTML = "";
+                for(var i = 0; i < messages.length; i++) {
+                    var r = document.createTextNode(messages[i] + "\n");
+                    document.getElementById('chat').appendChild(r);
+                }
             });
 </script>
 
@@ -100,14 +104,6 @@ button.addEventListener('click', function() {
 });
 </script>
 
-
-<script type="text/javascript" charset="utf-8">
-    socket.on('usermes', function(messages) {
-                console.log("Client recieved a list of messages from the server");
-                console.log(messages)
-                document.getElementById('chat').value = messages;
-            });
-</script>
 
 
 </body>
