@@ -140,7 +140,7 @@ def create_app(app):
 		message_query = session.query(Message).filter_by(conversations_id=conversation_id)
 		messages = []
 		for match in message_query.all():
-			messages.append({'message':match.message, 'used_id':match.user_id, 'timestamp':match.timestamp})
+			messages.append({'message':match.message, 'user_id':match.user_id, 'timestamp':match.timestamp})
 		#messages = sorted(messages.items(), key=operator.itemgetter(1))
 		print messages
 		emit("newmessage", messages, broadcast = True)

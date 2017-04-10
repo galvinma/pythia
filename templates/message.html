@@ -48,9 +48,8 @@ button.addEventListener('click', function(e) {
     socket.on('newmessage', function(messages) {
                 document.getElementById('chat').innerHTML = "";
                   for (var i in messages) {
-                      var dic = messages[i]
-                      console.log(dic);
-                      var r = document.createTextNode(dic);
+                      var dic = messages[i];
+                      var r = document.createTextNode(dic['timestamp']+"  "+dic['user_id']+"  "+dic['message']+"\n");
                       document.getElementById('chat').appendChild(r);
 
                 }
