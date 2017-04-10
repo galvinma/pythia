@@ -46,12 +46,18 @@ button.addEventListener('click', function(e) {
 
 <script type="text/javascript" charset="utf-8">
     socket.on('newmessage', function(messages) {
-                console.log("Client recieved a list of messages from the server");
-                console.log(messages)
                 document.getElementById('chat').innerHTML = "";
-                for (var key in messages) {
-                    var r = document.createTextNode(messages[key][1] + "   " + messages[key][0] + "\n");
-                    document.getElementById('chat').appendChild(r);
+                var messages = messages;
+                var i, len;
+                  for (i = 0, len = messages.length; i < len; i++) {
+                      console.log(messages[i]);
+                      var values = Object.keys(messages[i]).map(function("user_id")){
+                        return messages[i]["user_id"];
+                        console.log(messages[i][key]);
+                        }
+                      var r = document.createTextNode(messages[i]);
+                      document.getElementById('chat').appendChild(r);
+
                 }
             });
 </script>

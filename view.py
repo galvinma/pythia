@@ -138,10 +138,11 @@ def create_app(app):
 		conversation_id = conversation['conversation']
 		print conversation_id 
 		message_query = session.query(Message).filter_by(conversations_id=conversation_id)
-		messages = {}
+		messages = []
 		for match in message_query.all():
-			messages.update({match.message:[match.user_id,match.timestamp]})
-		messages = sorted(messages.items(), key=operator.itemgetter(1))
+			messages.append({'message':match.message, 'used_id':match.user_id, 'timestamp':match.timestamp})
+		#messages = sorted(messages.items(), key=operator.itemgetter(1))
+		print messages
 		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
