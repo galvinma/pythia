@@ -141,8 +141,6 @@ def create_app(app):
 		messages = []
 		for match in message_query.all():
 			messages.append({'message':match.message, 'user_id':match.user_id, 'timestamp':match.timestamp})
-		#messages = sorted(messages.items(), key=operator.itemgetter(1))
-		print messages
 		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
@@ -203,11 +201,10 @@ def create_app(app):
 				session.commit()
 				session.flush()
 				session.close()
-				messages = {}
+				messages = []
 				message_query = session.query(Message).filter_by(conversations_id=final_convo[0])
 				for match in message_query.all():
-					messages.update({match.message:[match.user_id,match.timestamp]})
-				print messages
+					messages.append({'message':match.message, 'user_id':match.user_id, 'timestamp':match.timestamp})
 				emit("newmessage", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
