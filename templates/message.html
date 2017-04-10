@@ -23,20 +23,6 @@
     });
 </script>
 
-<script type="text/javascript" charset="utf-8">
-    socket.on('newmessage', function(messages) {
-                console.log("Client recieved a list of messages from the server");
-                console.log(messages)
-                document.getElementById('chat').innerHTML = "";
-                for(var i = 0; i < messages.length; i++) {
-                    var r = document.createTextNode(messages[i] + "\n");
-                    document.getElementById('chat').appendChild(r);
-                }
-            });
-</script>
-
-
-
 
  {% for conversation in conversations %}
 <script type="text/javascript" charset="utf-8">
@@ -52,11 +38,31 @@ button.addEventListener('click', function(e) {
   var x = e.target.value
   socket.emit('conversation', {conversation: x });
 
-
 });
 </script>
 {% endfor %}
 
+
+
+<script type="text/javascript" charset="utf-8">
+    socket.on('newmessage', function(messages) {
+                console.log("Client recieved a list of messages from the server");
+                console.log(messages)
+                document.getElementById('chat').innerHTML = "";
+                for (var key in messages) {
+                    var r = document.createTextNode(messages[key][1] + "   " + messages[key][0] + "\n");
+                    document.getElementById('chat').appendChild(r);
+                }
+            });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect();
+    socket.on('newconvo', function() {
+        console.log("reload");
+        location.reload();
+    });
+</script>
 
 
 <div class="row">

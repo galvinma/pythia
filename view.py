@@ -1,5 +1,7 @@
 import os
+import time
 import datetime
+import operator
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField
@@ -135,11 +137,11 @@ def create_app(app):
 		print 'Received message from the client'
 		conversation_id = conversation['conversation']
 		print conversation_id 
-		messages = []
 		message_query = session.query(Message).filter_by(conversations_id=conversation_id)
+		messages = {}
 		for match in message_query.all():
-			messages.append(match.message)
-		print messages
+			messages.update({match.message:[match.user_id,match.timestamp]})
+		messages = sorted(messages.items(), key=operator.itemgetter(1))
 		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
@@ -191,8 +193,8 @@ def create_app(app):
 				session.add(message)
 				session.commit()
 				session.flush()
-				redirect = '/message'
 				session.close()
+				emit("newconvo", broadcast = True)
 			# Add message to db
 			else:	
 				message = Message(user_id=from_user, conversations_id=final_convo[0], message=message['message'], timestamp=timestamp)
@@ -200,10 +202,11 @@ def create_app(app):
 				session.commit()
 				session.flush()
 				session.close()
-				messages = []
+				messages = {}
 				message_query = session.query(Message).filter_by(conversations_id=final_convo[0])
 				for match in message_query.all():
-					messages.append(match.message)
+					messages.update({match.message:[match.user_id,match.timestamp]})
+				print messages
 				emit("newmessage", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
