@@ -47,15 +47,10 @@ button.addEventListener('click', function(e) {
 <script type="text/javascript" charset="utf-8">
     socket.on('newmessage', function(messages) {
                 document.getElementById('chat').innerHTML = "";
-                var messages = messages;
-                var i, len;
-                  for (i = 0, len = messages.length; i < len; i++) {
-                      console.log(messages[i]);
-                      var values = Object.keys(messages[i]).map(function("user_id")){
-                        return messages[i]["user_id"];
-                        console.log(messages[i][key]);
-                        }
-                      var r = document.createTextNode(messages[i]);
+                  for (var i in messages) {
+                      var dic = messages[i]
+                      console.log(dic);
+                      var r = document.createTextNode(dic);
                       document.getElementById('chat').appendChild(r);
 
                 }
