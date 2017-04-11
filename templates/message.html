@@ -24,15 +24,18 @@
     });
 </script>
 
+
 <script type="text/javascript" charset="utf-8">
     socket.on('userconvo', function(convo_user) {
        for (var i in convo_user) {
               var dic = convo_user[i];
               var div = document.createElement('button');
-              div.textContent = dic['user_id'];
+              div.innerText = dic['user_id'];
               div.setAttribute('id', dic['conversation_id']);
               div.setAttribute('value', dic['conversation_id']);
+              div.setAttribute('style', 'width:75px')
               document.body.appendChild(div);
+
 
 
               var button = document.getElementById(dic['conversation_id']);
@@ -44,27 +47,6 @@
           }
         });
 </script>
-
-
- {% for conversation in convo_user %}
-<script type="text/javascript" charset="utf-8">
-  console.log("{{conversation}}");
-  var div = document.createElement('button');
-  div.textContent = "{{conversation}}";
-  div.setAttribute('id', dic['conversation_id']);
-  div.setAttribute('value', dic['conversation_id']);
-  document.body.appendChild(div);
-
-  var button = document.getElementById(dic['conversation_id']);
-  
-  button.addEventListener('click', function(e) {
-    var x = e.target.value
-    socket.emit('conversation', {conversation: x });
-  })
-</script>
-{% endfor %}
-
-
 
 <script type="text/javascript" charset="utf-8">
     socket.on('newmessage', function(messages) {
@@ -88,7 +70,7 @@
 
 
 <div class="row">
- <textarea id="chat" cols="80" rows="20"></textarea><br><br>
+<textarea id="chat" cols="80" rows="20"></textarea>
 </div>
 
 
