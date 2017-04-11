@@ -136,11 +136,12 @@ def create_app(app):
 	def show_message(conversation):
 		print 'Received message from the client'
 		conversation_id = conversation['conversation']
-		print conversation_id 
-		message_query = session.query(Message).filter_by(conversations_id=conversation_id)
+		message_query = session.query(Message).join(User, Message.user_id==User.id).\
+					add_columns(Message.id, Message.user_id, Message.conversations_id, Message.message, Message.timestamp, User.id, User.username).\
+					filter(Message.conversations_id==conversation_id)
 		messages = []
 		for match in message_query.all():
-			messages.append({'message':match.message, 'user_id':match.user_id, 'timestamp':match.timestamp})
+			messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
 		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
@@ -202,9 +203,11 @@ def create_app(app):
 				session.flush()
 				session.close()
 				messages = []
-				message_query = session.query(Message).filter_by(conversations_id=final_convo[0])
+				message_query = session.query(Message).join(User, Message.user_id==User.id).\
+					add_columns(Message.id, Message.user_id, Message.conversations_id, Message.message, Message.timestamp, User.id, User.username).\
+					filter(Message.conversations_id==final_convo[0])
 				for match in message_query.all():
-					messages.append({'message':match.message, 'user_id':match.user_id, 'timestamp':match.timestamp})
+					messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
 				emit("newmessage", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
