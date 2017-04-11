@@ -7,7 +7,7 @@
 
 Use Pip to install requirements.txt
 
-#Example Commands#
+##Example Commands##
 
 * mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
 * pip install -r /path/to/requirements.txt
@@ -22,7 +22,7 @@ Use Pip to install requirements.txt
 * http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
 * https://www.digitalocean.com/community/tutorials/how-to-use-roles-and-manage-grant-permissions-in-postgresql-on-a-vps--2
 
-#Query Postgres#
+###Query Postgres###
 
 GALVIN-# \l
 GALVIN-# \connect pythia                 
@@ -34,27 +34,27 @@ pythia=# SELECT * FROM "SignUp";
  dsnfjkas | matthew   | dfsnjks  | dnjkfsa`dnbkdfs`       | ds nfks
 (2 rows)
 
-#Creating a Table#
+###Creating a Table###
 
 CREATE TABLE "Message"(
    mes_identity TEXT PRIMARY KEY     NOT NULL,
    message           TEXT    NOT NULL
 );
 
-#Inserting data into a table#
+###Inserting data into a table###
 
 INSERT INTO "UserConversations"(user_id,conversations_id)                                                                                                               
 VALUES                                                                                                                                                                    (1,1);
 
 
-#Entering pythia#
+###Entering pythia###
 
 workon pythia
 psql pythia
 \d
 
 
-#Dropping Schema#
+###Dropping Schema###
 
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
