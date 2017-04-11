@@ -146,6 +146,7 @@ def create_app(app):
 			filter(UserConversations.user_id!=current_user.id)
 			for x in other_user_query.all():
 				convo_user.append({"user_id":x.username, "conversation_id":convo, "lastconvo":x.lastconvo})
+		convo_user = sorted(convo_user, key=lambda item:item['lastconvo'])
 		print convo_user
 		emit("userconvo", convo_user, broadcast=True)
 
@@ -159,6 +160,7 @@ def create_app(app):
 		messages = []
 		for match in message_query.all():
 			messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
+		messages = sorted(messages, key=lambda item:item['timestamp'])
 		emit("newmessage", messages, broadcast = True)
 
 	@socketio.on('message')
@@ -229,6 +231,7 @@ def create_app(app):
 					filter(Message.conversations_id==final_convo[0])
 				for match in message_query.all():
 					messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
+				messages = sorted(messages, key=lambda item:item['timestamp'])
 				emit("newmessage", messages, broadcast = True)
 	@app.route('/search')
 	@login_required
