@@ -1,19 +1,19 @@
-## Board ##
+###Board###
 * https://trello.com/b/dOa48WoC/pythia
 
-##Virtual Environments and Requirements.txt##
+###Virtual Environments and Requirements.txt###
 
 * http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
 Use Pip to install requirements.txt
 
-##Example Commands##
+###Example Commands###
 
 * mkvirtualenv pythia -a /home/galvinma/Workspace/pythia/
 * pip install -r /path/to/requirements.txt
 * To install psycog2: sudo apt install libpq-dev python-dev
 
-## Postgres Integration ##
+### Postgres Integration ###
 
 * https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
 * http://newcoder.io/scrape/part-4/  
@@ -22,7 +22,7 @@ Use Pip to install requirements.txt
 * http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
 * https://www.digitalocean.com/community/tutorials/how-to-use-roles-and-manage-grant-permissions-in-postgresql-on-a-vps--2
 
-###Query Postgres###
+####Query Postgres####
 
 GALVIN-# \l
 GALVIN-# \connect pythia                 
@@ -34,27 +34,27 @@ pythia=# SELECT * FROM "SignUp";
  dsnfjkas | matthew   | dfsnjks  | dnjkfsa`dnbkdfs`       | ds nfks
 (2 rows)
 
-###Creating a Table###
+####Creating a Table####
 
 CREATE TABLE "Message"(
    mes_identity TEXT PRIMARY KEY     NOT NULL,
    message           TEXT    NOT NULL
 );
 
-###Inserting data into a table###
+####Inserting data into a table####
 
 INSERT INTO "UserConversations"(user_id,conversations_id)                                                                                                               
 VALUES                                                                                                                                                                    (1,1);
 
 
-###Entering pythia###
+####Entering pythia####
 
 workon pythia
 psql pythia
 \d
 
 
-###Dropping Schema###
+####Dropping Schema####
 
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
@@ -65,7 +65,7 @@ then
 GRANT USAGE ON SCHEMA public TO public;
 GRANT CREATE ON SCHEMA public TO public;
 
-##git##
+###git###
 
 * http://rogerdudler.github.io/git-guide/
 * http://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
