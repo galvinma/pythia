@@ -121,6 +121,13 @@ def create_app(app):
 	@login_required
 	def message():
 		session = Session()
+
+		session.close()			
+		return render_template('message.html')
+
+
+	@socketio.on('get_conversation')
+	def get_conversation():	
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
 
@@ -129,8 +136,17 @@ def create_app(app):
 		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
 		for match in conversation_query.all():
 			conversations.append(match.conversations_id)
-		session.close()			
-		return render_template('message.html', user=user, conversations=conversations)
+		convo_user = []
+		for convo in conversations:
+			other_user_query = 	session.query(UserConversations).\
+			join(User, UserConversations.user_id==User.id).\
+			add_columns(UserConversations.user_id, UserConversations.conversations_id, User.id, User.username).\
+			filter(UserConversations.conversations_id==convo).\
+			filter(UserConversations.user_id!=current_user.id)
+			for x in other_user_query.all():
+				convo_user.append({"user_id":x.username, "conversation_id":convo})
+		print convo_user
+		emit("userconvo", convo_user, broadcast=True)
 
 	@socketio.on('conversation')
 	def show_message(conversation):

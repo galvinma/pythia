@@ -20,25 +20,47 @@
     var socket = io.connect();
     socket.on('connect', function() {
         console.log("Sending a test message to the server");
+        socket.emit('get_conversation')
     });
 </script>
 
-
- {% for conversation in conversations %}
 <script type="text/javascript" charset="utf-8">
-var div = document.createElement('button');
-div.textContent = "{{conversation}}";
-div.setAttribute('id', 'togglebutton-{{conversation}}');
-div.setAttribute('value', "{{conversation}}");
-document.body.appendChild(div);
+    socket.on('userconvo', function(convo_user) {
+       for (var i in convo_user) {
+              var dic = convo_user[i];
+              var div = document.createElement('button');
+              div.textContent = dic['user_id'];
+              div.setAttribute('id', dic['conversation_id']);
+              div.setAttribute('value', dic['conversation_id']);
+              document.body.appendChild(div);
 
-var button = document.getElementById('togglebutton-{{conversation}}');
 
-button.addEventListener('click', function(e) {
-  var x = e.target.value
-  socket.emit('conversation', {conversation: x });
+              var button = document.getElementById(dic['conversation_id']);
+  
+              button.addEventListener('click', function(e) {
+              var x = e.target.value
+              socket.emit('conversation', {conversation: x });
+            });
+          }
+        });
+</script>
 
-});
+
+ {% for conversation in convo_user %}
+<script type="text/javascript" charset="utf-8">
+  console.log("{{conversation}}");
+  var div = document.createElement('button');
+  div.textContent = "{{conversation}}";
+  div.setAttribute('id', dic['conversation_id']);
+  div.setAttribute('value', dic['conversation_id']);
+  document.body.appendChild(div);
+
+  var button = document.getElementById(dic['conversation_id']);
+  
+  button.addEventListener('click', function(e) {
+    var x = e.target.value
+    socket.emit('conversation', {conversation: x });
+  })
 </script>
 {% endfor %}
 
