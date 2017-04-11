@@ -140,11 +140,12 @@ def create_app(app):
 		for convo in conversations:
 			other_user_query = 	session.query(UserConversations).\
 			join(User, UserConversations.user_id==User.id).\
-			add_columns(UserConversations.user_id, UserConversations.conversations_id, User.id, User.username).\
+			join(Conversations, UserConversations.conversations_id==Conversations.id).\
+			add_columns(UserConversations.user_id, UserConversations.conversations_id, User.id, User.username, Conversations.id, Conversations.lastconvo).\
 			filter(UserConversations.conversations_id==convo).\
 			filter(UserConversations.user_id!=current_user.id)
 			for x in other_user_query.all():
-				convo_user.append({"user_id":x.username, "conversation_id":convo})
+				convo_user.append({"user_id":x.username, "conversation_id":convo, "lastconvo":x.lastconvo})
 		print convo_user
 		emit("userconvo", convo_user, broadcast=True)
 
@@ -194,7 +195,7 @@ def create_app(app):
 			# Create conversation id if one does not exist, then add message
 			# Split because finalconvo changes
 			if not final_convo:
-				convo = Conversations(timestamp = timestamp)
+				convo = Conversations(timestamp = timestamp, lastconvo = timestamp)
 				session.add(convo)
 				session.commit()
 				session.flush()
@@ -212,7 +213,11 @@ def create_app(app):
 				session.close()
 				emit("newconvo", broadcast = True)
 			# Add message to db
-			else:	
+			else:
+				lastconvo = Conversations(id=final_convo[0], lastconvo = timestamp)	
+				session.merge(lastconvo)
+				session.commit()
+				session.flush()
 				message = Message(user_id=from_user, conversations_id=final_convo[0], message=message['message'], timestamp=timestamp)
 				session.add(message)
 				session.commit()

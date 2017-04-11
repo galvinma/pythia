@@ -54,6 +54,7 @@ class Conversations(DeclarativeBase):
 
 	id = Column('id', Integer, Sequence('conversations_id'), primary_key=True)
 	timestamp = Column('timestamp', String)
+	lastconvo = Column('lastconvo', String)
 
 	### Relationships ###
 	message = relationship("Message", backref = "Conversations")
