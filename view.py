@@ -120,9 +120,7 @@ def create_app(app):
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
-		session = Session()
-
-		session.close()			
+		session = Session()	
 		return render_template('message.html')
 
 
@@ -146,7 +144,7 @@ def create_app(app):
 			filter(UserConversations.user_id!=current_user.id)
 			for x in other_user_query.all():
 				convo_user.append({"user_id":x.username, "conversation_id":convo, "lastconvo":x.lastconvo})
-		convo_user = sorted(convo_user, key=lambda item:item['lastconvo'])
+		convo_user = sorted(convo_user, key=lambda item:item['lastconvo'], reverse=True)
 		print convo_user
 		emit("userconvo", convo_user, broadcast=True)
 

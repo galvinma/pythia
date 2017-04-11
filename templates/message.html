@@ -27,6 +27,8 @@
 
 <script type="text/javascript" charset="utf-8">
     socket.on('userconvo', function(convo_user) {
+      var convo_user = convo_user;
+      console.log(convo_user);
        for (var i in convo_user) {
               var dic = convo_user[i];
               var div = document.createElement('button');
@@ -37,13 +39,19 @@
               document.body.appendChild(div);
 
 
-
               var button = document.getElementById(dic['conversation_id']);
   
               button.addEventListener('click', function(e) {
               var x = e.target.value
               socket.emit('conversation', {conversation: x });
             });
+
+          }
+        // Checks if user conversations exist. If yes, propogate the chat box with latest conversation.
+        if (0 < convo_user.length) {
+          var z = convo_user[0]["conversation_id"];
+          console.log(z);
+          socket.emit('conversation', {conversation: z });
           }
         });
 </script>
