@@ -17,10 +17,3 @@ class LoginForm(Form):
 	logusername = StringField('Username', validators=[Required()])
 	logpassword = PasswordField('Password', validators=[Required()])
 	logsubmit = SubmitField('Login')
-
-# Allows user to submit new profile information and associated interests.
-class ProfileForm(Form):
-	description = StringField('Description here  ', validators=[Required()])
-	interests = StringField('Interests here:  ')
-	profilepicture = StringField('Profile picture')
-	profilesubmit = SubmitField('Submit')

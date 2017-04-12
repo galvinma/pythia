@@ -18,9 +18,8 @@ from flask_socketio import SocketIO
 from flask_socketio import send, emit
 
 
-from form import RegistrationForm, LoginForm, ProfileForm 
-from model import DeclarativeBase
-from model import User, Message, Conversations, UserConversations, Interests
+from form import RegistrationForm, LoginForm 
+from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests
 
 
 app = Flask(__name__)
@@ -92,36 +91,26 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
-		session = Session()
-		profileform = ProfileForm()
-		# Get data about current user
-		user = current_user.id
-		description_query = session.query(User).filter_by(id=user)
-		descriptions = []
-		# GET request to display user data
-		if request.method == 'GET':
-			for match in description_query.all():
-				descriptions.append(match.description)
-			return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
-		# POST request to update user description 
-		# Add interests in later story
-		if profileform.validate_on_submit():
-			profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
-			session.merge(profile_info)
-			session.commit()
-			session.close()
-			for match in description_query.all():
-				descriptions.append(match.description)
-			return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
-		session.close()
-		return render_template('profile.html', profileform=profileform, descriptions=descriptions, user=current_user.username)
-
+		return render_template('profile.html', user=current_user.username)
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
 	def message():
-		session = Session()	
 		return render_template('message.html')
+
+	@socketio.on('profilestore')
+	def profilestore():
+		user = current_user.id
+		session = Session()
+
+		description_query = session.query(User).filter_by(id=user)
+		descriptions = []
+		for match in description_query.all():
+				descriptions.append(match.description)
+		profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
+		session.merge(profile_info)
+		session.close()
+		emit('profileinfo')
 
 
 	@socketio.on('get_conversation')

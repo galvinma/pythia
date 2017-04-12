@@ -21,35 +21,40 @@
 
 
 
-<div class="row">
-    <div class="col-8-24">
-            <form method="POST">
-            {{ profileform.hidden_tag() }}
-            <p>{{ profileform.description.label }} {{ profileform.description() }} </p>
-            <p>{{ profileform.interests.label }} {{ profileform.interests() }} </p>
-            <p>{{ profileform.profilepicture.label }} {{ profileform.profilepicture() }} </p>
-            {{ profileform.profilesubmit }}
-            </form>
+<script type="text/javascript" charset="utf-8">
 
-    </div>
-    <div class ="offset-4-24"></div>
-  </div>
+var div = document.createElement('label');
+div.textContent = "Description";
+div.setAttribute('style', 'width:50px')
+document.body.appendChild(div);
 
-      <div class="row">
-    <div class="col-8-24">
+document.write("<br>");
+document.write("<br>");
 
-                <p>profile info for {{user}}</p>
-                {% for des in descriptions %}
-                <li>{{des}}</li>
-                {% endfor %}
-    </div>
-    <div class="col-8-24">
-                <p>interests of {{user}}</p>
-                {% for interest in interests %}
-                <li>{{interest}}</li>
-                {% endfor %}
-    </div>
-    </div>
+
+var div = document.createElement('label');
+div.textContent = "Interests";
+div.setAttribute('style', 'width:50px')
+document.body.appendChild(div);
+
+document.write("<br>");
+document.write("<br>");
+
+var div = document.createElement('button');
+div.textContent = "Update";
+div.setAttribute('style', 'width:50px')
+div.setAttribute('id', 'update');
+document.body.appendChild(div);
+
+var button = document.getElementById('update');
+
+button.addEventListener('click', function() {
+  //var x = document.getElementById('touser').value;
+  //var y = document.getElementById('inputmessage').value;
+  socket.emit('profilestore', {to_user: x}, {message: y});
+
+});
+</script>
 
 
 
