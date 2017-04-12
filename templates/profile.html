@@ -20,8 +20,8 @@
 </div>
 
 
-<div class = "row_main"> 
-  <div class = "col_main col-4-24" id = "description">
+<div class = "nav_bar_row_index"> 
+  <div class = "nav_bar_col_index col-4-24" id = "description">
 <script type="text/javascript" charset="utf-8">
 
 var div = document.createElement('label');
@@ -35,8 +35,8 @@ document.write("<br>");
 
 </script>
 </div>
-<div class = "offset-2-24 col_main "></div>
-<div class = "col_main col-4-24" id = "interests">
+<div class = "nav_bar_col_index offset-2-24"></div>
+<div class = "nav_bar_col_index col-4-24" id = "interests">
 <script type="text/javascript" charset="utf-8">
 
 var div = document.createElement('label');
@@ -52,28 +52,37 @@ document.write("<br>");
 </div>
 
 <div class = "row_main"> 
-<div class = "offset-4-24 col_main "></div>
-<div class = "col_main col-2-24" id = "update-row">
+<div class = "col_main col-4-24" id = "update-description">
+<textarea id="description-textarea" cols="30" rows="20" style="border: none"></textarea>
 
+</div>
+
+<div class = "offset-2-24 col_main "></div>
+
+<div class = "col_main col-4-24" id = "update-interests">
+<textarea id="interests-textarea" cols="30" rows="20" style="border: none"></textarea>
+
+
+</div>
+</div>
 <script type="text/javascript" charset="utf-8">
-  var div = document.createElement('button');
-  div.textContent = "Update";
-  div.setAttribute('style', 'width:50px')
-  div.setAttribute('id', 'update');
-  document.getElementById('update-row').appendChild(div);
+//  var div = document.createElement('button');
+//  div.textContent = "Update";
+//  div.setAttribute('style', 'width:50px')
+//  div.setAttribute('id', 'update');
+//  document.getElementById('update-row').appendChild(div);
 
 
-var button = document.getElementById('update');
+//var button = document.getElementById('update');
 
-button.addEventListener('click', function() {
-  var x = document.getElementById('touser').value;
-  var y = document.getElementById('inputmessage').value;
-  socket.emit('profilestore', {to_user: x}, {message: y});
+//button.addEventListener('click', function() {
+ // var x = document.getElementById('touser').value;
+ // var y = document.getElementById('inputmessage').value;
+ // socket.emit('profilestore', {to_user: x}, {message: y});
 
-});
+//});
 </script>
-</div>
-</div>
+
 
 
 </body>
