@@ -20,42 +20,60 @@
 </div>
 
 
-
+<div class = "row_main"> 
+  <div class = "col_main col-4-24" id = "description">
 <script type="text/javascript" charset="utf-8">
 
 var div = document.createElement('label');
 div.textContent = "Description";
 div.setAttribute('style', 'width:50px')
-document.body.appendChild(div);
+var r = document.createTextNode(div.textContent);
+document.getElementById('description').appendChild(r);
 
 document.write("<br>");
 document.write("<br>");
 
+</script>
+</div>
+<div class = "offset-2-24 col_main "></div>
+<div class = "col_main col-4-24" id = "interests">
+<script type="text/javascript" charset="utf-8">
 
 var div = document.createElement('label');
 div.textContent = "Interests";
 div.setAttribute('style', 'width:50px')
-document.body.appendChild(div);
+var r = document.createTextNode(div.textContent);
+document.getElementById('interests').appendChild(r);
 
 document.write("<br>");
 document.write("<br>");
+</script>
+</div>
+</div>
 
-var div = document.createElement('button');
-div.textContent = "Update";
-div.setAttribute('style', 'width:50px')
-div.setAttribute('id', 'update');
-document.body.appendChild(div);
+<div class = "row_main"> 
+<div class = "offset-4-24 col_main "></div>
+<div class = "col_main col-2-24" id = "update-row">
+
+<script type="text/javascript" charset="utf-8">
+  var div = document.createElement('button');
+  div.textContent = "Update";
+  div.setAttribute('style', 'width:50px')
+  div.setAttribute('id', 'update');
+  document.getElementById('update-row').appendChild(div);
+
 
 var button = document.getElementById('update');
 
 button.addEventListener('click', function() {
-  //var x = document.getElementById('touser').value;
-  //var y = document.getElementById('inputmessage').value;
+  var x = document.getElementById('touser').value;
+  var y = document.getElementById('inputmessage').value;
   socket.emit('profilestore', {to_user: x}, {message: y});
 
 });
 </script>
-
+</div>
+</div>
 
 
 </body>
