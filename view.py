@@ -8,6 +8,7 @@ from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
+from sqlalchemy import exist
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
@@ -91,6 +92,9 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
+		# On load, show the user's description and interests
+		# When user adds new info, interests/description field updated via socketIO
+
 		return render_template('profile.html', user=current_user.username)
 
 	@app.route('/message', methods =['GET', 'POST'])
@@ -99,18 +103,60 @@ def create_app(app):
 		return render_template('message.html')
 
 	@socketio.on('profilestore')
+	def profilestore(profilestore):
+		user = current_user.id
+		session = Session()
+		# Commit the new description to the db
+		profile_info = User(id = user, description = profilestore)
+		session.merge(profileinfo)
+		session.commit()
+		session.flush()
+		# Send the new description to the client
+		description_query = session.query(User).filter_by(id=user)
+		descriptions = []
+		for match in description_query.all():
+				descriptions.append(match.description)
+		session.close()
+		emit('profileinfo')
+
+
+	@socketio.on('intereststore')
 	def profilestore():
 		user = current_user.id
 		session = Session()
+		# Add interest to Interests table if it DNE
+		for interest in intereststore:
+			(ret, ), = session.query(exists().where.(Interests.interest==interest)\
+			if ret == False:
+			interests = Interests(interest = interest)
+		# Add user/interests combination to the UserInterests table if DNE
+		# HERE
+		for interest in intereststore:
+			interest_query = session.query(UserInterests).\
+			join(User, UserInterests.user_id==User.id).\
+			join(Interests, UserInterests.interest_id==Interests.id).\
+			add_columns(UserInterests.user_id, UserInterests.interest_id, User.id, User.username, Interests.id, Interests.interest).\
+			filter(UserInterests.interest_id==interest).\
+			filter(UserInterests.user_id!=current_user.id)
+			for x in other_user_query.all():
+				convo_user.append({"user_id":x.username, "conversation_id":convo, "lastconvo":x.lastconvo})
+		convo_user = sorted(convo_user, key=lambda item:item['lastconvo'], reverse=True)
+
+
+
+		profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
+		session.merge(profile_info)
+		# Send new interests string to the client
+
+
 
 		description_query = session.query(User).filter_by(id=user)
 		descriptions = []
 		for match in description_query.all():
 				descriptions.append(match.description)
-		profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
-		session.merge(profile_info)
+		
 		session.close()
-		emit('profileinfo')
+		emit('interestinfo')	
 
 
 	@socketio.on('get_conversation')
@@ -137,6 +183,7 @@ def create_app(app):
 		print convo_user
 		emit("userconvo", convo_user, broadcast=True)
 
+
 	@socketio.on('conversation')
 	def show_message(conversation):
 		print 'Received message from the client'
@@ -149,6 +196,7 @@ def create_app(app):
 			messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
 		messages = sorted(messages, key=lambda item:item['timestamp'])
 		emit("newmessage", messages, broadcast = True)
+
 
 	@socketio.on('message')
 	def archive_message(to_user,message):
@@ -220,6 +268,8 @@ def create_app(app):
 					messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
 				messages = sorted(messages, key=lambda item:item['timestamp'])
 				emit("newmessage", messages, broadcast = True)
+	
+
 	@app.route('/search')
 	@login_required
 	def search():
