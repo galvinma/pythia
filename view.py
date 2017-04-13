@@ -92,9 +92,6 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
-		# On load, show the user's description and interests
-		# When user adds new info, interests/description field updated via socketIO
-
 		return render_template('profile.html', user=current_user.username)
 
 	@app.route('/message', methods =['GET', 'POST'])
@@ -102,20 +99,34 @@ def create_app(app):
 	def message():
 		return render_template('message.html')
 
-	@socketio.on('profilestore')
-	def profilestore(profilestore):
-		user = current_user.id
-		session = Session()
-		# Commit the new description to the db
-		profile_info = User(id = user, description = profilestore)
-		session.merge(profileinfo)
-		session.commit()
-		session.flush()
-		# Send the new description to the client
-		description_query = session.query(User).filter_by(id=user)
+	@socketio.on('get_profileinfo')
+	def get_profileinfo():
+		print 'getting profile info'
+		# Send the description to the client
+		description_query = session.query(User).filter_by(id=current_user.id)
 		descriptions = []
 		for match in description_query.all():
 				descriptions.append(match.description)
+		session.close()
+		emit('profileinfo', descriptions, broadcast=True)
+
+	@socketio.on('profilestore')
+	def profilestore(profilestore):
+		print 'recieved profile info'
+		print profilestore['description']
+		user = current_user.id
+		session = Session()
+		# Commit the new description to the db
+		profile_info = User(id = user, description = profilestore['description'])
+		session.merge(profile_info)
+		session.commit()
+		session.flush()
+		# Send the new description to the client
+		description_query = session.query(User).filter(User.id==current_user.id)
+		descriptions = []
+		for match in description_query.all():
+			descriptions.append(match.description)
+		print descriptions
 		session.close()
 		emit('profileinfo', descriptions, broadcast=True)
 
