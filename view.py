@@ -8,7 +8,7 @@ from wtforms.fields import BooleanField, StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
-from sqlalchemy import exist
+from sqlalchemy import exists
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from sqlalchemy import create_engine
@@ -117,46 +117,40 @@ def create_app(app):
 		for match in description_query.all():
 				descriptions.append(match.description)
 		session.close()
-		emit('profileinfo')
+		emit('profileinfo', descriptions, broadcast=True)
 
 
 	@socketio.on('intereststore')
-	def profilestore():
+	def intereststore(intereststore):
 		user = current_user.id
 		session = Session()
 		# Add interest to Interests table if it DNE
 		for interest in intereststore:
-			(ret, ), = session.query(exists().where.(Interests.interest==interest)\
+			ret = session.query(exists().\
+			filter(Interests.interest==interest))
 			if ret == False:
-			interests = Interests(interest = interest)
+				missing_interests = Interests(interest = interest)
+				session.add(missing_interests)
+				session.commit()
+				session.flush()
 		# Add user/interests combination to the UserInterests table if DNE
-		# HERE
 		for interest in intereststore:
-			interest_query = session.query(UserInterests).\
-			join(User, UserInterests.user_id==User.id).\
-			join(Interests, UserInterests.interest_id==Interests.id).\
-			add_columns(UserInterests.user_id, UserInterests.interest_id, User.id, User.username, Interests.id, Interests.interest).\
-			filter(UserInterests.interest_id==interest).\
-			filter(UserInterests.user_id!=current_user.id)
-			for x in other_user_query.all():
-				convo_user.append({"user_id":x.username, "conversation_id":convo, "lastconvo":x.lastconvo})
-		convo_user = sorted(convo_user, key=lambda item:item['lastconvo'], reverse=True)
-
-
-
-		profile_info = User(id = user, description = profileform.description.data, profilepicture = profileform.profilepicture.data)
-		session.merge(profile_info)
-		# Send new interests string to the client
-
-
-
-		description_query = session.query(User).filter_by(id=user)
-		descriptions = []
-		for match in description_query.all():
-				descriptions.append(match.description)
-		
+			ret = session.query(exists().\
+				filter(UserInterests.interest_id==interest).\
+				filter(UserInterests.user_id==current_user.id))
+			if ret == False:
+				missing_userinterests = UserInterests(user_id=current_user.id, interest_id=interest)
+				session.add(missing_userinterests)
+				session.commit()
+				session.flush()
+		# Return updated interests list for a given user to the client
+		user_interests = []
+		interest_query = session.query(UserInterests).\
+			filter(UserInterests.user_id==current_user.id)
+		for x in interest_query.all():
+			user_interests.append(x)
 		session.close()
-		emit('interestinfo')	
+		emit('interestinfo', user_interests, broadcast=True)	
 
 
 	@socketio.on('get_conversation')

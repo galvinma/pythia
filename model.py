@@ -74,4 +74,4 @@ class UserInterests(DeclarativeBase):
 	__tablename__ = "UserInterests"
 
 	user_id = Column(Integer, ForeignKey('User.id'), primary_key=True)
-	interest = Column(Integer, ForeignKey('Interests.id'), primary_key=True)
+	interest_id = Column(Integer, ForeignKey('Interests.id'), primary_key=True)
