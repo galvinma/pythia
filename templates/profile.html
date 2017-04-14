@@ -96,6 +96,27 @@ socket.on('profileinfo', function(descriptions) {
 
 
 
+<script type="text/javascript" charset="utf-8">
+
+document.getElementById("interests-textarea").addEventListener("change", interests_update);
+
+function interests_update() {
+    var x = document.getElementById("interests-textarea").value;
+    socket.emit('intereststore', {interest: x});
+}
+
+socket.on('interestinfo', function(user_interests) {
+    document.getElementById('interests-textarea').innerHTML = "";
+      for (var i in user_interests) {
+        var r = document.createTextNode(user_interests);
+        document.getElementById('interests-textarea').appendChild(r);
+                }
+            });
+
+</script>
+
+
+
 </body>
 
   {% endblock %}

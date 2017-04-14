@@ -20,7 +20,7 @@ from flask_socketio import send, emit
 
 
 from form import RegistrationForm, LoginForm 
-from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests
+from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests, UserInterests
 
 
 app = Flask(__name__)
@@ -135,21 +135,27 @@ def create_app(app):
 	def intereststore(intereststore):
 		user = current_user.id
 		session = Session()
+		print "Updating interests for current user"
 		# Add interest to Interests table if it DNE
 		for interest in intereststore:
-			ret = session.query(exists().\
-			filter(Interests.interest==interest))
-			if ret == False:
+			ret = session.query(Interests).filter(Interests.interest==interest).exists()
+			print ret
+			if ret == None:
 				missing_interests = Interests(interest = interest)
+				print "The following interest has been added to Interests:"
+				print interest
 				session.add(missing_interests)
 				session.commit()
 				session.flush()
 		# Add user/interests combination to the UserInterests table if DNE
 		for interest in intereststore:
-			ret = session.query(exists().\
+			ret = session.query(UserInterests).\
 				filter(UserInterests.interest_id==interest).\
-				filter(UserInterests.user_id==current_user.id))
-			if ret == False:
+				filter(UserInterests.user_id==current_user.id).\
+				exists()
+			if ret == None:
+				print "The current user added the following interest to their profile:"
+				print interest
 				missing_userinterests = UserInterests(user_id=current_user.id, interest_id=interest)
 				session.add(missing_userinterests)
 				session.commit()
