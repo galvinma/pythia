@@ -138,34 +138,41 @@ def create_app(app):
 		print "Updating interests for current user"
 		# Add interest to Interests table if it DNE
 		for interest in intereststore:
-			ret = session.query(Interests).filter(Interests.interest==interest).exists()
-			print ret
-			if ret == None:
-				missing_interests = Interests(interest = interest)
+			print "Adding the following interest to the table:"
+			print intereststore['interest']
+			ret = session.query(Interests).filter(Interests.interest==intereststore['interest']).all()
+			if not ret:
+				missing_interests = Interests(interest = intereststore['interest'])
 				print "The following interest has been added to Interests:"
-				print interest
+				print intereststore['interest']
 				session.add(missing_interests)
 				session.commit()
 				session.flush()
 		# Add user/interests combination to the UserInterests table if DNE
 		for interest in intereststore:
-			ret = session.query(UserInterests).\
-				filter(UserInterests.interest_id==interest).\
-				filter(UserInterests.user_id==current_user.id).\
-				exists()
-			if ret == None:
-				print "The current user added the following interest to their profile:"
-				print interest
-				missing_userinterests = UserInterests(user_id=current_user.id, interest_id=interest)
-				session.add(missing_userinterests)
-				session.commit()
-				session.flush()
+			print "adding interest to UserInterests table"
+			interest_ids = []
+			screen = session.query(Interests).filter(Interests.interest==intereststore['interest'])
+			for x in screen.all():
+				interest_ids.append(x.id)
+			for y in interest_ids:
+				print y
+				ret = session.query(UserInterests).\
+					filter(UserInterests.interest_id==y).\
+					filter(UserInterests.user_id==current_user.id).all()
+				if not ret:
+					print "The current user added the following interest to their profile:"
+					print intereststore['interest']
+					missing_userinterests = UserInterests(user_id=current_user.id, interest_id=y)
+					session.add(missing_userinterests)
+					session.commit()
+					session.flush()
 		# Return updated interests list for a given user to the client
 		user_interests = []
 		interest_query = session.query(UserInterests).\
 			filter(UserInterests.user_id==current_user.id)
 		for x in interest_query.all():
-			user_interests.append(x)
+			user_interests.append(x.interest_id)
 		session.close()
 		emit('interestinfo', user_interests, broadcast=True)	
 
