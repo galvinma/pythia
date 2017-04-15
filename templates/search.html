@@ -12,41 +12,56 @@
       <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
   </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect();
+    socket.on('connect', function() {
+        console.log("Test connection for search page");
+        socket.emit('get_user_match')
+    });
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+</script>
 
 <script type="text/javascript" charset="utf-8">
-var div = document.createElement('button');
-div.textContent = "People";
-div.Width = "50 px"
+
+var div = document.createElement('label');
+div.textContent = "List of users with whom I have interests in common:";
+div.setAttribute('style', 'width:50px')
 document.body.appendChild(div);
 
-var div = document.createElement('button');
-div.textContent = "Ideas";
-document.body.appendChild(div);
+document.write('<br>');
+document.write('<br>');
+document.write('<br>');
 
-var button = document.getElementById('togglebutton');
+socket.on('match_list', function(matches) {
+  var matches = matches;
+  for (var i in matches) {
+    var username = matches[i]
+    var div = document.createElement('button');
+    div.innerText = username;
+    div.setAttribute('id', username);
+    div.setAttribute('value', username);
+    div.setAttribute('style', 'width:75px')
+    document.body.appendChild(div);
 
-button.addEventListener('click', function(e) {
-  var x = e.target.value
-  socket.emit('conversation', {conversation: x });
-
-
-});
+    var button = document.getElementById(username);  
+    button.addEventListener('click', function(e) {
+      var x = e.target.value
+            
+            });
+          }
+        });
 </script>
 
 
 </body>
 
-
-
-
-</div>
 
 {% endblock %}

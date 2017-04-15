@@ -46,6 +46,9 @@ def create_app(app):
 	def load_user(username):
 		return session.query(User).get(username)
 
+	#
+	### app routes
+	#
 
 	@app.route('/', methods =['GET', 'POST'])
 	def index():
@@ -98,6 +101,40 @@ def create_app(app):
 	@login_required
 	def message():
 		return render_template('message.html')
+
+	@app.route('/search', methods=['GET', 'POST'])
+	@login_required
+	def search():
+		return render_template('search.html')
+
+	@app.route('/logout', methods=['GET', 'POST'])
+	def logout():
+		logout_user()
+		return redirect(url_for('index'))	
+
+
+	#
+	### Socket Routes
+	#
+
+	@socketio.on('get_user_match')
+	def get_user_match():
+		# Find users who have similar interests, based upon interest ID
+		user_interests = []
+		user_interests_query = session.query(UserInterests).\
+			filter(UserInterests.user_id==current_user.id)
+		for interest in user_interests_query.all():
+			user_interests.append(interest.interest_id)
+		matches = []
+		for interest in user_interests:
+			search = session.query(UserInterests).filter(UserInterests.interest_id==interest)
+			print search
+			for x in search.all():
+				if x.user_id != current_user.id: # Need to check if matches contains user_id #and matches.exist(x.user_id)==False:
+					matches.append(x.user_id)
+		print user_interests
+		print matches
+		emit('match_list', matches, broadcast=True)
 
 	@socketio.on('get_profileinfo')
 	def get_profileinfo():
@@ -286,19 +323,7 @@ def create_app(app):
 				for match in message_query.all():
 					messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
 				messages = sorted(messages, key=lambda item:item['timestamp'])
-				emit("newmessage", messages, broadcast = True)
-	
-
-	@app.route('/search')
-	@login_required
-	def search():
-		return render_template('search.html')
-
-
-	@app.route('/logout', methods=['GET', 'POST'])
-	def logout():
-		logout_user()
-		return redirect(url_for('index'))		
+				emit("newmessage", messages, broadcast = True)	
 	
 	return app
 
