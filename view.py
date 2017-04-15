@@ -105,10 +105,20 @@ def create_app(app):
 		# Send the description to the client
 		description_query = session.query(User).filter_by(id=current_user.id)
 		descriptions = []
+		user_interests = []
+		interest_query = session.query(UserInterests).\
+			join(Interests, UserInterests.interest_id==Interests.id).\
+			add_columns(UserInterests.user_id, UserInterests.interest_id, Interests.id, Interests.interest).\
+			filter(UserInterests.user_id==current_user.id)
+		for x in interest_query.all():
+			user_interests.append(x.interest)
+		session.close()
 		for match in description_query.all():
 				descriptions.append(match.description)
 		session.close()
-		emit('profileinfo', descriptions, broadcast=True)
+		emit('load_profiledes', descriptions, broadcast=True)
+		emit('load_profileint', user_interests, broadcast=True)
+
 
 	@socketio.on('profilestore')
 	def profilestore(profilestore):
@@ -121,38 +131,35 @@ def create_app(app):
 		session.merge(profile_info)
 		session.commit()
 		session.flush()
-		# Send the new description to the client
-		description_query = session.query(User).filter(User.id==current_user.id)
-		descriptions = []
-		for match in description_query.all():
-			descriptions.append(match.description)
-		print descriptions
 		session.close()
-		emit('profileinfo', descriptions, broadcast=True)
+		emit('updates', broadcast=True)
 
 
 	@socketio.on('intereststore')
 	def intereststore(intereststore):
 		user = current_user.id
 		session = Session()
+		interests = []
+		for x in intereststore['interest']:
+			interests.append(x)
 		print "Updating interests for current user"
 		# Add interest to Interests table if it DNE
-		for interest in intereststore:
+		for interest in interests:
 			print "Adding the following interest to the table:"
-			print intereststore['interest']
-			ret = session.query(Interests).filter(Interests.interest==intereststore['interest']).all()
+			print interest
+			ret = session.query(Interests).filter(Interests.interest==interest).all()
 			if not ret:
-				missing_interests = Interests(interest = intereststore['interest'])
+				missing_interests = Interests(interest = interest)
 				print "The following interest has been added to Interests:"
-				print intereststore['interest']
+				print interest
 				session.add(missing_interests)
 				session.commit()
 				session.flush()
 		# Add user/interests combination to the UserInterests table if DNE
-		for interest in intereststore:
+		for interest in interests:
 			print "adding interest to UserInterests table"
 			interest_ids = []
-			screen = session.query(Interests).filter(Interests.interest==intereststore['interest'])
+			screen = session.query(Interests).filter(Interests.interest==interest)
 			for x in screen.all():
 				interest_ids.append(x.id)
 			for y in interest_ids:
@@ -167,14 +174,8 @@ def create_app(app):
 					session.add(missing_userinterests)
 					session.commit()
 					session.flush()
-		# Return updated interests list for a given user to the client
-		user_interests = []
-		interest_query = session.query(UserInterests).\
-			filter(UserInterests.user_id==current_user.id)
-		for x in interest_query.all():
-			user_interests.append(x.interest_id)
 		session.close()
-		emit('interestinfo', user_interests, broadcast=True)	
+		emit('updates', broadcast=True)	
 
 
 	@socketio.on('get_conversation')

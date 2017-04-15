@@ -3,6 +3,7 @@
 
 <body>
 
+
 <div class = "nav_bar_row_index"> 
       <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
       <div class = "nav_bar_col_index offset-19-24"></div>
@@ -72,19 +73,43 @@ document.write("<br>");
         console.log("Sending a test message to the server");
         socket.emit('get_profileinfo')
     });
+
 </script>
 
 
 <script type="text/javascript" charset="utf-8">
 
-document.getElementById("description-textarea").addEventListener("change", description_update);
+// update user description, then refresh on change
 
+document.getElementById("description-textarea").addEventListener("change", description_update);
 function description_update() {
     var x = document.getElementById("description-textarea").value;
     socket.emit('profilestore', {description: x});
 }
 
-socket.on('profileinfo', function(descriptions) {
+</script>
+
+
+<script type="text/javascript" charset="utf-8">
+
+// update user interests, then refresh list
+
+document.getElementById("interests-textarea").addEventListener("change", interests_update);
+function interests_update() {
+    var w = document.getElementById("interests-textarea").value;
+    var x = w.split(" ");
+    socket.emit('intereststore', {interest: x});
+}
+
+</script>
+
+
+<script type="text/javascript" charset="utf-8">
+
+// display user info on page load
+// trace to emit statement, 'get_profileinfo'
+
+socket.on('load_profiledes', function(descriptions) {
     document.getElementById('description-textarea').innerHTML = "";
       for (var i in descriptions) {
         var r = document.createTextNode(descriptions);
@@ -92,29 +117,15 @@ socket.on('profileinfo', function(descriptions) {
                 }
             });
 
-</script>
-
-
-
-<script type="text/javascript" charset="utf-8">
-
-document.getElementById("interests-textarea").addEventListener("change", interests_update);
-
-function interests_update() {
-    var x = document.getElementById("interests-textarea").value;
-    socket.emit('intereststore', {interest: x});
-}
-
-socket.on('interestinfo', function(user_interests) {
+socket.on('load_profileint', function(user_interests) {
     document.getElementById('interests-textarea').innerHTML = "";
       for (var i in user_interests) {
-        var r = document.createTextNode(user_interests);
+        var r = document.createTextNode(user_interests[i]+" ");
         document.getElementById('interests-textarea').appendChild(r);
-                }
+              }
             });
 
 </script>
-
 
 
 </body>
