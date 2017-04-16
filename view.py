@@ -127,11 +127,14 @@ def create_app(app):
 			user_interests.append(interest.interest_id)
 		matches = []
 		for interest in user_interests:
-			search = session.query(UserInterests).filter(UserInterests.interest_id==interest)
+			search = session.query(UserInterests).\
+			join(User, UserInterests.user_id==User.id).\
+			add_columns(UserInterests.user_id, UserInterests.interest_id, User.id, User.username).\
+			filter(UserInterests.interest_id==interest)
 			print search
 			for x in search.all():
-				if x.user_id != current_user.id: # Need to check if matches contains user_id #and matches.exist(x.user_id)==False:
-					matches.append(x.user_id)
+				if x.user_id != current_user.id and x.username not in matches:
+					matches.append(x.username)
 		print user_interests
 		print matches
 		emit('match_list', matches, broadcast=True)
