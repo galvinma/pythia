@@ -61,7 +61,7 @@ def create_app(app):
 			if username and username.password == loginform.logpassword.data:
 				login_user(username)
 				session.close()
-				return redirect(url_for('profile', loginform=loginform))
+				return redirect(url_for('profile', username= current_user.username, loginform=loginform))
 			else:
 				flash('Username or Password Incorrect')
 		session.close()
@@ -80,21 +80,13 @@ def create_app(app):
 			username = session.query(User).filter_by(username = signupform.username.data).first()
 			login_user(username)
 			session.close()
-			return redirect(url_for('profile', signupform=signupform))
-
-		elif loginform.validate_on_submit():
-			username = session.query(User).filter_by(username = loginform.logusername.data).first()
-			if username and username.password == loginform.logpassword.data:
-				login_user(username)
-				return redirect(url_for('profile', loginform=loginform))
-			else:
-				flash('Username or Password Incorrect')
+			return redirect(url_for('profile', username= current_user.username, signupform=signupform))
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
-	@app.route('/profile', methods =['GET', 'POST'])	
+	@app.route('/profile/<username>', methods =['GET', 'POST'])	
 	@login_required
-	def profile():
+	def profile(username):
 		return render_template('profile.html', user=current_user.username)
 
 	@app.route('/message', methods =['GET', 'POST'])
