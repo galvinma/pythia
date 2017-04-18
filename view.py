@@ -86,7 +86,7 @@ def create_app(app):
 	@app.route('/profile/<username>', methods =['GET', 'POST'])	
 	@login_required
 	def read_profile(username):
-		return render_template('read_profile.html', username=username)
+		return render_template('viewprofile.html', username=username)
 
 
 	# Allows for user conversations
