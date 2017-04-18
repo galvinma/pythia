@@ -84,10 +84,16 @@ def create_app(app):
 		session.close()
 		return render_template('signup.html', signupform=signupform, loginform=loginform)	
 
+	@app.route('/profile', methods =['GET', 'POST'])	
+	@login_required
+	def profile():
+		return render_template('profile.html', username=current_user.username)
+
+
 	@app.route('/profile/<username>', methods =['GET', 'POST'])	
 	@login_required
-	def profile(username):
-		return render_template('profile.html', user=current_user.username)
+	def read_profile(username):
+		return render_template('read_profile.html', username=username)
 
 	@app.route('/message', methods =['GET', 'POST'])
 	@login_required
@@ -109,6 +115,7 @@ def create_app(app):
 	### Socket Routes
 	#
 
+	# Returns a list of Users the current user has at least interetst in common
 	@socketio.on('get_user_match')
 	def get_user_match():
 		# Find users who have similar interests, based upon interest ID
@@ -131,17 +138,23 @@ def create_app(app):
 		print matches
 		emit('match_list', matches, broadcast=True)
 
+	# Returns profile information 
 	@socketio.on('get_profileinfo')
-	def get_profileinfo():
-		print 'getting profile info'
+	def get_profileinfo(get_profileinfo):
+		username =  get_profileinfo['user']
+		user_id_list = []
+		user_id = session.query(User).filter_by(username=username)
+		for match in user_id.all():
+			user_id_list.append(match.id)
+		user_id = user_id_list[0]
 		# Send the description to the client
-		description_query = session.query(User).filter_by(id=current_user.id)
+		description_query = session.query(User).filter_by(id=user_id)
 		descriptions = []
 		user_interests = []
 		interest_query = session.query(UserInterests).\
 			join(Interests, UserInterests.interest_id==Interests.id).\
 			add_columns(UserInterests.user_id, UserInterests.interest_id, Interests.id, Interests.interest).\
-			filter(UserInterests.user_id==current_user.id)
+			filter(UserInterests.user_id==user_id)
 		for x in interest_query.all():
 			user_interests.append(x.interest)
 		session.close()
@@ -151,7 +164,7 @@ def create_app(app):
 		emit('load_profiledes', descriptions, broadcast=True)
 		emit('load_profileint', user_interests, broadcast=True)
 
-
+	# Update a profile description
 	@socketio.on('profilestore')
 	def profilestore(profilestore):
 		print 'recieved profile info'
@@ -166,7 +179,7 @@ def create_app(app):
 		session.close()
 		emit('updates', broadcast=True)
 
-
+	# Update a user interest
 	@socketio.on('intereststore')
 	def intereststore(intereststore):
 		user = current_user.id
@@ -209,13 +222,11 @@ def create_app(app):
 		session.close()
 		emit('updates', broadcast=True)	
 
-
+	# Get all conversations for a given user
 	@socketio.on('get_conversation')
 	def get_conversation():	
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
-
-		# Show all conversations for a given user
 		conversations = []
 		conversation_query = session.query(UserConversations).filter_by(user_id=current_user.id)
 		for match in conversation_query.all():
@@ -235,6 +246,7 @@ def create_app(app):
 		emit("userconvo", convo_user, broadcast=True)
 
 
+	# Show all messages in a given conversation
 	@socketio.on('conversation')
 	def show_message(conversation):
 		print 'Received message from the client'
@@ -249,6 +261,7 @@ def create_app(app):
 		emit("newmessage", messages, broadcast = True)
 
 
+	# Add a message to the db, then update client conversation
 	@socketio.on('message')
 	def archive_message(to_user,message):
 		# Find id of user sending the message

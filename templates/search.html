@@ -50,7 +50,7 @@ socket.on('match_list', function(matches) {
     var button = document.getElementById(username);  
     button.addEventListener('click', function(e) {
       var x = e.target.value
-      window.location.href = "/profile";
+      window.location.href = "/profile/"+x;
             
             });
           }

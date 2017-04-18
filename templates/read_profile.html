@@ -79,33 +79,6 @@ document.write("<br>");
 
 <script type="text/javascript" charset="utf-8">
 
-// update user description, then refresh on change
-
-document.getElementById("description-textarea").addEventListener("change", description_update);
-function description_update() {
-    var x = document.getElementById("description-textarea").value;
-    socket.emit('profilestore', {description: x});
-}
-
-</script>
-
-
-<script type="text/javascript" charset="utf-8">
-
-// update user interests, then refresh list
-
-document.getElementById("interests-textarea").addEventListener("change", interests_update);
-function interests_update() {
-    var w = document.getElementById("interests-textarea").value;
-    var x = w.split(" ");
-    socket.emit('intereststore', {interest: x});
-}
-
-</script>
-
-
-<script type="text/javascript" charset="utf-8">
-
 // display user info on page load
 // trace to emit statement, 'get_profileinfo'
 
