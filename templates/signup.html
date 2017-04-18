@@ -1,28 +1,18 @@
 {% extends "layout.html" %}
 {% block content %} 
 
-
- 
-
 <div class="row">
     <div class="col-8-24">
-            <form method="POST">
-            {{ signupform.hidden_tag() }}
-            <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
-            <p>{{ signupform.lastname.label }} {{ signupform.lastname() }} </p>
-            <p>{{ signupform.username.label }} {{ signupform.username() }} </p>
-            <p>{{ signupform.email.label }} {{ signupform.email() }} </p>
-            <p>{{ signupform.password.label }} {{ signupform.password() }} </p>
-            {{ signupform.submit }}
-            </form>
+        <form method="POST">
+        {{ signupform.hidden_tag() }}
+        <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
+        <p>{{ signupform.lastname.label }} {{ signupform.lastname() }} </p>
+        <p>{{ signupform.username.label }} {{ signupform.username() }} </p>
+        <p>{{ signupform.email.label }} {{ signupform.email() }} </p>
+        <p>{{ signupform.password.label }} {{ signupform.password() }} </p>
+        {{ signupform.submit }}
+        </form>
     </div>
-    <div class ="offset-4-24"></div>
-
-
-    
 </div>
-
-
-
 
 {% endblock %}

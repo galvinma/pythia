@@ -3,131 +3,107 @@
 
 <body>
 
-
 <div class = "nav_bar_row_index"> 
-      <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
-      <div class = "nav_bar_col_index offset-19-24"></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
-  </div>
-
-
-<div class = "row_main"> 
-      <div class = "offset-1-24 col_main "></div>
-      <div class = "col_main col-4-24"><div class = "profile_picture"></div></div>
-      <div class = "offset-19-24 col_main "></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
+  <div class = "nav_bar_col_index offset-19-24"></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
 </div>
 
+<div class = "row_main"> 
+  <div class = "offset-1-24 col_main "></div>
+  <div class = "col_main col-4-24"><div class = "profile_picture"></div></div>
+  <div class = "offset-19-24 col_main "></div>
+</div>
 
 <div class = "nav_bar_row_index"> 
   <div class = "nav_bar_col_index col-4-24" id = "description">
-<script type="text/javascript" charset="utf-8">
+    <script type="text/javascript" charset="utf-8">
+      var div = document.createElement('label');
+      div.textContent = "Description";
+      div.setAttribute('style', 'width:50px')
+      var r = document.createTextNode(div.textContent);
+      document.getElementById('description').appendChild(r);
 
-var div = document.createElement('label');
-div.textContent = "Description";
-div.setAttribute('style', 'width:50px')
-var r = document.createTextNode(div.textContent);
-document.getElementById('description').appendChild(r);
+      document.write("<br>");
+      document.write("<br>");
+    </script>
+  </div>
 
-document.write("<br>");
-document.write("<br>");
+  <div class = "nav_bar_col_index offset-2-24"></div>
+  <div class = "nav_bar_col_index col-4-24" id = "interests">
+    <script type="text/javascript" charset="utf-8">
+      var div = document.createElement('label');
+      div.textContent = "Interests";
+      div.setAttribute('style', 'width:50px')
+      var r = document.createTextNode(div.textContent);
+      document.getElementById('interests').appendChild(r);
 
-</script>
-</div>
-<div class = "nav_bar_col_index offset-2-24"></div>
-<div class = "nav_bar_col_index col-4-24" id = "interests">
-<script type="text/javascript" charset="utf-8">
-
-var div = document.createElement('label');
-div.textContent = "Interests";
-div.setAttribute('style', 'width:50px')
-var r = document.createTextNode(div.textContent);
-document.getElementById('interests').appendChild(r);
-
-document.write("<br>");
-document.write("<br>");
-</script>
-</div>
+      document.write("<br>");
+      document.write("<br>");
+    </script>
+  </div>
 </div>
 
 <div class = "row_main"> 
-<div class = "col_main col-4-24" id = "update-description">
-<textarea id="description-textarea" cols="30" rows="20" style="border: none"></textarea>
+  <div class = "col_main col-4-24" id = "update-description">
+    <textarea id="description-textarea" cols="30" rows="20" style="border: none"></textarea>
+  </div>
 
-</div>
+  <div class = "offset-2-24 col_main "></div>
 
-<div class = "offset-2-24 col_main "></div>
-
-<div class = "col_main col-4-24" id = "update-interests">
-<textarea id="interests-textarea" cols="30" rows="20" style="border: none"></textarea>
-
-</div>
+  <div class = "col_main col-4-24" id = "update-interests">
+    <textarea id="interests-textarea" cols="30" rows="20" style="border: none"></textarea>
+  </div>
 </div>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-    var socket = io.connect();
-    socket.on('connect', function() {
-        console.log("Sending a test message to the server");
-        socket.emit('get_profileinfo', {user: "{{username}}"});
-    });
 
+<script type="text/javascript" charset="utf-8">
+  var socket = io.connect();
+  socket.on('connect', function() {
+    console.log("Sending a test message to the server");
+    socket.emit('get_profileinfo', {user: "{{username}}"});
+  });
 </script>
 
-
 <script type="text/javascript" charset="utf-8">
-
-// update user description, then refresh on change
-
-document.getElementById("description-textarea").addEventListener("change", description_update);
-function description_update() {
+  document.getElementById("description-textarea").addEventListener("change", description_update);
+  function description_update() {
     var x = document.getElementById("description-textarea").value;
     socket.emit('profilestore', {description: x});
-}
-
+  }
 </script>
 
-
 <script type="text/javascript" charset="utf-8">
-
-// update user interests, then refresh list
-
-document.getElementById("interests-textarea").addEventListener("change", interests_update);
-function interests_update() {
+  document.getElementById("interests-textarea").addEventListener("change", interests_update);
+  function interests_update() {
     var w = document.getElementById("interests-textarea").value;
     var x = w.split(" ");
     socket.emit('intereststore', {interest: x});
-}
-
+  }
 </script>
-
 
 <script type="text/javascript" charset="utf-8">
+  socket.on('load_profiledes', function(descriptions) {
+  document.getElementById('description-textarea').innerHTML = "";
+    for (var i in descriptions) {
+      var r = document.createTextNode(descriptions);
+      document.getElementById('description-textarea').appendChild(r);
+    }
+  });
 
-// display user info on page load
-// trace to emit statement, 'get_profileinfo'
-
-socket.on('load_profiledes', function(descriptions) {
-    document.getElementById('description-textarea').innerHTML = "";
-      for (var i in descriptions) {
-        var r = document.createTextNode(descriptions);
-        document.getElementById('description-textarea').appendChild(r);
-                }
-            });
-
-socket.on('load_profileint', function(user_interests) {
-    document.getElementById('interests-textarea').innerHTML = "";
-      for (var i in user_interests) {
-        var r = document.createTextNode(user_interests[i]+" ");
-        document.getElementById('interests-textarea').appendChild(r);
-              }
-            });
-
+  socket.on('load_profileint', function(user_interests) {
+  document.getElementById('interests-textarea').innerHTML = "";
+    for (var i in user_interests) {
+      var r = document.createTextNode(user_interests[i]+" ");
+      document.getElementById('interests-textarea').appendChild(r);
+    }
+  });
 </script>
-
 
 </body>
 
-  {% endblock %}
+{% endblock %}

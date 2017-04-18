@@ -1,131 +1,117 @@
 {% extends "layout.html" %}
 {% block content %}   
 
-
 <body>
 
 <div class = "nav_bar_row_index"> 
-      <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
-      <div class = "nav_bar_col_index offset-19-24"></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
-      <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
-  </div>
-
-
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-    var socket = io.connect();
-    socket.on('connect', function() {
-        console.log("Sending a test message to the server");
-        socket.emit('get_conversation')
-    });
-</script>
-
-
-<script type="text/javascript" charset="utf-8">
-    socket.on('userconvo', function(convo_user) {
-      var convo_user = convo_user;
-      console.log(convo_user);
-       for (var i in convo_user) {
-              var dic = convo_user[i];
-              var div = document.createElement('button');
-              div.innerText = dic['user_id'];
-              div.setAttribute('id', dic['conversation_id']);
-              div.setAttribute('value', dic['conversation_id']);
-              div.setAttribute('style', 'width:75px')
-              document.body.appendChild(div);
-
-
-              var button = document.getElementById(dic['conversation_id']);
-  
-              button.addEventListener('click', function(e) {
-              var x = e.target.value
-              socket.emit('conversation', {conversation: x });
-            });
-
-          }
-        // Checks if user conversations exist. If yes, propogate the chat box with latest conversation.
-        if (0 < convo_user.length) {
-          var z = convo_user[0]["conversation_id"];
-          console.log(z);
-          socket.emit('conversation', {conversation: z });
-          }
-        });
-</script>
-
-<script type="text/javascript" charset="utf-8">
-    socket.on('newmessage', function(messages) {
-                document.getElementById('chat').innerHTML = "";
-                  for (var i in messages) {
-                      var dic = messages[i];
-                      var r = document.createTextNode(dic['timestamp']+"  "+dic['user_id']+"  "+dic['message']+"\n");
-                      document.getElementById('chat').appendChild(r);
-
-                }
-            });
-</script>
-
-<script type="text/javascript" charset="utf-8">
-    var socket = io.connect();
-    socket.on('newconvo', function() {
-        console.log("reload");
-        location.reload();
-    });
-</script>
-
-
-<div class="row">
-<textarea id="chat" cols="80" rows="20"></textarea>
+  <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
+  <div class = "nav_bar_col_index offset-19-24"></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
+  <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
 </div>
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 <script type="text/javascript" charset="utf-8">
-
-var div = document.createElement('textarea');
-div.setAttribute('id', 'inputmessage');
-div.setAttribute('cols', '80');
-div.setAttribute('rows', '5');
-document.body.appendChild(div);
-
-document.write("<br>");
-
-var div = document.createElement('label');
-div.textContent = "Send message to:";
-div.setAttribute('style', 'width:50px')
-document.body.appendChild(div);
-
-document.write("\n\n\n\n\n");
-
-var div = document.createElement('textarea');
-div.setAttribute('id', 'touser');
-div.setAttribute('cols', '20');
-div.setAttribute('rows', '1');
-document.body.appendChild(div);
-
-document.write("\n\n\n\n\n");
-
-var div = document.createElement('button');
-div.textContent = "Send";
-div.setAttribute('style', 'width:50px')
-div.setAttribute('id', 'sendmessage');
-document.body.appendChild(div);
-
-var button = document.getElementById('sendmessage');
-
-button.addEventListener('click', function() {
-  var x = document.getElementById('touser').value;
-  var y = document.getElementById('inputmessage').value;
-  console.log("User sent a message to the server");
-  socket.emit('message', {to_user: x}, {message: y});
-
-
-});
+  var socket = io.connect();
+  socket.on('connect', function() {
+    console.log("Sending a test message to the server");
+    socket.emit('get_conversation')
+  });
 </script>
 
+<script type="text/javascript" charset="utf-8">
+  socket.on('userconvo', function(convo_user) {
+    var convo_user = convo_user;
+    console.log(convo_user);
+      for (var i in convo_user) {
+        var dic = convo_user[i];
+        var div = document.createElement('button');
+        div.innerText = dic['user_id'];
+        div.setAttribute('id', dic['conversation_id']);
+        div.setAttribute('value', dic['conversation_id']);
+        div.setAttribute('style', 'width:75px')
+        document.body.appendChild(div);
 
+        var button = document.getElementById(dic['conversation_id']);
+        button.addEventListener('click', function(e) {
+          var x = e.target.value
+          socket.emit('conversation', {conversation: x });
+        });
+      }
+        // Checks if user conversations exist. If yes, propogate the chat box with latest conversation.
+      if (0 < convo_user.length) {
+        var z = convo_user[0]["conversation_id"];
+        console.log(z);
+        socket.emit('conversation', {conversation: z });
+      }
+    });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  socket.on('newmessage', function(messages) {
+    document.getElementById('chat').innerHTML = "";
+      for (var i in messages) {
+        var dic = messages[i];
+        var r = document.createTextNode(dic['timestamp']+"  "+dic['user_id']+"  "+dic['message']+"\n");
+        document.getElementById('chat').appendChild(r);
+      }
+    });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var socket = io.connect();
+  socket.on('newconvo', function() {
+    console.log("reload");
+    location.reload();
+    });
+</script>
+
+<div class="row">
+  <textarea id="chat" cols="80" rows="20"></textarea>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  var div = document.createElement('textarea');
+  div.setAttribute('id', 'inputmessage');
+  div.setAttribute('cols', '80');
+  div.setAttribute('rows', '5');
+  document.body.appendChild(div);
+
+  document.write("<br>");
+
+  var div = document.createElement('label');
+  div.textContent = "Send message to:";
+  div.setAttribute('style', 'width:50px')
+  document.body.appendChild(div);
+
+  document.write("\n\n\n\n\n");
+
+  var div = document.createElement('textarea');
+  div.setAttribute('id', 'touser');
+  div.setAttribute('cols', '20');
+  div.setAttribute('rows', '1');
+  document.body.appendChild(div);
+
+  document.write("\n\n\n\n\n");
+
+  var div = document.createElement('button');
+  div.textContent = "Send";
+  div.setAttribute('style', 'width:50px')
+  div.setAttribute('id', 'sendmessage');
+  document.body.appendChild(div);
+
+  var button = document.getElementById('sendmessage');
+
+  button.addEventListener('click', function() {
+    var x = document.getElementById('touser').value;
+    var y = document.getElementById('inputmessage').value;
+    console.log("User sent a message to the server");
+    socket.emit('message', {to_user: x}, {message: y});
+  });
+</script>
 
 </body>
 

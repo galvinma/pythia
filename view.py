@@ -10,7 +10,6 @@ from flask_socketio import SocketIO, send, emit
 # Imports from py files
 from form import RegistrationForm, LoginForm 
 from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests, UserInterests
-import socketroutes
 
 # App settings and SocketIO connection
 app = Flask(__name__)
@@ -193,7 +192,7 @@ def create_app(app):
 
 	# Return a list of conversations for a given user
 	# List is sorted by timestamp
-	@socketio.on('get_conversation', namespace='/message')
+	@socketio.on('get_conversation')
 	def get_conversation():	
 		session = Session()
 		user = current_user.username
@@ -223,7 +222,7 @@ def create_app(app):
 		emit("userconvo", convo_user, broadcast=True)
 
 	# Show all messages in a given conversation
-	@socketio.on('conversation', namespace='/message')
+	@socketio.on('conversation')
 	def show_message(conversation):
 		conversation_id = conversation['conversation']
 		message_query = session.query(Message).join(User, Message.user_id==User.id).\
@@ -237,7 +236,7 @@ def create_app(app):
 		emit("newmessage", messages, broadcast = True)
 
 	# Add a message to the db, then update client conversation
-	@socketio.on('message', namespace='/message')
+	@socketio.on('message')
 	def archive_message(to_user,message):
 		# Find id of user sending the message
 		from_user = current_user.id
