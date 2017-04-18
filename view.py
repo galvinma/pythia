@@ -1,35 +1,24 @@
-import os
-import time
+# Global imports
 import datetime
-import operator
+#import operator
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_wtf import Form
-from wtforms.fields import BooleanField, StringField, SubmitField
-from wtforms.validators import Required
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import *
-from sqlalchemy import exists
+#from sqlalchemy import *
+from sqlalchemy import exists, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.sql.expression import func, select
-from sqlalchemy import literal_column, or_
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from flask_socketio import SocketIO
-from flask_socketio import send, emit
+from flask_socketio import SocketIO, send, emit
 
-
+# Imports from py files
 from form import RegistrationForm, LoginForm 
 from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests, UserInterests
 
-
+# App settings
 app = Flask(__name__)
 "app.config.from_object(os.environ['APP_SETTINGS'])"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
 socketio = SocketIO(app)
-
-
 
 def create_app(app):
 

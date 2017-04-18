@@ -44,7 +44,7 @@ CREATE TABLE "Message"(
 ####Inserting data into a table####
 
 INSERT INTO "UserConversations"(user_id,conversations_id)                                                                                                               
-VALUES                                                                                                                                                                    (1,1);
+VALUES (1,1);
 
 
 ####Entering pythia####
