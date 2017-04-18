@@ -1,9 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
-from wtforms.fields import BooleanField, StringField, SubmitField, TextField, PasswordField, FieldList
+from wtforms.fields import BooleanField, StringField, SubmitField, TextField, PasswordField
 from wtforms.validators import Required
-from flask_login import LoginManager, UserMixin, login_user, login_required
-
 
 class RegistrationForm(Form):
 	username = StringField('Username', validators=[Required()])
