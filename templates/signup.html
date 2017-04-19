@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
 {% block content %} 
 
-<div class="row">
-    <div class="col-8-24">
+<body>
+
+<div class="row_main">
+    <div class = "col_main col-6-24">
         <form method="POST">
         {{ signupform.hidden_tag() }}
         <p>{{ signupform.firstname.label }} {{ signupform.firstname() }} </p>
@@ -14,5 +16,24 @@
         </form>
     </div>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+    var div = document.createElement('button');
+    div.innerText = "Return to index";
+    div.setAttribute('id', 'return');
+    div.setAttribute('style', 'width:75px');
+    document.body.appendChild(div);
+
+    var button = document.getElementById("return");
+    button.addEventListener('click', function() {
+        window.location = "/";
+    });
+</script>
+
+</div>
+
+
+
+</body>
 
 {% endblock %}
