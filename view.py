@@ -6,6 +6,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send, emit
+from flask_bootstrap import Bootstrap
+
 
 # Imports from py files
 from form import RegistrationForm, LoginForm 
@@ -13,6 +15,7 @@ from model import DeclarativeBase, User, Message, Conversations, UserConversatio
 
 # App settings and SocketIO connection
 app = Flask(__name__)
+Bootstrap(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
 socketio = SocketIO(app)

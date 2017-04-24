@@ -1,11 +1,9 @@
 {% extends "layout.html" %}
 {% block content %} 
 
-<body class = "back_img">
+<body>
 
-<div class = "nav_bar_row_index">
-  <div class = "nav_bar_col_index offset-16-24"></div>
-  <div class = "nav_bar_col_index col-8-24 nav_bar_form" >
+<div>
     <form method="POST">
     {{ loginform.hidden_tag() }}
     {{ loginform.logusername(class="loginform") }}
@@ -23,8 +21,8 @@
       {% endif %}
     {% endwith %}
     </form>
-  </div>
 </div>
+
 
 <script type="text/javascript" charset="utf-8">
 //  var div = document.createElement('button');
@@ -38,6 +36,15 @@
 //    window.location = "/signup";
 //  }); 
 </script>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">The Pythia Project</a>
+    </div>
+  </div>
+</nav>
 
 </body>
 
