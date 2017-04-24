@@ -11,6 +11,6 @@ class RegistrationForm(Form):
 	submit = SubmitField('Submit')
 
 class LoginForm(Form):
-	logusername = StringField('Username', validators=[Required()])
-	logpassword = PasswordField('Password', validators=[Required()])
-	logsubmit = SubmitField('Login')
+	lg_username = StringField('Username', validators=[Required()])
+	lg_password = PasswordField('Password', validators=[Required()])
+	submit = SubmitField('Login')

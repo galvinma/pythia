@@ -35,7 +35,6 @@ def create_app(app):
 	def load_user(username):
 		return session.query(User).get(username)
 
-
 	# Routes
 	#
 	# Index. Allows user to login to app. Page should link to the Sign-up page
@@ -47,8 +46,8 @@ def create_app(app):
 		# Check if user exists, validate credentials, then  redirect to Profile page. 
 		# If validaiton fails, flash incorrect username or password
 		if loginform.validate_on_submit():
-			username = session.query(User).filter_by(username = loginform.logusername.data).first()
-			if username and username.password == loginform.logpassword.data:
+			username = session.query(User).filter_by(username = loginform.lg_username.data).first()
+			if username and username.password == loginform.lg_password.data:
 				login_user(username)
 				session.close()
 				return redirect(url_for('profile', username= current_user.username, loginform=loginform))
