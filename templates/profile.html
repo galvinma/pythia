@@ -1,16 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}   
 
-<body>
 
-<div class = "nav_bar_row_index"> 
-  <div class = "nav_bar_col_index col-1-24"><a href="/"><span class = "icon-th-list"></span></a></div>
-  <div class = "nav_bar_col_index offset-19-24"></div>
-  <div class = "nav_bar_col_index col-1-24"><a href="/profile"><span class = "icon-user"></span></a></div>
-  <div class = "nav_bar_col_index col-1-24"><a href="/message"><span class = "icon-mail"></span></a></div>
-  <div class = "nav_bar_col_index col-1-24"><a href="/search"><span class = "icon-search"></span></a></div>
-  <div class = "nav_bar_col_index col-1-24"><a href="/logout"><span class = "icon-logout"></span></a></div>
-</div>
+<script>
+// update navbar button to active state
+$(document).ready(function () {
+  $(".nav li").removeClass("active");//this will remove the active class from  
+
+  $('#profile').addClass('active');
+});
+</script>
 
 <div class = "row_main"> 
   <div class = "offset-1-24 col_main "></div>
@@ -104,6 +103,5 @@
   });
 </script>
 
-</body>
 
 {% endblock %}
