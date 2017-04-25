@@ -1,0 +1,15 @@
+html,
+body {
+  background: #efefef;
+  padding: 10px;
+  font-family: 'Work Sans', sans-serif;
+}
+/*=== 2. Anchor Link ===*/
+a {
+  color: #aaaaaa;
+  transition: all ease-in-out 200ms;
+}
+a:hover {
+  color: #333333;
+  text-decoration: none;
+}

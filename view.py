@@ -62,7 +62,6 @@ def create_app(app):
 	def signup():
 		session = Session()
 		signupform = RegistrationForm()
-		loginform = LoginForm()
 		# Register user if user data is unique / valid
 		# If registration is successful, redirect to the profile page
 		if signupform.validate_on_submit():
@@ -74,7 +73,7 @@ def create_app(app):
 			session.close()
 			return redirect(url_for('profile', username= current_user.username, signupform=signupform))
 		session.close()
-		return render_template('signup.html', signupform=signupform, loginform=loginform)	
+		return render_template('signup.html', signupform=signupform)	
 
 
 	# Profile page for the current user
