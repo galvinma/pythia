@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}   
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
 
 <script>
 // update navbar button to active state
@@ -11,54 +13,39 @@ $(document).ready(function () {
 });
 </script>
 
-<div class = "row_main"> 
-  <div class = "offset-1-24 col_main "></div>
-  <div class = "col_main col-4-24"><div class = "profile_picture"></div></div>
-  <div class = "offset-19-24 col_main "></div>
+<div class="row">
+    <div class="col-md-4">
+         <div class="panel">
+             <div class="panel-heading"></div>
+                <div class="panel-body">
+                  <p>Profile Picture</p>
+                </div>
+          </div>
+    </div>
+    <div class="col-md-4">
+         <div class="panel">
+             <div class="panel-heading"></div>
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" rows="5" id = "description" style="border: none"></textarea>
+                  </div>
+                </div>
+          </div>
+    </div>
+    <div class="col-md-4">
+         <div class="panel">
+             <div class="panel-heading"></div>
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label for="intetests">Interests:</label>
+                    <textarea class="form-control" rows="5" id = "interests" style="border: none"></textarea>
+                  </div>
+                </div>
+          </div>
+    </div>
 </div>
 
-<div class = "nav_bar_row_index"> 
-  <div class = "nav_bar_col_index col-4-24" id = "description">
-    <script type="text/javascript" charset="utf-8">
-      var div = document.createElement('label');
-      div.textContent = "Description";
-      div.setAttribute('style', 'width:50px')
-      var r = document.createTextNode(div.textContent);
-      document.getElementById('description').appendChild(r);
-
-      document.write("<br>");
-      document.write("<br>");
-    </script>
-  </div>
-
-  <div class = "nav_bar_col_index offset-2-24"></div>
-  <div class = "nav_bar_col_index col-4-24" id = "interests">
-    <script type="text/javascript" charset="utf-8">
-      var div = document.createElement('label');
-      div.textContent = "Interests";
-      div.setAttribute('style', 'width:50px')
-      var r = document.createTextNode(div.textContent);
-      document.getElementById('interests').appendChild(r);
-
-      document.write("<br>");
-      document.write("<br>");
-    </script>
-  </div>
-</div>
-
-<div class = "row_main"> 
-  <div class = "col_main col-4-24" id = "update-description">
-    <textarea id="description-textarea" cols="30" rows="20" style="border: none"></textarea>
-  </div>
-
-  <div class = "offset-2-24 col_main "></div>
-
-  <div class = "col_main col-4-24" id = "update-interests">
-    <textarea id="interests-textarea" cols="30" rows="20" style="border: none"></textarea>
-  </div>
-</div>
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 <script type="text/javascript" charset="utf-8">
   var socket = io.connect();
@@ -69,17 +56,17 @@ $(document).ready(function () {
 </script>
 
 <script type="text/javascript" charset="utf-8">
-  document.getElementById("description-textarea").addEventListener("change", description_update);
+  document.getElementById("description").addEventListener("change", description_update);
   function description_update() {
-    var x = document.getElementById("description-textarea").value;
+    var x = document.getElementById("description").value;
     socket.emit('profilestore', {description: x});
   }
 </script>
 
 <script type="text/javascript" charset="utf-8">
-  document.getElementById("interests-textarea").addEventListener("change", interests_update);
+  document.getElementById("interests").addEventListener("change", interests_update);
   function interests_update() {
-    var w = document.getElementById("interests-textarea").value;
+    var w = document.getElementById("interests").value;
     var x = w.split(" ");
     socket.emit('intereststore', {interest: x});
   }
@@ -87,18 +74,18 @@ $(document).ready(function () {
 
 <script type="text/javascript" charset="utf-8">
   socket.on('load_profiledes', function(descriptions) {
-  document.getElementById('description-textarea').innerHTML = "";
+  document.getElementById('description').innerHTML = "";
     for (var i in descriptions) {
       var r = document.createTextNode(descriptions);
-      document.getElementById('description-textarea').appendChild(r);
+      document.getElementById('description').appendChild(r);
     }
   });
 
   socket.on('load_profileint', function(user_interests) {
-  document.getElementById('interests-textarea').innerHTML = "";
+  document.getElementById('interests').innerHTML = "";
     for (var i in user_interests) {
       var r = document.createTextNode(user_interests[i]+" ");
-      document.getElementById('interests-textarea').appendChild(r);
+      document.getElementById('interests').appendChild(r);
     }
   });
 </script>
