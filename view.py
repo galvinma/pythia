@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send, emit
 from flask_bootstrap import Bootstrap
-from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 
 # Imports from py files
@@ -20,8 +19,6 @@ Bootstrap(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
 socketio = SocketIO(app)
-images = UploadSet('images', IMAGES)
-configure_uploads(app, images)
 
 def create_app(app):
 	# Initialize db connection
@@ -83,15 +80,16 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
+		session = Session()
 		profileform = ProfileForm()
 		if request.method == "POST":
 			if profileform.validate_on_submit():
-				profilepic = 
-				filename = images.save(request.files['recipe_image'])
-           		url = images.url(filename)
-            	new_recipe = Recipe(form.recipe_title.data, form.recipe_description.data, current_user.id, True, filename, url)
-            	db.session.add(new_recipe)
-		return render_template('profile.html', username=current_user.username)
+				pic = profileform.profilepicture.data.read()
+				profilepic = User(id = current_user.id, profilepicture = image)
+				session.merge(profilepic)
+				session.commit()
+				session.close()
+		return render_template('profile.html', profileform=profileform, username=current_user.username)
 
 
 	# Read only profile page for search feature
@@ -133,9 +131,11 @@ def create_app(app):
 		for match in user_id.all():
 			user_id_list.append(match.id)
 		user_id = user_id_list[0]
-		# Send a User's description and interest list to the client
+		# Send a User's description, interests, and profilepicture to the client
 		descriptions = []
 		user_interests = []
+		# Get profile picture
+		profilepicquery = session.query(User).filter_by(id=user_id)
 		# Search the User table for a user's description
 		description_query = session.query(User).filter_by(id=user_id)
 		# Search the UserInterests table for interests tied to the supplied user
@@ -150,6 +150,7 @@ def create_app(app):
 		# Append user description to description list
 		for match in description_query.all():
 				descriptions.append(match.description)
+		# profile pic
 		# Close session
 		session.close()
 		# Emit the description list + interest list to the client

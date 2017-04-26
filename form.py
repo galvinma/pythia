@@ -2,7 +2,6 @@ from flask_wtf import Form
 from wtforms.fields import BooleanField, StringField, SubmitField, TextField, PasswordField
 from wtforms.validators import Required
 from flask_wtf.file import FileField, FileRequired
-from project import images
 
 class RegistrationForm(Form):
 	username = StringField('Username', validators=[Required()])
