@@ -16,6 +16,6 @@ a:hover {
 
 textarea {
     resize: none;
-    overflow: hidden;
+    overflow: auto;
     outline: none;
 }

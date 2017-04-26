@@ -19,7 +19,11 @@ $(document).ready(function () {
              <div class="panel-heading"></div>
                 <div class="panel-body">
                   <p>Profile Picture</p>
-                </div>
+                  <form action = "http://localhost:5000/uploader" method = "POST" enctype = "multipart/form-data">
+                  <input type = "file" name = "file" />
+                  <input type = "submit"/>
+                  </form>
+               </div>
           </div>
     </div>
     <div class="col-md-4">
@@ -28,7 +32,7 @@ $(document).ready(function () {
                 <div class="panel-body">
                   <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea class="form-control" rows="5" id = "description" style="border: none"></textarea>
+                    <textarea class="form-control" rows="10" id = "description" style="border: none"></textarea>
                   </div>
                 </div>
           </div>
@@ -39,7 +43,7 @@ $(document).ready(function () {
                 <div class="panel-body">
                   <div class="form-group">
                     <label for="intetests">Interests:</label>
-                    <textarea class="form-control" rows="5" id = "interests" style="border: none"></textarea>
+                    <textarea class="form-control" rows="10" id = "interests" style="border: none"></textarea>
                   </div>
                 </div>
           </div>

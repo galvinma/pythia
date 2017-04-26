@@ -18,7 +18,8 @@ class User(DeclarativeBase, UserMixin):
 	email = Column('email', String)
 	password = Column('password', String)
 	description = Column('description', String)
-	profilepicture = Column('profilepicture', String)
+	profilepicture_filename = Column("profilepicture_filename", String)
+    profilepicture_filename_url = Column("profilepicture_filename_url", String)
 
 	# Relationships
 	message = relationship("Message", backref = "User")

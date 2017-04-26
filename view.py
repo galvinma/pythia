@@ -7,10 +7,11 @@ from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send, emit
 from flask_bootstrap import Bootstrap
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 
 # Imports from py files
-from form import RegistrationForm, LoginForm 
+from form import RegistrationForm, LoginForm, ProfileForm
 from model import DeclarativeBase, User, Message, Conversations, UserConversations, Interests, UserInterests
 
 # App settings and SocketIO connection
@@ -19,6 +20,8 @@ Bootstrap(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
 socketio = SocketIO(app)
+images = UploadSet('images', IMAGES)
+configure_uploads(app, images)
 
 def create_app(app):
 	# Initialize db connection
@@ -80,6 +83,14 @@ def create_app(app):
 	@app.route('/profile', methods =['GET', 'POST'])	
 	@login_required
 	def profile():
+		profileform = ProfileForm()
+		if request.method == "POST":
+			if profileform.validate_on_submit():
+				profilepic = 
+				filename = images.save(request.files['recipe_image'])
+           		url = images.url(filename)
+            	new_recipe = Recipe(form.recipe_title.data, form.recipe_description.data, current_user.id, True, filename, url)
+            	db.session.add(new_recipe)
 		return render_template('profile.html', username=current_user.username)
 
 
