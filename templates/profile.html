@@ -19,6 +19,7 @@ $(document).ready(function () {
              <div class="panel-heading"></div>
                 <div class="panel-body">
                   <p>Profile Picture</p>
+                  <img id = "profilepic" class="profilepic">
                   <form method = "POST" enctype = "multipart/form-data">
                     {{ profileform.hidden_tag() }}
                     {{  profileform.profilepicture}}
@@ -93,6 +94,17 @@ $(document).ready(function () {
       document.getElementById('interests').appendChild(r);
     }
   });
+
+  socket.on('load_profilepic', function(profile_pic) {
+    for (var i in profile_pic) {
+      document.getElementById('profilepic').setAttribute('src', profile_pic[i]);
+    }
+  });
+
+
+
+
+
 </script>
 
 

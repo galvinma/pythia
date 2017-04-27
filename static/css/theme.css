@@ -19,3 +19,10 @@ textarea {
     overflow: auto;
     outline: none;
 }
+
+img.profilepic {
+    resize: none;
+    width: 200px;
+    overflow: auto;
+    outline: none;
+}

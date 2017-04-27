@@ -89,6 +89,10 @@ def create_app(app):
 		if profileform.validate_on_submit():
 			filename = secure_filename(profileform.profilepicture.data.filename)
 			profileform.profilepicture.data.save(os.path.join('static/images/', filename))
+			profilepic = User(id=current_user.id, profilepicture='static/images/'+filename)
+			session.merge(profilepic)
+			session.commit()
+			session.close()
 			return render_template('profile.html', username= current_user.username, profileform=profileform)
 		return render_template('profile.html', username= current_user.username, profileform=profileform)
 
@@ -134,6 +138,7 @@ def create_app(app):
 		# Send a User's description, interests, and profilepicture to the client
 		descriptions = []
 		user_interests = []
+		profile_pic = []
 		# Get profile picture
 		profilepicquery = session.query(User).filter_by(id=user_id)
 		# Search the User table for a user's description
@@ -146,16 +151,20 @@ def create_app(app):
 		# Append interests to the interest list
 		for interest in interest_query.all():
 			user_interests.append(interest.interest)
-		session.close()
 		# Append user description to description list
 		for match in description_query.all():
-				descriptions.append(match.description)
+			descriptions.append(match.description)
 		# profile pic
+		for match in profilepicquery.all():
+			to_string = str(match.profilepicture)
+			profile_pic.append(to_string)
+		print profile_pic[0]
 		# Close session
 		session.close()
 		# Emit the description list + interest list to the client
 		emit('load_profiledes', descriptions, broadcast=True)
 		emit('load_profileint', user_interests, broadcast=True)
+		emit('load_profilepic', profile_pic, broadcast=True)
 
 	# Update a profile description
 	@socketio.on('profilestore')
