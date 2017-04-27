@@ -1,4 +1,5 @@
 # Global imports
+import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from sqlalchemy import exists, create_engine
@@ -7,6 +8,7 @@ from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send, emit
 from flask_bootstrap import Bootstrap
+from werkzeug.utils import secure_filename
 
 
 # Imports from py files
@@ -19,6 +21,8 @@ Bootstrap(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/pythia'
 app.secret_key = "6234sdfadfs78dfasd9021dsffds3baf57849sdfssdd057348905fds79340"
 socketio = SocketIO(app)
+UPLOAD_FOLDER = '/static/images/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def create_app(app):
 	# Initialize db connection
@@ -82,15 +86,11 @@ def create_app(app):
 	def profile():
 		session = Session()
 		profileform = ProfileForm()
-		if request.method == "POST":
-			if profileform.validate_on_submit():
-				pic = profileform.profilepicture.data.read()
-				profilepic = User(id = current_user.id, profilepicture = image)
-				session.merge(profilepic)
-				session.commit()
-				session.close()
-		return render_template('profile.html', profileform=profileform, username=current_user.username)
-
+		if profileform.validate_on_submit():
+			filename = secure_filename(profileform.profilepicture.data.filename)
+			profileform.profilepicture.data.save(os.path.join('static/images/', filename))
+			return render_template('profile.html', username= current_user.username, profileform=profileform)
+		return render_template('profile.html', username= current_user.username, profileform=profileform)
 
 	# Read only profile page for search feature
 	@app.route('/profile/<username>', methods =['GET', 'POST'])	
