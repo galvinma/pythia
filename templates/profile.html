@@ -18,13 +18,16 @@ $(document).ready(function () {
          <div class="panel">
              <div class="panel-heading"></div>
                 <div class="panel-body">
-                  <p>Profile Picture</p>
                   <img id = "profilepic" class="profilepic">
-                  <form method = "POST" enctype = "multipart/form-data">
+                  <div class="panel-body">
+                    <form method = "POST" enctype = "multipart/form-data">
                     {{ profileform.hidden_tag() }}
-                    {{  profileform.profilepicture}}
-                  <input type = "submit" />
-                  </form>
+                    <label class="btn btn-default btn-file">
+                    <input type="file" style="display:none;" onchange="this.form.submit()" id="profilepicture" name="profilepicture">
+                    Upload Profile Picture
+                    </label>
+                   </form>
+                  </div>
                </div>
           </div>
     </div>
@@ -100,9 +103,6 @@ $(document).ready(function () {
       document.getElementById('profilepic').setAttribute('src', profile_pic[i]);
     }
   });
-
-
-
 
 
 </script>

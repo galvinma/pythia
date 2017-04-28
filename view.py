@@ -69,7 +69,12 @@ def create_app(app):
 		# Register user if user data is unique / valid
 		# If registration is successful, redirect to the profile page
 		if signupform.validate_on_submit():
-			user = User(firstname = signupform.firstname.data, lastname = signupform.lastname.data, username = signupform.username.data, email = signupform.email.data, password = signupform.password.data)
+			user = User(firstname = signupform.firstname.data, 
+				lastname = signupform.lastname.data, 
+				username = signupform.username.data, 
+				email = signupform.email.data, 
+				password = signupform.password.data, 
+				profilepicture = 'static/images/profile_default.png')
 			session.add(user)
 			session.commit()
 			username = session.query(User).filter_by(username = signupform.username.data).first()
