@@ -27,3 +27,7 @@ img.profilepic {
     overflow: auto;
     outline: none;
 }
+
+textarea.readonly {
+  background-color: white;
+}
