@@ -10,20 +10,21 @@ $(document).ready(function () {
 });
 </script>
 
+
 <div class="row">
   <div class="col-md-8">
       <div class="panel">
         <div class="panel-heading">
           <div class="panel-body">
-            <div class="col-md-2" id="conversation_list"></div>
+            <div class="col-md-2 btn-group" id="conversation_list"></div>
               <div class="col-md-10"> 
-                <textarea id="chat" class="form-control" rows="20" style="border: none" readonly></textarea>
+                <textarea id="chat" class="form-control" rows="20" readonly="readonly"></textarea>
               </div>              
           </div>
           <div class="panel-body">
             <div class="col-md-2" id="offset"></div>
             <div class="col-md-10">
-              <textarea id="inputmessage" class="form-control" rows="4" style="border: none" placeholder="Type a message..."></textarea>
+              <textarea id="inputmessage" class="form-control" rows="4" placeholder="Press enter to send a message..."></textarea>
             </div>
           </div>
         </div>
@@ -31,21 +32,6 @@ $(document).ready(function () {
   </div>
 </div>
 
-<label for="description">Send message to:</label>
-
-<div class="row">
-    <div class="col-md-6">
-         <div class="panel">
-             <div class="panel-heading">
-                <div class="panel-body">
-                  <textarea id="touser" class="form-control" rows="1" style="border: none"></textarea>
-                </div>
-              </div>  
-          </div>
-    </div>
-</div>
-
- <button type="button" id= "sendmessage" class="btn btn-default">Send</button>
 
 
 
@@ -62,7 +48,6 @@ $(document).ready(function () {
 <script type="text/javascript" charset="utf-8">
   socket.on('userconvo', function(convo_user) {
     var convo_user = convo_user;
-    console.log(convo_user);
       for (var i in convo_user) {
         var dic = convo_user[i];
         var div = document.createElement('button');
@@ -74,6 +59,9 @@ $(document).ready(function () {
         document.body.appendChild(div);
         document.getElementById('conversation_list').appendChild(div);
         
+        $('#conversation_list button').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+        });
 
         var button = document.getElementById(dic['conversation_id']);
         button.addEventListener('click', function(e) {
@@ -81,10 +69,12 @@ $(document).ready(function () {
           socket.emit('conversation', {conversation: x });
         });
       }
+
+      $( "button" ).first().addClass('active').siblings().removeClass('active');
+
         // Checks if user conversations exist. If yes, propogate the chat box with latest conversation.
       if (0 < convo_user.length) {
         var z = convo_user[0]["conversation_id"];
-        console.log(z);
         socket.emit('conversation', {conversation: z });
       }
     });
@@ -112,14 +102,18 @@ $(document).ready(function () {
 
 
 <script type="text/javascript" charset="utf-8">
-  var button = document.getElementById('sendmessage');
 
-  button.addEventListener('click', function() {
-    var x = document.getElementById('touser').value;
-    var y = document.getElementById('inputmessage').value;
-    console.log("User sent a message to the server");
-    socket.emit('message', {to_user: x}, {message: y});
-  });
+  document.getElementById('inputmessage').onkeypress = function(e){
+    if (!e) e = window.event;
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == '13'){
+      var x = document.getElementsByClassName('btn btn-default active')[0].textContent;
+      var y = document.getElementById('inputmessage').value;
+      console.log("User sent a message to the server");
+      socket.emit('message', {to_user: x}, {message: y});
+      return false;
+    }
+  }
 </script>
 
 

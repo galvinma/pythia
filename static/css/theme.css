@@ -28,6 +28,6 @@ img.profilepic {
     outline: none;
 }
 
-textarea.readonly {
-  background-color: white;
+textarea:read-only:not([read-only="false"]) { 
+    background-color:white; 
 }

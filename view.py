@@ -273,6 +273,7 @@ def create_app(app):
 		to_user_query = session.query(User).filter_by(username= to_user['to_user'])
 		for match in to_user_query.all():
 			foreign_user_list.append(match.id)
+		print foreign_user_list
 		foreign_user = foreign_user_list[0]
 		# Find conversations the current user is a part of
 		conversation_id = []
