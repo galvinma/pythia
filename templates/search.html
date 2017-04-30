@@ -11,6 +11,21 @@ $(document).ready(function () {
 });
 </script>
 
+
+
+<div class="row">
+  <div class="col-md-2">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="panel-body">
+            <p align="center"><strong>Interest Match</strong></p>
+            <div class="col-md-12 btn-group" id="matches"></div>
+          </div>
+        </div>
+      </div>  
+  </div>
+</div>
+
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
 <script type="text/javascript" charset="utf-8">
@@ -22,25 +37,18 @@ $(document).ready(function () {
 </script>
 
 <script type="text/javascript" charset="utf-8">
-var div = document.createElement('label');
-div.textContent = "List of users with whom I have interests in common:";
-div.setAttribute('style', 'width:50px')
-document.body.appendChild(div);
-
-document.write('<br>');
-document.write('<br>');
-document.write('<br>');
-
 socket.on('match_list', function(matches) {
   var matches = matches;
   for (var i in matches) {
     var username = matches[i]
     var div = document.createElement('button');
     div.innerText = username;
+    div.setAttribute('type', 'button');
+    div.setAttribute('class', 'btn btn-default btn-block');
     div.setAttribute('id', username);
     div.setAttribute('value', username);
-    div.setAttribute('style', 'width:75px');
-    document.body.appendChild(div);
+    document.getElementById('matches').appendChild(div);
+
 
     var button = document.getElementById(username);  
     button.addEventListener('click', function(e) {
