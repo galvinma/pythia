@@ -16,7 +16,10 @@ $(document).ready(function () {
       <div class="panel">
         <div class="panel-heading">
           <div class="panel-body">
-            <div class="col-md-2 btn-group" id="conversation_list"></div>
+            <div class="col-md-2 btn-group" id="conversation_list">
+            <textarea id="plusconvo" class="form-control" rows="1" placeholder="Add username"></textarea>
+            <br>
+            </div>
               <div class="col-md-10"> 
                 <textarea id="chat" class="form-control" rows="20" readonly="readonly"></textarea>
               </div>              
@@ -48,6 +51,7 @@ $(document).ready(function () {
 <script type="text/javascript" charset="utf-8">
   socket.on('userconvo', function(convo_user) {
     var convo_user = convo_user;
+
       for (var i in convo_user) {
         var dic = convo_user[i];
         var div = document.createElement('button');
@@ -111,10 +115,32 @@ $(document).ready(function () {
       var y = document.getElementById('inputmessage').value;
       console.log("User sent a message to the server");
       socket.emit('message', {to_user: x}, {message: y});
+      document.getElementById('inputmessage').value = "";
       return false;
     }
   }
 </script>
+
+
+<script type="text/javascript" charset="utf-8">
+
+  document.getElementById('plusconvo').onkeypress = function(e){
+    if (!e) e = window.event;
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == '13'){
+        var div = document.createElement('button');
+        div.innerText = plusconvo.value;
+        div.setAttribute('type', 'button');
+        $('#conversation_list button').removeClass('active');
+        div.setAttribute('class', 'btn btn-default btn-block active');
+        document.body.appendChild(div);
+        document.getElementById('conversation_list').appendChild(div);
+      return false;
+    }
+  }
+</script>
+
+
 
 
 {% endblock %}

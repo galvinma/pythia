@@ -31,3 +31,7 @@ img.profilepic {
 textarea:read-only:not([read-only="false"]) { 
     background-color:white; 
 }
+
+textarea.plusconvo {
+  style="min-width: 100%;
+}
