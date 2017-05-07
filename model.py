@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy import create_engine
 from sqlalchemy import UniqueConstraint, Table, Column, Integer, ForeignKey
+from sqlalchemy_utils import PasswordType
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required
@@ -16,7 +17,10 @@ class User(DeclarativeBase, UserMixin):
 	firstname = Column('firstname', String)
 	lastname = Column('lastname', String)
 	email = Column('email', String)
-	password = Column('password', String)
+	password = Column('password', PasswordType(
+        schemes=[
+            'pbkdf2_sha512',
+        ]))
 	description = Column('description', String)
 	profilepicture = Column('profilepicture', String)
 
