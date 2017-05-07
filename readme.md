@@ -2,7 +2,7 @@
 
 Creating meaningful connections by leveraging big data.
 
-This repo is a proof of concept for The Pythia project. Pythia allows individuals to search for users based upon common interests. Current app leverages Flask, WebSockets, SQLalchemy, and Bootstrap.
+This repo is a proof of concept for The Pythia Project. Pythia allows individuals to search for users based upon common interests. Current app leverages Flask, WebSockets, SQLalchemy, and Bootstrap.
 
 ## Installation
 
