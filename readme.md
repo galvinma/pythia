@@ -15,17 +15,21 @@ Use Pip to install requirements.txt
 
 ### Postgres Integration ###
 
-* https://www.cyberciti.biz/faq/howto-add-postgresql-user-account/
-* http://newcoder.io/scrape/part-4/  
-* http://www.blog.pythonlibrary.org/2012/07/01/a-simple-sqlalchemy-0-7-0-8-tutorial/ 
-* http://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
-* http://www.blog.pythonlibrary.org/2010/02/03/another-step-by-step-sqlalchemy-tutorial-part-2-of-2/
-* https://www.digitalocean.com/community/tutorials/how-to-use-roles-and-manage-grant-permissions-in-postgresql-on-a-vps--2
+Fresh install for a linux user. local_user_account is the current OS account.
+* sudo apt-get install postgresql postgresql-contrib 
+* sudo service postgresql start
+* sudo su - postgres 
+* psql
+* CREATE USER admin;
+* ALTER ROLE admin WITH PASSWORD 'password';
+* ALTER ROLE admin WITH SUPERUSER;
+* CREATE USER local_user_account;
+* ALTER ROLE local_user_account WITH PASSWORD 'password';
+* ALTER ROLE local_user_account WITH SUPERUSER;
+* CREATE DATABASE pythia;
 
 ####Query Postgres####
 
-GALVIN-# \l
-GALVIN-# \connect pythia                 
 pythia=# SELECT * FROM "SignUp";
 
  username | firstname | lastname |         email          | password 
@@ -52,7 +56,6 @@ VALUES (1,1);
 workon pythia
 psql pythia
 \d
-
 
 ####Dropping Schema####
 
