@@ -1,8 +1,6 @@
 (function($) {
     "use strict";
 	
-	// Options for Message
-	//----------------------------------------------
   var options = {
 	  'btn-success': '<i class="fa fa-check"></i>',
 	  'btn-error': '<i class="fa fa-remove"></i>',
@@ -10,21 +8,12 @@
 	  'msg-error': 'Wrong login credentials!',
   };
 
-	// Login Form
-	//----------------------------------------------
-	// Validation
-
-  
-	// Form Submission
   $("#login-form").submit(function() {
   	remove_loading($(this));
 		
   $("#register-form").submit(function() {
     remove_loading($(this));
 
-
-	// Loading
-	//----------------------------------------------
   function remove_loading($form)
   {
   	$form.find('[type=submit]').removeClass('error success');
@@ -49,4 +38,6 @@
   }
 
 	
-})(jQuery);
+    });
+  });
+})

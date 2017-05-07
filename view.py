@@ -163,7 +163,6 @@ def create_app(app):
 		for match in profilepicquery.all():
 			to_string = str(match.profilepicture)
 			profile_pic.append(to_string)
-		print profile_pic[0]
 		# Close session
 		session.close()
 		# Emit the description list + interest list to the client
@@ -273,7 +272,6 @@ def create_app(app):
 		to_user_query = session.query(User).filter_by(username= to_user['to_user'])
 		for match in to_user_query.all():
 			foreign_user_list.append(match.id)
-		print foreign_user_list
 		foreign_user = foreign_user_list[0]
 		# Find conversations the current user is a part of
 		conversation_id = []
@@ -344,7 +342,6 @@ def create_app(app):
 			join(User, UserInterests.user_id==User.id).\
 			add_columns(UserInterests.user_id, UserInterests.interest_id, User.id, User.username).\
 			filter(UserInterests.interest_id==interest)
-			print search
 			for x in search.all():
 				if x.user_id != current_user.id and x.username not in matches:
 					matches.append(x.username)
