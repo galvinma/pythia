@@ -1,0 +1,444 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.6
+-- Dumped by pg_dump version 9.5.6
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'SQL_ASCII';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: Conversations; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "Conversations" (
+    id integer NOT NULL,
+    "timestamp" character varying,
+    lastconvo character varying
+);
+
+
+ALTER TABLE "Conversations" OWNER TO admin;
+
+--
+-- Name: Interests; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "Interests" (
+    id integer NOT NULL,
+    interest character varying
+);
+
+
+ALTER TABLE "Interests" OWNER TO admin;
+
+--
+-- Name: Message; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "Message" (
+    id integer NOT NULL,
+    user_id integer,
+    conversations_id integer,
+    message character varying,
+    "timestamp" character varying
+);
+
+
+ALTER TABLE "Message" OWNER TO admin;
+
+--
+-- Name: User; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "User" (
+    id integer NOT NULL,
+    username character varying,
+    firstname character varying,
+    lastname character varying,
+    email character varying,
+    password bytea,
+    description character varying,
+    profilepicture character varying
+);
+
+
+ALTER TABLE "User" OWNER TO admin;
+
+--
+-- Name: UserConversations; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "UserConversations" (
+    user_id integer NOT NULL,
+    conversations_id integer NOT NULL
+);
+
+
+ALTER TABLE "UserConversations" OWNER TO admin;
+
+--
+-- Name: UserInterests; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE "UserInterests" (
+    user_id integer NOT NULL,
+    interest_id integer NOT NULL
+);
+
+
+ALTER TABLE "UserInterests" OWNER TO admin;
+
+--
+-- Name: conversations_id; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE conversations_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE conversations_id OWNER TO admin;
+
+--
+-- Name: interests_id; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE interests_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE interests_id OWNER TO admin;
+
+--
+-- Name: message_id; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE message_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE message_id OWNER TO admin;
+
+--
+-- Name: user_id; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE user_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE user_id OWNER TO admin;
+
+--
+-- Data for Name: Conversations; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "Conversations" (id, "timestamp", lastconvo) FROM stdin;
+4	2017-05-07 12:37:34.249556	2017-05-07 12:37:34.249556
+6	2017-05-07 12:39:24.504966	2017-05-07 12:39:24.504966
+5	2017-05-07 12:38:03.270398	2017-05-07 12:40:35.012131
+2	2017-05-07 12:36:08.050911	2017-05-07 12:42:11.680408
+1	2017-05-07 12:35:46.332700	2017-05-07 12:44:42.982528
+3	2017-05-07 12:36:27.406272	2017-05-07 12:44:56.634706
+\.
+
+
+--
+-- Data for Name: Interests; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "Interests" (id, interest) FROM stdin;
+1	Dogs
+2	Beer
+3	Python
+4	Computers
+5	Ocean
+6	Surfing
+7	Music
+8	Money
+9	Fame
+10	Wealth
+11	Inequality
+12	Marxism
+13	Space
+14	Fruit
+\.
+
+
+--
+-- Data for Name: Message; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "Message" (id, user_id, conversations_id, message, "timestamp") FROM stdin;
+1	1	1	would you like to get some pizza?	2017-05-07 12:35:46.332700
+2	1	2	did you find out how to get pythia up and running?	2017-05-07 12:36:08.050911
+3	1	3	Let's go to the dog park!	2017-05-07 12:36:27.406272
+4	3	4	Where do you like to go running?	2017-05-07 12:37:34.249556
+5	3	1	sure, tomorrow @ 7?	2017-05-07 12:37:44.214359
+6	3	5	Hi	2017-05-07 12:38:03.270398
+7	3	5	what do you think of, "Beyond good and evil"?	2017-05-07 12:38:28.396598
+8	5	6	Want to come to a concert w/ me?	2017-05-07 12:39:24.504966
+9	6	5	It's a masterpiece	2017-05-07 12:40:27.085622
+10	6	5	well ahead of its time	2017-05-07 12:40:35.012131
+11	6	2	Yes!	2017-05-07 12:40:39.799260
+12	6	2	It's great!!!!	2017-05-07 12:40:45.148977
+13	1	2	Great, lmk if you need any help!	2017-05-07 12:42:11.680408
+14	1	1	great, see you there!	2017-05-07 12:44:42.982528
+15	1	3	sure, let me shower first	2017-05-07 12:44:53.327735
+16	1	3	8?	2017-05-07 12:44:56.634706
+\.
+
+
+--
+-- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "User" (id, username, firstname, lastname, email, password, description, profilepicture) FROM stdin;
+4	ek	Emily	Marx	ekek@ek.com	\\x2470626b6466322d73686135313224323530303024394c355853696c6c6a44456d424543497366612e7477244e575835332f477a513650654a4362316c48584a70615655565942626a454a484a5a736d304d43564b796752735a777a642f344a6a594c7336773445775773675a4d2e7a56677145763071714576586333746f636877	\N	static/images/profile_default.png
+7	dog	good	pupper	dogs@dogs.com	\\x2470626b6466322d73686135313224323530303024683542794c755838662e39396a2f452e687843436b4124594e386935315244655037382f3958587079644f6565776264305a2f534b584d766573306f4b345034535a667a54624855736b4d5039793356626331772e446f6d5249387238627a6e384e4849675776446749674a41	\N	static/images/profile_default.png
+8	ash	ash	kaun	ash@ash.com	\\x2470626b6466322d736861353132243235303030245863745a4330476f395637726663395a713556535367246536383459654a313037466f322f49776367325a687358424b6d4e365943554d6d712f34517938795272726964644470764e72555544423262675a5264324533747732754e37346461616a46422f67356b7a6c683877	\N	static/images/profile_default.png
+9	alaina	alaina	shu	shu@al.com	\\x2470626b6466322d736861353132243235303030246d6e4e754c61555541734359453849346878436956412468737852595777714f506451516d736143365556304232324e696d346b52727271534f735142496357717855427364444275484f71394a6b664e6e4341344b66344d676677554a306b59385052542f2f324c52727441	\N	static/images/profile_default.png
+10	larx	larx	marx	larx@marx.com	\\x2470626b6466322d73686135313224323530303024566571394e3259733566782f37333350325676727651244d6865564b4b6952596651395162447272524d3069654a4c5a4c4a68426e3847763178796a746f57614d554a7841626a45764b6f654f5941617478424d4266744c6276556542304c774a614e4f6f763950456b6a4651	\N	static/images/profile_default.png
+1	admin	admin_first	admin_last	admin@admin.com	\\x2470626b6466322d736861353132243235303030244e535a6b37463072355678724c6556387231574b63512436474958785562597170714431444d4e6a77326466676634616a4e5265514a64744b575945355358647934766d6e567134384e4f2f6357595a774c5352745a636e33486c4a4b56476a3276424c676f38597348564951	Hi I am the admin!	static/images/profile_default.png
+3	tots	thomas	smith	smith@smith.com	\\x2470626b6466322d7368613531322432353030302474685a69724a55536f6a546d504164676249317872672457457466693355477238547a484d4d323545503777596c692f6141524267307338532f2e54426b6641337461543276795a4e644f4e4a496a566e552f58532f702f37795977532e684c644a2f44647a6562556b797767	Troll of the sea.\n\nLet's go to the beach!	static/images/profile_default.png
+5	noodle	becca	galvin	b@g.com	\\x2470626b6466322d736861353132243235303030246a4e45616f2f522e44794645434b465569724757736724764e317474766568366479794b4e476e716435596e376f61426377773954465161422e2e735a43686a32422f53733264664f785330435967656d547075784c7234536c316753503445562e6244686730315a51416c41	gorillaz	static/images/profile_default.png
+6	marx	karl	marx	marx@marx.com	\\x2470626b6466322d73686135313224323530303024586b764a2e62395871705879767065794e6f5a5171672465593865747839596953636b68337368564e57743434794f485436493676627378736e4d5a6d55502e36466651647a65307a69506458412e49454f6751416864622f38553075774443344c685971545a626d4d373567	Capital	static/images/profile_default.png
+2	galvinma	Matthew	Galvin	galvin@galvin.com	\\x2470626b6466322d736861353132243235303030246e4850755855754a6b524b6946494b77746c614b385124724c4a4e657555446e712f494c583355346959546d75354545306745624b7262337661327a4f3341674d42556d334c5270706b57444f6949533841365768622e76334e6b464c646c2e7848346c4f626e383242744a67	I am a Intergalactic space explorer.	static/images/profile_default.png
+\.
+
+
+--
+-- Data for Name: UserConversations; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "UserConversations" (user_id, conversations_id) FROM stdin;
+1	1
+3	1
+1	2
+6	2
+1	3
+4	3
+3	4
+4	4
+3	5
+6	5
+5	6
+3	6
+\.
+
+
+--
+-- Data for Name: UserInterests; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "UserInterests" (user_id, interest_id) FROM stdin;
+1	1
+1	2
+1	3
+1	4
+3	5
+3	1
+3	6
+5	7
+5	8
+5	9
+6	10
+6	11
+6	12
+6	1
+2	2
+2	13
+2	1
+2	14
+2	7
+\.
+
+
+--
+-- Name: conversations_id; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('conversations_id', 6, true);
+
+
+--
+-- Name: interests_id; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('interests_id', 14, true);
+
+
+--
+-- Name: message_id; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('message_id', 16, true);
+
+
+--
+-- Name: user_id; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('user_id', 10, true);
+
+
+--
+-- Name: Conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "Conversations"
+    ADD CONSTRAINT "Conversations_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Interests_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "Interests"
+    ADD CONSTRAINT "Interests_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Message_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "Message"
+    ADD CONSTRAINT "Message_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: UserConversations_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserConversations"
+    ADD CONSTRAINT "UserConversations_pkey" PRIMARY KEY (user_id, conversations_id);
+
+
+--
+-- Name: UserInterests_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserInterests"
+    ADD CONSTRAINT "UserInterests_pkey" PRIMARY KEY (user_id, interest_id);
+
+
+--
+-- Name: User_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "User"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: User_username_key; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "User"
+    ADD CONSTRAINT "User_username_key" UNIQUE (username);
+
+
+--
+-- Name: Message_conversations_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "Message"
+    ADD CONSTRAINT "Message_conversations_id_fkey" FOREIGN KEY (conversations_id) REFERENCES "Conversations"(id);
+
+
+--
+-- Name: Message_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "Message"
+    ADD CONSTRAINT "Message_user_id_fkey" FOREIGN KEY (user_id) REFERENCES "User"(id);
+
+
+--
+-- Name: UserConversations_conversations_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserConversations"
+    ADD CONSTRAINT "UserConversations_conversations_id_fkey" FOREIGN KEY (conversations_id) REFERENCES "Conversations"(id);
+
+
+--
+-- Name: UserConversations_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserConversations"
+    ADD CONSTRAINT "UserConversations_user_id_fkey" FOREIGN KEY (user_id) REFERENCES "User"(id);
+
+
+--
+-- Name: UserInterests_interest_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserInterests"
+    ADD CONSTRAINT "UserInterests_interest_id_fkey" FOREIGN KEY (interest_id) REFERENCES "Interests"(id);
+
+
+--
+-- Name: UserInterests_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "UserInterests"
+    ADD CONSTRAINT "UserInterests_user_id_fkey" FOREIGN KEY (user_id) REFERENCES "User"(id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: galvinma
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM galvinma;
+GRANT ALL ON SCHEMA public TO galvinma;
+GRANT CREATE ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

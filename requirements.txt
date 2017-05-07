@@ -33,6 +33,7 @@ python-socketio==1.7.4
 pytz==2017.2
 six==1.10.0
 SQLAlchemy==1.1.5
+SQLAlchemy-Utils==0.32.14
 stevedore==1.21.0
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
