@@ -2,7 +2,7 @@
 import os
 import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from sqlalchemy import exists, create_engine
+from sqlalchemy import exists, create_engine, exc
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -69,18 +69,22 @@ def create_app(app):
 		# Register user if user data is unique / valid
 		# If registration is successful, redirect to the profile page
 		if signupform.validate_on_submit():
-			user = User(firstname = signupform.firstname.data, 
-				lastname = signupform.lastname.data, 
-				username = signupform.username.data, 
-				email = signupform.email.data, 
-				password = signupform.password.data, 
-				profilepicture = 'static/images/profile_default.png')
-			session.add(user)
-			session.commit()
-			username = session.query(User).filter_by(username = signupform.username.data).first()
-			login_user(username)
-			session.close()
-			return redirect(url_for('profile', username= current_user.username, signupform=signupform))
+			try:
+				user = User(firstname = signupform.firstname.data, 
+					lastname = signupform.lastname.data, 
+					username = signupform.username.data, 
+					email = signupform.email.data, 
+					password = signupform.password.data, 
+					profilepicture = 'static/images/profile_default.png')
+				session.add(user)
+				session.commit()
+				username = session.query(User).filter_by(username = signupform.username.data).first()
+				login_user(username)
+				session.close()
+				return redirect(url_for('profile', username= current_user.username, signupform=signupform))
+			except exc.SQLAlchemyError:
+				flash('Error creating user account')
+				return render_template('signup.html', signupform=signupform)
 		session.close()
 		return render_template('signup.html', signupform=signupform)	
 
