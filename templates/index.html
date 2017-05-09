@@ -32,6 +32,15 @@
       <div class="etc-login-form">
       <a href="/signup">create an account</a></p>
       </div>
+      <div align = "center">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
     </form>
   </div>
   <!-- end:Main Form -->
