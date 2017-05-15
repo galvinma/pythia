@@ -51,12 +51,14 @@ def create_app(app):
 		# If validaiton fails, flash incorrect username or password
 		if loginform.validate_on_submit():
 			username = session.query(User).filter_by(username = loginform.lg_username.data).first()
-			if username and username.password == loginform.lg_password.data:
+			try: 
+				username and username.password == loginform.lg_password.data
 				login_user(username)
 				session.close()
 				return redirect(url_for('profile', username= current_user.username, loginform=loginform))
-			else:
-				flash('Username or Password Incorrect')
+			except:
+				flash('Incorrect username or password')
+				return render_template('index.html', loginform=loginform)
 		session.close()
 		return render_template('index.html', loginform=loginform)	
 
