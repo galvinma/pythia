@@ -3,6 +3,9 @@ import pandas as pd
 import math
 from kmodes import kmodes
 
+def similarity(user, cluster):
+	similarity = pd.DataFrame(user-cluster).abs()
+	return similarity
 
 def cluster():
 	# Find population size
@@ -65,9 +68,25 @@ def cluster():
 		k.append(i)
 		i += 500
 
-	# Define ks as a dictionary of {Cluser : Silhouette Score}
-	ks = {}
+	# Define ks as a list of [Cluster : Mean Silhouette Score]
+	ks = []
 
-	for clusters in k:
-		kmodes_cao = kmodes.KModes(n_clusters=4, init='Cao', verbose=1)
-		kmodes_cao.fit(x)
+	for num in k:
+		kmodes_cao = kmodes.KModes(n_clusters=num, init='Cao')
+		kmodes_cao.fit_predict(data)
+		# Create list of UserIntersts--Centroid
+		clusters = pd.DataFrame(kmodes_cao.cluster_centroids_)
+		user_cluster = pd.DataFrame(index=data.index)
+		user_cluster['clusters'] = kmodes_cao.labels_
+		# Pass user and associated cluster to similarity function
+		for index, row in user_cluster.iterrows():
+			cluster = clusters.iloc[row['clusters']]
+			user = data.iloc[index]
+			# Find similarity between user and cluster
+			sim = similarity(user, cluster)
+			 
+
+
+
+
+		# Need User-Interests and Associated Cluster
