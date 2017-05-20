@@ -101,12 +101,9 @@ def cluster():
 		user_cluster = pd.DataFrame(index=data.index)
 		user_cluster['clusters'] = kmodes_cao.labels_
 
-		# Create a DataFrame for each cluster and add it to dictionary
-		users_sorted = {}
-		for index, row in user_cluster.iterrows():
-			if row not in users_sorted:
-				users_sorted['index']
-
+		# Create a Dictionary with the user id as the key. Value for each key \\
+		# is a list: [[Interest list], Cluster ID, [Cluster]]
+	
 
 		# Calculate the silhouette coefficient for each point
 		#
@@ -126,6 +123,8 @@ def cluster():
 
 
 		# Pass user and associated cluster to similarity function
+		# 
+		# This is incorrect. Not quite sure what I was trying to do here, but keeping for reference for now
 		for index, row in user_cluster.iterrows():
 			cluster = clusters.iloc[row['clusters']]
 			user = data.iloc[index]
