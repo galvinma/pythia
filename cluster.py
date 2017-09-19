@@ -11,7 +11,7 @@ from kmodes import kmodes
 # Lower similarity scores imply a object is more similar
 
 def similarity(object_one, object_two):
-	delta = pd.DataFrame(onject_one-object_two).abs()
+	delta = pd.DataFrame(object_one-object_two).abs()
 	similarity = 0
 	for i in delta:
 		similarity += i
