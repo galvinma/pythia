@@ -31,5 +31,5 @@ pip install -r requirements.txt
 
 echo "Executing Pythia and associated tests..."
 python view.py &
-python sel.py
+python unittests.py
 exit 0

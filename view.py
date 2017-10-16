@@ -47,11 +47,11 @@ def create_app(app):
 		session = Session()
 		signupform = RegistrationForm()
 		loginform = LoginForm()
-		# Check if user exists, validate credentials, then  redirect to Profile page. 
+		# Check if user exists, validate credentials, then  redirect to Profile page.
 		# If validaiton fails, flash incorrect username or password
 		if loginform.validate_on_submit():
 			username = session.query(User).filter_by(username = loginform.lg_username.data).first()
-			try: 
+			try:
 				username and username.password == loginform.lg_password.data
 				login_user(username)
 				session.close()
@@ -60,10 +60,10 @@ def create_app(app):
 				flash('Incorrect username or password')
 				return render_template('index.html', loginform=loginform)
 		session.close()
-		return render_template('index.html', loginform=loginform)	
+		return render_template('index.html', loginform=loginform)
 
 
-	# Sign up page allows users to register for the site. 
+	# Sign up page allows users to register for the site.
 	@app.route('/signup', methods =['GET', 'POST'])
 	def signup():
 		session = Session()
@@ -72,11 +72,11 @@ def create_app(app):
 		# If registration is successful, redirect to the profile page
 		if signupform.validate_on_submit():
 			try:
-				user = User(firstname = signupform.firstname.data, 
-					lastname = signupform.lastname.data, 
-					username = signupform.username.data, 
-					email = signupform.email.data, 
-					password = signupform.password.data, 
+				user = User(firstname = signupform.firstname.data,
+					lastname = signupform.lastname.data,
+					username = signupform.username.data,
+					email = signupform.email.data,
+					password = signupform.password.data,
 					profilepicture = 'static/images/profile_default.png')
 				session.add(user)
 				session.commit()
@@ -88,11 +88,11 @@ def create_app(app):
 				flash('Error creating user account')
 				return render_template('signup.html', signupform=signupform)
 		session.close()
-		return render_template('signup.html', signupform=signupform)	
+		return render_template('signup.html', signupform=signupform)
 
 
 	# Profile page for the current user
-	@app.route('/profile', methods =['GET', 'POST'])	
+	@app.route('/profile', methods =['GET', 'POST'])
 	@login_required
 	def profile():
 		session = Session()
@@ -108,7 +108,7 @@ def create_app(app):
 		return render_template('profile.html', username= current_user.username, profileform=profileform)
 
 	# Read only profile page for search feature
-	@app.route('/profile/<username>', methods =['GET', 'POST'])	
+	@app.route('/profile/<username>', methods =['GET', 'POST'])
 	@login_required
 	def read_profile(username):
 		return render_template('viewprofile.html', username=username)
@@ -132,7 +132,7 @@ def create_app(app):
 	@app.route('/logout', methods=['GET', 'POST'])
 	def logout():
 		logout_user()
-		return redirect(url_for('index'))	
+		return redirect(url_for('index'))
 
 	# Socket Routes
 	@socketio.on('get_profileinfo')
@@ -187,7 +187,7 @@ def create_app(app):
 		session.commit()
 		session.close()
 
-	# Update a user interest. 
+	# Update a user interest.
 	# Route will commit a new interest to the Interest table if interest DNE
 	@socketio.on('intereststore')
 	def intereststore(intereststore):
@@ -225,7 +225,7 @@ def create_app(app):
 	# Return a list of conversations for a given user
 	# List is sorted by timestamp
 	@socketio.on('get_conversation')
-	def get_conversation():	
+	def get_conversation():
 		session = Session()
 		user = current_user.username
 		timestamp = str(datetime.datetime.now())
@@ -288,7 +288,7 @@ def create_app(app):
 		final_convo = []
 		for convo in conversation_id:
 			match = session.query(UserConversations).filter(UserConversations.user_id==foreign_user, UserConversations.conversations_id==convo)
-			for conversation in match:					
+			for conversation in match:
 				final_convo.append(conversation.conversations_id)
 		# Create conversation id if one does not exist, then add message
 		# If conversation already exists, just add the message
@@ -311,7 +311,7 @@ def create_app(app):
 			emit("newconvo", broadcast = True)
 		# If conversation already exists, just add message to db
 		else:
-			lastconvo = Conversations(id=final_convo[0], lastconvo = timestamp)	
+			lastconvo = Conversations(id=final_convo[0], lastconvo = timestamp)
 			session.merge(lastconvo)
 			session.commit()
 			session.flush()
@@ -326,12 +326,12 @@ def create_app(app):
 				filter(Message.conversations_id==final_convo[0])
 			for match in message_query.all():
 				messages.append({'message':match.message, 'user_id':match.username, 'timestamp':match.timestamp})
-			# Sort messages by timestamp	
+			# Sort messages by timestamp
 			messages = sorted(messages, key=lambda item:item['timestamp'])
 			# Close session
 			session.close()
 			# Emit list of messages to the client
-			emit("newmessage", messages, broadcast = True)	
+			emit("newmessage", messages, broadcast = True)
 
 	# Returns a list of users the current user has at least interest in common
 	@socketio.on('get_user_match')
@@ -352,8 +352,8 @@ def create_app(app):
 				if x.user_id != current_user.id and x.username not in matches:
 					matches.append(x.username)
 		# Close session
-		session.close()	
-		# Emit list of usernames		
+		session.close()
+		# Emit list of usernames
 		emit('match_list', matches, broadcast=True)
 
 

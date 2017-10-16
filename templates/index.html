@@ -1,5 +1,5 @@
 {% extends "outerlayout.html" %}
-{% block content %} 
+{% block content %}
 
 <body>
 
@@ -9,7 +9,7 @@
   <div class="logo">The Pythia Project</div>
   <!-- Main Form -->
   <div class="login-form-1">
-    <form id="login-form" class="text-left" method="POST">
+    <form id="login-form" class="text-left" method="POST" action="/profile">
       {{ loginform.hidden_tag() }}
       <div class="login-form-main-message"></div>
       <div class="main-login-form">
