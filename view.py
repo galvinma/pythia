@@ -55,7 +55,7 @@ def create_app(app):
 				username and username.password == loginform.lg_password.data
 				login_user(username)
 				session.close()
-				return redirect(url_for('profile', username= current_user.username, loginform=loginform))
+				return redirect(url_for('profileredirect', username= current_user.username, loginform=loginform))
 			except:
 				flash('Incorrect username or password')
 				return render_template('index.html', loginform=loginform)
@@ -83,13 +83,18 @@ def create_app(app):
 				username = session.query(User).filter_by(username = signupform.username.data).first()
 				login_user(username)
 				session.close()
-				return redirect(url_for('profile', username= current_user.username, signupform=signupform))
+				return redirect(url_for('profileredirect', username= current_user.username, signupform=signupform))
 			except exc.SQLAlchemyError:
 				flash('Error creating user account')
 				return render_template('signup.html', signupform=signupform)
 		session.close()
 		return render_template('signup.html', signupform=signupform)
 
+	# Profile redirect. Alls GET method, but keeps form data out of URL
+	@app.route('/profileredirect', methods =['GET'])
+	@login_required
+	def profileredirect():
+		return redirect(url_for('profile'))
 
 	# Profile page for the current user
 	@app.route('/profile', methods =['GET', 'POST'])

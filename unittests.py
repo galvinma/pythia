@@ -30,7 +30,7 @@ class CreateUserTest(unittest.TestCase):
         time.sleep(1)
         sbtn = driver.find_element_by_class_name('login-button')
         sbtn.click()
-        self.assertEqual(response.status_code, 200)
+#        self.assertTrue(driver.find_element_by_link_text("Logout"),"Logout link")
         time.sleep(5)
 
         def testTearDown(self):
