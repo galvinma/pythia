@@ -19,10 +19,10 @@ driver = webdriver.Chrome('/home/galvinma/Workspace/pythia/chromedriver')
 username = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
 
 def createnewuser():
-    global username
     username = str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
+    return username
 
-def commituser(self):
+def commituser(username):
     try:
         user = User(firstname = 'test_firstname',
             lastname = 'test_lastname',
@@ -37,7 +37,8 @@ def commituser(self):
 
 class CreateUserHappyPath(unittest.TestCase):
     def testCreateUserHappyPath(self):
-        createnewuser()
+        username = createnewuser()
+        print(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
         driver.find_element_by_xpath("//*[contains(text(),'create')]").click();
@@ -68,7 +69,8 @@ class CreateUserHappyPath(unittest.TestCase):
 
 class CreateDuplicateUserTest(unittest.TestCase):
     def testCreateDuplicateUserTest(self):
-        createnewuser()
+        username = createnewuser()
+        print(username)
         commituser(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
@@ -100,7 +102,8 @@ class CreateDuplicateUserTest(unittest.TestCase):
 
 class LoginHappyPath(unittest.TestCase):
     def testLoginHappyPath(self):
-        createnewuser()
+        username = createnewuser()
+        print(username)
         commituser(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
