@@ -38,7 +38,6 @@ def commituser(username):
 class CreateUserHappyPath(unittest.TestCase):
     def testCreateUserHappyPath(self):
         username = createnewuser()
-        print(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
         driver.find_element_by_xpath("//*[contains(text(),'create')]").click();
@@ -70,7 +69,6 @@ class CreateUserHappyPath(unittest.TestCase):
 class CreateDuplicateUserTest(unittest.TestCase):
     def testCreateDuplicateUserTest(self):
         username = createnewuser()
-        print(username)
         commituser(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
@@ -103,7 +101,6 @@ class CreateDuplicateUserTest(unittest.TestCase):
 class LoginHappyPath(unittest.TestCase):
     def testLoginHappyPath(self):
         username = createnewuser()
-        print(username)
         commituser(username)
         driver.get('http://localhost:5000/');
         time.sleep(2)
