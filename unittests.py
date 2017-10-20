@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from sqlalchemy import exists, create_engine, exc
 from sqlalchemy.orm import sessionmaker, scoped_session, query
 from sqlalchemy.ext.declarative import	declarative_base
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from model import DeclarativeBase, User
 
@@ -28,7 +29,7 @@ def commituser(username):
             lastname = 'test_lastname',
             username = username,
             email = 'testemail@123.com',
-            password = 'password',
+            password = generate_password_hash('password'),
             profilepicture = 'static/images/profile_default.png')
         session.add(user)
         session.commit()
@@ -114,6 +115,24 @@ class LoginHappyPath(unittest.TestCase):
         sbtn.click()
         time.sleep(2)
         self.assertTrue(driver.find_element_by_id('profilepic'))
+        time.sleep(2)
+
+class LoginFailPath(unittest.TestCase):
+    def testLoginFail(self):
+        username = createnewuser()
+        commituser(username)
+        driver.get('http://localhost:5000/');
+        time.sleep(2)
+        login = driver.find_element_by_id('lg_username')
+        login.send_keys(username)
+        time.sleep(1)
+        password = driver.find_element_by_id('lg_password')
+        password.send_keys('passwordX')
+        time.sleep(1)
+        sbtn = driver.find_element_by_class_name('login-button')
+        sbtn.click()
+        time.sleep(2)
+        self.assertTrue(driver.find_element_by_id('lg_username'))
         time.sleep(2)
 
     def TearDown(self):

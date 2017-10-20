@@ -51,16 +51,16 @@ def create_app(app):
 		# If validaiton fails, flash incorrect username or password
 		if loginform.validate_on_submit():
 			username = session.query(User).filter_by(username = loginform.lg_username.data).first()
-			print(username)
-			print(username.password)
-			print(loginform.lg_password.data)
 			try:
 				if check_password_hash(username.password, loginform.lg_password.data) is True:
 				#if username.password == loginform.lg_password.data:
 					login_user(username)
 					session.close()
 					return redirect(url_for('profileredirect', username= current_user.username, loginform=loginform))
-			except:
+			except AttributeError:
+				flash('Incorrect username or password')
+				return render_template('index.html', loginform=loginform)
+			else:
 				flash('Incorrect username or password')
 				return render_template('index.html', loginform=loginform)
 		session.close()
@@ -77,7 +77,6 @@ def create_app(app):
 		if signupform.validate_on_submit():
 			try:
 				passhash = generate_password_hash(signupform.password.data)
-				print(passhash)
 				user = User(firstname = signupform.firstname.data,
 					lastname = signupform.lastname.data,
 					username = signupform.username.data,
