@@ -9,7 +9,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_socketio import SocketIO, send, emit
 from flask_bootstrap import Bootstrap
 from werkzeug.utils import secure_filename
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Imports from py files
 from form import RegistrationForm, LoginForm, ProfileForm
@@ -51,11 +51,15 @@ def create_app(app):
 		# If validaiton fails, flash incorrect username or password
 		if loginform.validate_on_submit():
 			username = session.query(User).filter_by(username = loginform.lg_username.data).first()
+			print(username)
+			print(username.password)
+			print(loginform.lg_password.data)
 			try:
-				username and username.password == loginform.lg_password.data
-				login_user(username)
-				session.close()
-				return redirect(url_for('profileredirect', username= current_user.username, loginform=loginform))
+				if check_password_hash(username.password, loginform.lg_password.data) is True:
+				#if username.password == loginform.lg_password.data:
+					login_user(username)
+					session.close()
+					return redirect(url_for('profileredirect', username= current_user.username, loginform=loginform))
 			except:
 				flash('Incorrect username or password')
 				return render_template('index.html', loginform=loginform)
@@ -72,11 +76,13 @@ def create_app(app):
 		# If registration is successful, redirect to the profile page
 		if signupform.validate_on_submit():
 			try:
+				passhash = generate_password_hash(signupform.password.data)
+				print(passhash)
 				user = User(firstname = signupform.firstname.data,
 					lastname = signupform.lastname.data,
 					username = signupform.username.data,
 					email = signupform.email.data,
-					password = signupform.password.data,
+					password = passhash,
 					profilepicture = 'static/images/profile_default.png')
 				session.add(user)
 				session.commit()

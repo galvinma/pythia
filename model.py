@@ -17,10 +17,7 @@ class User(DeclarativeBase, UserMixin):
 	firstname = Column('firstname', String)
 	lastname = Column('lastname', String)
 	email = Column('email', String)
-	password = Column('password', PasswordType(
-        schemes=[
-            'pbkdf2_sha512',
-        ]))
+	password = Column('password', String)
 	description = Column('description', String)
 	profilepicture = Column('profilepicture', String)
 
