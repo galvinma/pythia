@@ -4,13 +4,15 @@ Creating meaningful connections by leveraging big data.
 
 This repo is a proof of concept for the Pythia project. Pythia allows individuals to search for users based upon common interests. Current app leverages Flask, WebSockets, SQLalchemy, and Bootstrap.
 
+![Alt text](/static/images/demo.png?raw=true "Demo")
+
 ## Installation
 
-This app requires Python 2.7 and Postgres 9.5. Other dependencies can be installed via, "pip install -r requirements.txt". See wiki for further instructions. 
+This app requires Python 2.7 and Postgres 9.5. Other dependencies can be installed via, "pip install -r requirements.txt". See wiki for further instructions.
 
 ## Contributing
 
-All contributions are welcome. 
+All contributions are welcome.
 
 Fork this project, then submit a pull request.
 
